@@ -288,7 +288,7 @@
 .rv-ba__side--after .rv-ba__label strong { color: #f3d9a8; }
 
 .rv-hero__title { font-size: clamp(28px, 3vw, 38px); font-weight: 700; line-height: 1.5; }
-.rv-hero__text { margin-top: 20px !important; font-size: 15px; line-height: 2; color: var(--rv-body); max-width: 75ch; }
+.rv-hero__text { margin-top: 20px !important; font-size: 15px; line-height: 2; color: var(--rv-body); max-width: 60ch; }
 .rv-hero__cta { margin-top: 28px; }
 .rv-hero__note { margin-top: 24px !important; font-size: 11px; line-height: 1.8; color: var(--rv-muted); max-width: 100ch; }
 
