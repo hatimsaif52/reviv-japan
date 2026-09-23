@@ -410,7 +410,7 @@
         "video_3": {
           "type": "video",
           "settings": {
-            "video": "",
+            "video": "https://www.youtube.com/watch?v=gmoeX-6gsFg",
             "vertical": true,
             "link": "",
             "media_label": "Watch · Short",
