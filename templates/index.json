@@ -206,15 +206,15 @@
             "raised": false
           }
         },
-        "product_4": {
+        "product_WJBaHx": {
           "type": "product",
           "settings": {
-            "product": "",
-            "badge": "New arrival",
-            "badge_style": "soft",
-            "type_label": "Sport appliance",
+            "product": "1-year-subscription-only",
+            "badge": "Best seller",
+            "badge_style": "gold",
+            "type_label": "Oral appliance",
             "highlight": "",
-            "details": "1 appliance, one adult size · wear it while you train",
+            "details": "1 appliance, hard case, guide · about 1 year",
             "button_style": "outline",
             "raised": false
           }
@@ -224,7 +224,7 @@
         "product_1",
         "product_2",
         "product_3",
-        "product_4"
+        "product_WJBaHx"
       ],
       "settings": {
         "eyebrow": "Item",
