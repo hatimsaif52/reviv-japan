@@ -1,0 +1,15 @@
+{%- comment -%}
+  Usage: {% render 'rv-stars', rating: 4.5, count: 120 %}
+  rating: number 0–5. count: optional review count.
+{%- endcomment -%}
+{%- assign r = rating | default: 0 | times: 1.0 -%}
+{%- assign full = r | round -%}
+<span class="rv-stars">
+  <span class="rv-stars__icons" aria-hidden="true">
+    {%- for i in (1..5) -%}{%- if i <= full -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}
+  </span>
+  <span class="rv-visually-hidden">{{ r | round: 1 }} out of 5</span>
+  {%- if show_value != false -%}
+    <span>{{ r | round: 1 }}{% if count != blank %} ({{ count }}){% endif %}</span>
+  {%- endif -%}
+</span>

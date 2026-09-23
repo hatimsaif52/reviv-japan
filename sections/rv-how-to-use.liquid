@@ -1,0 +1,63 @@
+{%- assign s = section.settings -%}
+<section class="rv-scope rv-section" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-howto-{{ section.id }}">
+  <div class="rv-container">
+    <div class="rv-howto">
+      <div class="rv-head">
+        <div>
+          {%- render 'rv-pill', text: s.eyebrow, style: 'white' -%}
+          <h2 class="rv-head__title" id="rv-howto-{{ section.id }}">{{ s.heading }}</h2>
+          {%- if s.subheading != blank -%}<p class="rv-head__sub">{{ s.subheading }}</p>{%- endif -%}
+        </div>
+      </div>
+      <ol class="rv-steps" style="list-style:none;padding:0;margin:0 auto;">
+        {%- for block in section.blocks -%}
+          <li class="rv-step" {{ block.shopify_attributes }}>
+            <div class="rv-step__media">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 33vw, 100vw', widths: '350, 500, 700' }}
+              {%- else -%}
+                {{ 'lifestyle-2' | placeholder_svg_tag: 'rv-placeholder' }}
+              {%- endif -%}
+              <span class="rv-step__num" aria-hidden="true">{{ forloop.index }}</span>
+            </div>
+            <div class="rv-step__body">
+              <h3 class="rv-step__title"><span class="rv-visually-hidden">Step {{ forloop.index }}: </span>{{ block.settings.title }}</h3>
+              {%- if block.settings.text != blank -%}<p class="rv-step__text">{{ block.settings.text }}</p>{%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv how to use",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Guide" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How to use" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "No moulding, no adjustment period — it arrives in your size, ready to wear." },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [{
+    "type": "step", "name": "Step",
+    "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Step title" },
+      { "type": "textarea", "id": "text", "label": "Text" }
+    ]
+  }],
+  "presets": [{
+    "name": "Reviv how to use",
+    "blocks": [
+      { "type": "step", "settings": { "title": "Take it out of the box and wash it", "text": "Warm water and a little soap. Nothing to boil, nothing to mould." } },
+      { "type": "step", "settings": { "title": "Wear it to sleep and 2–3 hours during the day", "text": "The hours are what do the work. Take it out to eat and to speak." } },
+      { "type": "step", "settings": { "title": "Wash it and let it dry", "text": "Air dry somewhere dry, away from heat and direct sun." } }
+    ]
+  }]
+}
+{% endschema %}

@@ -1,0 +1,125 @@
+{%- render 'rv-assets' -%}
+{%- assign menu = linklists[section.settings.menu] -%}
+
+<header class="rv-scope rv-header{% if section.settings.sticky %} is-sticky{% endif %}" style="--rv-logo-w: {{ section.settings.logo_width }}px;">
+  <div class="rv-container rv-container--narrow">
+    <div class="rv-header__top">
+      <button type="button" class="rv-icon-link rv-burger" data-rv-drawer-open aria-expanded="false" aria-controls="rv-drawer" aria-label="Open menu">
+        {%- render 'rv-icon', icon: 'menu' -%}
+      </button>
+
+      <a href="{{ routes.root_url }}" class="rv-header__logo">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 480 | image_tag: alt: shop.name, loading: 'eager', widths: '160, 240, 320, 480' }}
+        {%- else -%}
+          <span class="rv-header__logo-text">{{ shop.name | upcase }}</span>
+        {%- endif -%}
+        {%- if request.page_type == 'index' -%}<h1 class="rv-visually-hidden">{{ shop.name }}</h1>{%- endif -%}
+      </a>
+      {%- if section.settings.flag != blank -%}
+        <span class="rv-header__flag" aria-hidden="true">{{ section.settings.flag }}</span>
+      {%- endif -%}
+
+      <div class="rv-header__right">
+        {%- if section.settings.show_search -%}
+          <form action="{{ routes.search_url }}" method="get" role="search" class="rv-search">
+            <label for="rv-search-{{ section.id }}" class="rv-visually-hidden">Search</label>
+            {%- render 'rv-icon', icon: 'search' -%}
+            <input id="rv-search-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder }}">
+            <input type="hidden" name="options[prefix]" value="last">
+          </form>
+        {%- endif -%}
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="rv-icon-link" aria-label="Account">
+            {%- render 'rv-icon', icon: 'account' -%}
+          </a>
+        {%- endif -%}
+
+        <a href="{{ routes.cart_url }}" class="rv-icon-link" data-rv-open-cart aria-label="Cart, {{ cart.item_count }} items">
+          {%- render 'rv-icon', icon: 'bag' -%}
+          <span class="rv-cart-count" data-rv-cart-count>{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+
+    {%- if menu.links.size > 0 -%}
+      <nav aria-label="Main">
+        <ul class="rv-nav">
+          {%- for link in menu.links -%}
+            {%- liquid
+              assign is_active = false
+              if link.active or link.current
+                assign is_active = true
+              endif
+              if link.url == routes.root_url and request.page_type == 'index'
+                assign is_active = true
+              endif
+            -%}
+            <li>
+              {%- if link.links.size > 0 -%}
+                <button type="button" class="rv-nav__link{% if is_active or link.child_active %} is-active{% endif %}" data-rv-dropdown aria-expanded="false">
+                  {{ link.title }} {% render 'rv-icon', icon: 'chevron' %}
+                </button>
+                <ul class="rv-nav__drop">
+                  {%- for child in link.links -%}
+                    <li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- else -%}
+                <a href="{{ link.url }}" class="rv-nav__link{% if is_active %} is-active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</header>
+
+<div class="rv-scope rv-drawer" id="rv-drawer" data-rv-drawer aria-hidden="true">
+  <div class="rv-drawer__overlay" data-rv-drawer-close></div>
+  <div class="rv-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <button type="button" class="rv-icon-link rv-drawer__close" data-rv-drawer-close aria-label="Close menu">{%- render 'rv-icon', icon: 'close' -%}</button>
+    {%- if section.settings.show_search -%}
+      <form action="{{ routes.search_url }}" method="get" role="search" class="rv-search" style="margin-top:16px">
+        <label for="rv-search-m-{{ section.id }}" class="rv-visually-hidden">Search</label>
+        {%- render 'rv-icon', icon: 'search' -%}
+        <input id="rv-search-m-{{ section.id }}" type="search" name="q" placeholder="{{ section.settings.search_placeholder }}">
+      </form>
+    {%- endif -%}
+    <ul class="rv-drawer__nav">
+      {%- for link in menu.links -%}
+        <li>
+          {%- if link.links.size > 0 -%}
+            <details>
+              <summary>{{ link.title }} {% render 'rv-icon', icon: 'chevron' %}</summary>
+              <ul>
+                {%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}
+              </ul>
+            </details>
+          {%- else -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reviv header",
+  "class": "rv-header-section",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 240, "step": 5, "unit": "px", "default": 120 },
+    { "type": "text", "id": "flag", "label": "Flag / region badge", "info": "Emoji or short text shown beside the logo", "default": "🇯🇵" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search" },
+    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": false }
+  ]
+}
+{% endschema %}

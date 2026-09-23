@@ -1,0 +1,101 @@
+{%- assign s = section.settings -%}
+<section class="rv-scope rv-section" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-vc-{{ section.id }}">
+  <div class="rv-container">
+    <div class="rv-head">
+      <div>
+        {%- render 'rv-pill', text: s.eyebrow -%}
+        <h2 class="rv-head__title" id="rv-vc-{{ section.id }}">{{ s.heading }}</h2>
+      </div>
+      {%- if s.button_label != blank -%}
+        <a href="{{ s.button_link | default: '#' }}" class="rv-btn rv-btn--ghost">{{ s.button_label }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="rv-vcards">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign video_src = ''
+          if b.video != blank
+            if b.video.type == 'youtube'
+              assign video_src = 'https://www.youtube.com/watch?v=' | append: b.video.id
+            elsif b.video.type == 'vimeo'
+              assign video_src = 'https://vimeo.com/' | append: b.video.id
+            endif
+          endif
+        -%}
+        <article class="rv-vcard" {{ block.shopify_attributes }}>
+          {%- if video_src != blank -%}
+            <button type="button" class="rv-vcard__media" data-rv-video="{{ video_src }}" data-rv-vertical="{{ b.vertical }}" aria-label="Play video: {{ b.title | escape }}">
+          {%- else -%}
+            <a href="{{ b.link | default: '#' }}" class="rv-vcard__media" aria-label="{{ b.title | escape }}">
+          {%- endif -%}
+            {%- if b.image != blank -%}
+              {{ b.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 850px) 33vw, 100vw', widths: '400, 600, 800', alt: '' }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'rv-placeholder' }}
+            {%- endif -%}
+            <span class="rv-vcard__play"><i>{%- render 'rv-icon', icon: 'play' -%}</i>{{ b.media_label }}</span>
+          {%- if video_src != blank -%}</button>{%- else -%}</a>{%- endif -%}
+
+          <div class="rv-vcard__body">
+            <h3 class="rv-vcard__title">{{ b.title }}</h3>
+            {%- if b.text != blank -%}<p class="rv-vcard__text">{{ b.text }}</p>{%- endif -%}
+            {%- if b.button_label != blank -%}
+              {%- if video_src != blank -%}
+                <button type="button" class="rv-btn rv-btn--ghost" data-rv-video="{{ video_src }}" data-rv-vertical="{{ b.vertical }}">{{ b.button_label }} {% render 'rv-icon', icon: 'arrow-up-right' %}</button>
+              {%- else -%}
+                <a href="{{ b.link | default: '#' }}" class="rv-btn rv-btn--ghost">{{ b.button_label }} {% render 'rv-icon', icon: 'arrow-up-right' %}</a>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<div class="rv-scope rv-modal" data-rv-modal role="dialog" aria-modal="true" aria-label="Video">
+  <div class="rv-modal__overlay" data-rv-modal-close></div>
+  <div class="rv-modal__box" data-rv-modal-box>
+    <button type="button" class="rv-modal__close" data-rv-modal-close aria-label="Close video">{%- render 'rv-icon', icon: 'close' -%}</button>
+    <div data-rv-modal-slot style="width:100%;height:100%"></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reviv video cards",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Size" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Find your size" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Size guide" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [{
+    "type": "video", "name": "Video card",
+    "settings": [
+      { "type": "image_picker", "id": "image", "label": "Cover image" },
+      { "type": "video_url", "id": "video", "label": "YouTube or Vimeo URL", "accept": ["youtube", "vimeo"] },
+      { "type": "checkbox", "id": "vertical", "label": "Vertical video (Shorts)", "default": true },
+      { "type": "url", "id": "link", "label": "Fallback link", "info": "Used when no video URL is set" },
+      { "type": "text", "id": "media_label", "label": "Label on cover", "default": "Watch · Short" },
+      { "type": "text", "id": "title", "label": "Title", "default": "How to choose R1 size?" },
+      { "type": "textarea", "id": "text", "label": "Text" },
+      { "type": "text", "id": "button_label", "label": "Button label", "default": "Watch video" }
+    ]
+  }],
+  "presets": [{
+    "name": "Reviv video cards",
+    "blocks": [
+      { "type": "video", "settings": { "title": "How to choose R1 size?", "text": "Sizing the everyday R1 — how to read your own bite and pick between Small and Large." } },
+      { "type": "video", "settings": { "title": "How to choose R2 size?", "text": "Sizing the R2 — the Medium and Large fit, and how to tell which one is yours." } },
+      { "type": "video", "settings": { "title": "How to choose R3 size?", "text": "Sizing the R3, including the new Extra Large. No impressions, no moulding, no dental visit." } }
+    ]
+  }]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+{%- liquid
+  assign s = section.settings
+  assign blog = blogs[s.blog]
+-%}
+<section class="rv-scope rv-section" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-journal-{{ section.id }}">
+  <div class="rv-container">
+    <div class="rv-head">
+      <div>
+        {%- render 'rv-pill', text: s.eyebrow -%}
+        <h2 class="rv-head__title" id="rv-journal-{{ section.id }}">{{ s.heading }}</h2>
+      </div>
+      {%- if s.button_label != blank -%}
+        <a href="{{ blog.url | default: '#' }}" class="rv-btn rv-btn--ghost">{{ s.button_label }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="rv-journal__grid">
+      {%- if blog != blank and blog.articles_count > 0 -%}
+        {%- for article in blog.articles limit: s.post_limit -%}
+          <a href="{{ article.url }}" class="rv-post">
+            <div class="rv-post__media">
+              {%- if article.image != blank -%}
+                {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, (min-width: 520px) 50vw, 100vw', widths: '300, 450, 600', alt: article.image.alt | default: article.title }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'rv-placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="rv-post__body">
+              <time class="rv-post__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: s.date_format }}</time>
+              <h3 class="rv-post__title">{{ article.title }}</h3>
+              {%- if s.show_tags and article.tags.size > 0 -%}
+                <div class="rv-post__tags">
+                  {%- for tag in article.tags limit: 3 -%}<span>{{ tag }}</span>{%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          <div class="rv-post">
+            <div class="rv-post__media">{{ 'image' | placeholder_svg_tag: 'rv-placeholder' }}</div>
+            <div class="rv-post__body">
+              <span class="rv-post__date">2024.06.2{{ i }}</span>
+              <h3 class="rv-post__title">Choose a blog in the section settings</h3>
+              <div class="rv-post__tags"><span>tag</span></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv journal",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Article" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From the journal" },
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "range", "id": "post_limit", "label": "Number of posts", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tags", "default": true },
+    { "type": "text", "id": "date_format", "label": "Date format", "info": "strftime format, e.g. %Y.%m.%d", "default": "%Y.%m.%d" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View all articles" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [{ "name": "Reviv journal" }]
+}
+{% endschema %}

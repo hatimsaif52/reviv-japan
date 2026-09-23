@@ -1,0 +1,87 @@
+{%- liquid
+  assign s = section.settings
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign points = section.blocks | where: 'type', 'point'
+-%}
+<section class="rv-scope rv-benefits" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-benefits-{{ section.id }}">
+  <div class="rv-container">
+    {%- if photos.size > 0 -%}
+      <div class="rv-benefits__strip">
+        {%- for block in photos -%}
+          <div {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 25vw, 50vw', widths: '300, 450, 600, 700' }}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'rv-placeholder' }}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="rv-benefits__card"{% if photos.size == 0 %} style="margin-top:0"{% endif %}>
+      <h2 class="rv-benefits__title" id="rv-benefits-{{ section.id }}">
+        {{ s.heading_line_1 }}{% if s.heading_line_2 != blank %}<br><mark>{{ s.heading_line_2 }}</mark>{% if s.footnote_marker != blank %}<sup>{{ s.footnote_marker }}</sup>{% endif %}{% endif %}
+      </h2>
+      {%- if s.intro != blank -%}<p class="rv-benefits__intro">{{ s.intro }}</p>{%- endif -%}
+
+      {%- if points.size > 0 -%}
+        <ul class="rv-checklist">
+          {%- for block in points -%}
+            <li {{ block.shopify_attributes }}>
+              <span class="rv-checklist__icon">{%- render 'rv-icon', icon: 'check' -%}</span>
+              {{ block.settings.text }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if s.button_label != blank -%}
+        <a href="{{ s.button_link | default: routes.all_products_collection_url }}" class="rv-btn rv-btn--primary rv-btn--block rv-btn--lg">
+          {{ s.button_label }} {% render 'rv-icon', icon: 'arrow' %}
+        </a>
+      {%- endif -%}
+      {%- if s.footnote != blank -%}<div class="rv-benefits__foot">{{ s.footnote }}</div>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv benefits card",
+  "tag": "div",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "heading_line_1", "label": "Heading line 1", "default": "The more you wear it," },
+    { "type": "text", "id": "heading_line_2", "label": "Heading line 2 (highlighted)", "default": "the more your jaw lets go." },
+    { "type": "text", "id": "footnote_marker", "label": "Footnote marker", "default": "*1" },
+    { "type": "text", "id": "intro", "label": "Intro", "default": "What customers most often tell us, after wearing it night after night:" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Purchase now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "richtext", "id": "footnote", "label": "Footnote", "default": "<p>*1 a sense of ease and reduced tension. These statements are based on personal customer experience, individual results vary and are not typical, and they have not been evaluated by the PMDA. Reviv is a consumer oral appliance, not a medical device, and is not intended to diagnose, treat or prevent any condition.</p>" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "photo", "name": "Photo", "limit": 4,
+      "settings": [{ "type": "image_picker", "id": "image", "label": "Image" }]
+    },
+    {
+      "type": "point", "name": "Check point",
+      "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Woke up with noticeably less jaw tension" }]
+    }
+  ],
+  "presets": [{
+    "name": "Reviv benefits card",
+    "blocks": [
+      { "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" },
+      { "type": "point", "settings": { "text": "Woke up with noticeably less jaw tension" } },
+      { "type": "point", "settings": { "text": "Felt more rested in the mornings" } },
+      { "type": "point", "settings": { "text": "Stopped grinding through their nights" } },
+      { "type": "point", "settings": { "text": "Partners said they seemed less restless while sleeping" } },
+      { "type": "point", "settings": { "text": "It became part of the routine — they don't sleep without it" } }
+    ]
+  }]
+}
+{% endschema %}

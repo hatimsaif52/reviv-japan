@@ -1,0 +1,6 @@
+{%- comment -%} Usage: {% render 'rv-pill', text: 'Item', style: 'white' %} {%- endcomment -%}
+{%- if text != blank -%}
+  <span class="rv-pill{% if style == 'white' %} rv-pill--white{% endif %}">
+    <span class="rv-pill__star" aria-hidden="true">✦</span>{{ text }}
+  </span>
+{%- endif -%}

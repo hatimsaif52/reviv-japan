@@ -1,0 +1,116 @@
+{%- assign s = section.settings -%}
+<section class="rv-scope rv-section rv-products" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-products-{{ section.id }}">
+  <div class="rv-container">
+    <div class="rv-head">
+      <div>
+        {%- render 'rv-pill', text: s.eyebrow -%}
+        <h2 class="rv-head__title" id="rv-products-{{ section.id }}">{{ s.heading }}</h2>
+      </div>
+      {%- if s.button_label != blank -%}
+        <a href="{{ s.button_link | default: routes.all_products_collection_url }}" class="rv-btn rv-btn--ghost">{{ s.button_label }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="rv-products__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign p = b.product
+          assign rating = p.metafields.reviews.rating.value.rating
+          assign rating_count = p.metafields.reviews.rating_count.value
+          assign type_label = b.type_label | default: p.type
+        -%}
+        <article class="rv-pcard{% if b.raised %} is-raised{% endif %}" {{ block.shopify_attributes }}>
+          {%- if b.badge != blank -%}<span class="rv-badge rv-badge--{{ b.badge_style }}">{{ b.badge }}</span>{%- endif -%}
+
+          <a href="{{ p.url | default: '#' }}" class="rv-pcard__media" tabindex="-1" aria-hidden="true">
+            {%- if p.featured_image != blank -%}
+              {{ p.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, (min-width: 520px) 50vw, 100vw', widths: '300, 450, 600, 700' }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'rv-placeholder' }}
+            {%- endif -%}
+          </a>
+
+          <div class="rv-pcard__body">
+            {%- if type_label != blank -%}<p class="rv-pcard__type">{{ type_label }}</p>{%- endif -%}
+            <h3 class="rv-pcard__title"><a href="{{ p.url | default: '#' }}">{{ p.title | default: 'Product title' }}</a></h3>
+
+            {%- if rating != blank -%}
+              <div class="rv-pcard__rating">{%- render 'rv-stars', rating: rating, count: rating_count -%}</div>
+            {%- elsif s.show_no_reviews -%}
+              <p class="rv-pcard__noreviews">No reviews yet</p>
+            {%- endif -%}
+
+            {%- if b.highlight != blank -%}<p class="rv-pcard__highlight">{{ b.highlight }}</p>{%- endif -%}
+            {%- if b.details != blank -%}<p class="rv-pcard__meta">{{ b.details }}</p>{%- endif -%}
+
+            <div class="rv-pcard__price">
+              {%- if p != blank -%}
+                <strong>{{ p.price | money_without_trailing_zeros }}</strong>
+                {%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
+              {%- else -%}
+                <strong>{{ 0 | money_without_trailing_zeros }}</strong>
+              {%- endif -%}
+              {%- if s.price_suffix != blank -%}<small>{{ s.price_suffix }}</small>{%- endif -%}
+            </div>
+
+            {%- render 'rv-product-form', product: p, style: b.button_style, label: s.cart_label -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if s.note != blank -%}<p class="rv-products__note">{{ s.note }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv product cards",
+  "tag": "div",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Item" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "All products" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View all items" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "cart_label", "label": "Add to cart label", "default": "Add to cart" },
+    { "type": "text", "id": "price_suffix", "label": "Price suffix", "default": "tax in" },
+    { "type": "checkbox", "id": "show_no_reviews", "label": "Show \"No reviews yet\" when a product has no rating", "default": true },
+    { "type": "text", "id": "note", "label": "Note under cards", "default": "All prices include consumption tax · free shipping nationwide · dispatched from Tokyo within 3 business days" },
+    { "type": "paragraph", "content": "Star ratings read the standard reviews.rating and reviews.rating_count product metafields, which most review apps (Judge.me, Okendo, Shopify Product Reviews) fill in." },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [{
+    "type": "product", "name": "Product",
+    "settings": [
+      { "type": "product", "id": "product", "label": "Product" },
+      { "type": "text", "id": "badge", "label": "Badge", "default": "Best seller" },
+      { "type": "select", "id": "badge_style", "label": "Badge style", "default": "gold", "options": [
+        { "value": "green", "label": "Green" },
+        { "value": "gold", "label": "Gold" },
+        { "value": "dark", "label": "Dark" },
+        { "value": "soft", "label": "Soft peach" }
+      ]},
+      { "type": "text", "id": "type_label", "label": "Type label", "info": "Leave blank to use the product type", "default": "Oral appliance" },
+      { "type": "text", "id": "highlight", "label": "Highlight line" },
+      { "type": "text", "id": "details", "label": "Details", "default": "1 appliance, hard case, guide · about 1 year" },
+      { "type": "select", "id": "button_style", "label": "Button style", "default": "primary", "options": [
+        { "value": "primary", "label": "Filled" },
+        { "value": "outline", "label": "Outline" }
+      ]},
+      { "type": "checkbox", "id": "raised", "label": "Lift this card slightly", "default": false }
+    ]
+  }],
+  "presets": [{
+    "name": "Reviv product cards",
+    "blocks": [
+      { "type": "product", "settings": { "badge": "Best to start with", "badge_style": "green", "highlight": "Low-cut profile — the easiest first appliance" } },
+      { "type": "product", "settings": { "badge": "Best seller", "badge_style": "gold", "highlight": "Best for discouraging mouth breathing", "raised": true } },
+      { "type": "product", "settings": { "badge": "New colour", "badge_style": "dark", "details": "1 appliance · about 2–4 months", "button_style": "outline" } },
+      { "type": "product", "settings": { "badge": "New arrival", "badge_style": "soft", "type_label": "Sport appliance", "details": "1 appliance, one adult size · wear it while you train", "button_style": "outline" } }
+    ]
+  }]
+}
+{% endschema %}

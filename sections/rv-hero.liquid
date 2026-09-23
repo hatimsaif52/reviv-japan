@@ -1,0 +1,66 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="rv-scope rv-hero-wrap" aria-labelledby="rv-hero-title-{{ section.id }}">
+  <div class="rv-hero">
+    <div class="rv-container rv-container--narrow">
+      <div class="rv-hero__grid">
+        <div class="rv-ba">
+          <div class="rv-ba__side rv-ba__side--before">
+            {%- if s.before_image != blank -%}
+              {{ s.before_image | image_url: width: 1000 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 850px) 28vw, 50vw', widths: '400, 600, 800, 1000', alt: s.before_image.alt | default: s.before_label }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'rv-placeholder' }}
+            {%- endif -%}
+            <p class="rv-ba__label"><strong>{{ s.before_label }}</strong><span>{{ s.before_date }}</span></p>
+          </div>
+          <div class="rv-ba__side rv-ba__side--after">
+            {%- if s.after_image != blank -%}
+              {{ s.after_image | image_url: width: 1000 | image_tag: loading: 'eager', sizes: '(min-width: 850px) 28vw, 50vw', widths: '400, 600, 800, 1000', alt: s.after_image.alt | default: s.after_label }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'rv-placeholder' }}
+            {%- endif -%}
+            <p class="rv-ba__label"><strong>{{ s.after_label }}</strong><span>{{ s.after_date }}</span></p>
+          </div>
+        </div>
+
+        <div class="rv-hero__content">
+          <h2 class="rv-hero__title" id="rv-hero-title-{{ section.id }}">{{ s.heading | newline_to_br }}</h2>
+          {%- if s.text != blank -%}<div class="rv-hero__text">{{ s.text }}</div>{%- endif -%}
+          {%- if s.button_label != blank -%}
+            <div class="rv-hero__cta">
+              <a href="{{ s.button_link | default: routes.all_products_collection_url }}" class="rv-btn rv-btn--primary rv-btn--lg">
+                {{ s.button_label }} {% render 'rv-icon', icon: 'arrow' %}
+              </a>
+            </div>
+          {%- endif -%}
+          {%- if s.note != blank -%}<div class="rv-hero__note">{{ s.note }}</div>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv before / after hero",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Before" },
+    { "type": "image_picker", "id": "before_image", "label": "Before image" },
+    { "type": "text", "id": "before_label", "label": "Label", "default": "Before" },
+    { "type": "text", "id": "before_date", "label": "Date", "default": "Early 2021" },
+    { "type": "header", "content": "After" },
+    { "type": "image_picker", "id": "after_image", "label": "After image" },
+    { "type": "text", "id": "after_label", "label": "Label", "default": "After" },
+    { "type": "text", "id": "after_date", "label": "Date", "default": "Early 2025" },
+    { "type": "header", "content": "Content" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Four years of wearing it, most nights and much of the day." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Ken, who founded Reviv, wore the appliance through the biomechanics process he writes about — 2021 on the left, 2025 on the right.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Purchase now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "richtext", "id": "note", "label": "Disclaimer", "default": "<p>Individual experiences vary and are not typical results. Reviv is a consumer oral appliance, not a medical device, and has not been evaluated by the PMDA.</p>" }
+  ],
+  "presets": [{ "name": "Reviv before / after hero" }]
+}
+{% endschema %}

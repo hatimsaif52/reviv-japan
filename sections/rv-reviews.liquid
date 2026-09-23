@@ -1,0 +1,66 @@
+{%- assign s = section.settings -%}
+<section class="rv-scope rv-section" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-reviews-{{ section.id }}">
+  <div class="rv-reviews-shell">
+    <div class="rv-container">
+      <div class="rv-head">
+        <div>
+          {%- render 'rv-pill', text: s.eyebrow -%}
+          <h2 class="rv-head__title" id="rv-reviews-{{ section.id }}">{{ s.heading }}</h2>
+          {%- if s.subheading != blank -%}<p class="rv-head__sub">{{ s.subheading }}</p>{%- endif -%}
+        </div>
+        {%- if s.button_label != blank -%}
+          <a href="{{ s.button_link | default: '#' }}" class="rv-btn rv-btn--ghost">{{ s.button_label }}</a>
+        {%- endif -%}
+      </div>
+      <div class="rv-reviews">
+        {%- for block in section.blocks -%}
+          {%- assign stars = block.settings.rating | plus: 0 -%}
+          <figure class="rv-review" style="margin:0" {{ block.shopify_attributes }}>
+            <div class="rv-review__stars" role="img" aria-label="{{ stars }} out of 5 stars">
+              {%- for i in (1..5) -%}{%- if i <= stars -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}
+            </div>
+            <blockquote style="margin:0">
+              {%- if block.settings.title != blank -%}<p class="rv-review__title">"{{ block.settings.title }}"</p>{%- endif -%}
+              {%- if block.settings.text != blank -%}<p class="rv-review__text">{{ block.settings.text }}</p>{%- endif -%}
+            </blockquote>
+            {%- if block.settings.author != blank -%}<figcaption class="rv-review__author">{{ block.settings.author }}</figcaption>{%- endif -%}
+          </figure>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv testimonials",
+  "tag": "div",
+  "max_blocks": 9,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Review" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What customers tell us" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "4.7 average from 2,418 verified reviews" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View all reviews" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [{
+    "type": "review", "name": "Review",
+    "settings": [
+      { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+      { "type": "text", "id": "title", "label": "Quote headline" },
+      { "type": "textarea", "id": "text", "label": "Review" },
+      { "type": "text", "id": "author", "label": "Author line", "info": "e.g. K. Tanaka · Setagaya · R2, size M" }
+    ]
+  }],
+  "presets": [{
+    "name": "Reviv testimonials",
+    "blocks": [
+      { "type": "review", "settings": { "rating": 5, "title": "I stopped waking up clenched.", "text": "Three weeks in, my partner said I had gone quiet at night. I have not slept without it since.", "author": "K. Tanaka · Setagaya · R2, size M" } },
+      { "type": "review", "settings": { "rating": 5, "title": "Softer than the one my clinic made.", "text": "My gums were sore for days with the hard acrylic one. This one I forget I am wearing.", "author": "M. Saito · Nagoya · R3, size L" } },
+      { "type": "review", "settings": { "rating": 4, "title": "Nothing to fit — it just went in.", "text": "I expected an impression kit and a wait. It arrived in my size and I wore it the same night.", "author": "Y. Hara · Fukuoka · R1, size L" } }
+    ]
+  }]
+}
+{% endschema %}

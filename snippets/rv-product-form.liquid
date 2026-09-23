@@ -1,0 +1,19 @@
+{%- comment -%}
+  Add-to-cart form. Usage:
+  {% render 'rv-product-form', product: product, style: 'primary', label: 'Add to cart' %}
+{%- endcomment -%}
+{%- assign btn_label = label | default: 'Add to cart' -%}
+{%- if product != blank -%}
+  {%- form 'product', product, data-rv-add: '' -%}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <input type="hidden" name="quantity" value="1">
+    <button type="submit"
+      class="rv-btn rv-btn--block rv-btn--{{ style | default: 'primary' }}"
+      data-added-label="Added to cart"
+      {% unless product.available %}disabled{% endunless %}>
+      {%- if product.available -%}{{ btn_label }}{%- else -%}Sold out{%- endif -%}
+    </button>
+  {%- endform -%}
+{%- else -%}
+  <button type="button" class="rv-btn rv-btn--block rv-btn--{{ style | default: 'primary' }}" disabled>{{ btn_label }}</button>
+{%- endif -%}

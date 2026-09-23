@@ -1,0 +1,85 @@
+{%- liquid
+  assign s = section.settings
+  assign menu = linklists[s.menu]
+-%}
+<div class="rv-scope rv-footer" style="--rv-logo-w: {{ s.logo_width }}px;">
+  <svg class="rv-footer__wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0 34C160 14 300 10 470 22s330 30 520 18S1300 6 1440 20V60H0z"/>
+  </svg>
+
+  <div class="rv-container">
+    <div class="rv-footer__main">
+      <nav aria-label="Footer">
+        {%- if menu.links.size > 0 -%}
+          <ul class="rv-footer__links">
+            {%- for link in menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </nav>
+
+      <div>
+        {%- if s.support_heading != blank -%}<h2 class="rv-footer__heading">{{ s.support_heading }}</h2>{%- endif -%}
+        <div class="rv-footer__card">
+          <p class="rv-footer__card-label">{{ s.email_label }}</p>
+          <a class="rv-footer__card-email" href="mailto:{{ s.email | default: shop.email }}">{{ s.email | default: shop.email }}</a>
+          {%- if s.email_note != blank -%}<p class="rv-footer__card-note">{{ s.email_note }}</p>{%- endif -%}
+        </div>
+        {%- if s.notice != blank -%}<div class="rv-footer__notice">{{ s.notice }}</div>{%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-footer__brand">
+    <div class="rv-container">
+      <a href="{{ routes.root_url }}" class="rv-footer__logo">
+        {%- if s.logo != blank -%}
+          {{ s.logo | image_url: width: 400 | image_tag: loading: 'lazy', alt: shop.name }}
+        {%- else -%}
+          <span class="rv-header__logo-text" style="font-size:22px">{{ shop.name | upcase }}</span>
+        {%- endif -%}
+        {%- if s.tagline != blank -%}<span class="rv-footer__tagline">{{ s.tagline }}</span>{%- endif -%}
+      </a>
+
+      <ul class="rv-social">
+        {%- liquid
+          assign fb = s.facebook | default: settings.social_facebook_link
+          assign ig = s.instagram | default: settings.social_instagram_link
+        -%}
+        {%- if fb != blank -%}<li><a href="{{ fb }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'rv-icon', icon: 'facebook' %}</a></li>{%- endif -%}
+        {%- if ig != blank -%}<li><a href="{{ ig }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'rv-icon', icon: 'instagram' %}</a></li>{%- endif -%}
+        {%- if settings.social_twitter_link != blank -%}<li><a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" aria-label="X">{% render 'rv-icon', icon: 'x' %}</a></li>{%- endif -%}
+        {%- if settings.social_youtube_link != blank -%}<li><a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" aria-label="YouTube">{% render 'rv-icon', icon: 'youtube' %}</a></li>{%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}<li><a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'rv-icon', icon: 'tiktok' %}</a></li>{%- endif -%}
+      </ul>
+    </div>
+  </div>
+
+  {%- if s.copyright != blank -%}
+    <div class="rv-footer__bar">© {{ 'now' | date: '%Y' }} {{ s.copyright }}</div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Reviv footer",
+  "class": "rv-footer-section",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Footer menu", "default": "footer" },
+    { "type": "header", "content": "Support" },
+    { "type": "text", "id": "support_heading", "label": "Heading", "default": "Support" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email us any time" },
+    { "type": "text", "id": "email", "label": "Email", "default": "cs@getreviv.com" },
+    { "type": "text", "id": "email_note", "label": "Note", "default": "We reply within one business day" },
+    { "type": "richtext", "id": "notice", "label": "Legal notice", "default": "<p>Seller information is disclosed in our <a href=\"/policies/legal-notice\">Specified Commercial Transactions Act notice</a>.</p>" },
+    { "type": "header", "content": "Brand" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 200, "step": 5, "unit": "px", "default": 100 },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "日本のために" },
+    { "type": "paragraph", "content": "Social icons use Theme settings › Social media. Links below override Facebook and Instagram." },
+    { "type": "url", "id": "facebook", "label": "Facebook (optional)" },
+    { "type": "url", "id": "instagram", "label": "Instagram (optional)" },
+    { "type": "text", "id": "copyright", "label": "Copyright line", "info": "Shown after © and the current year", "default": "EGK, Inc. · Prices include Japanese consumption tax · Reviv is a consumer oral appliance, not a medical device" }
+  ]
+}
+{% endschema %}

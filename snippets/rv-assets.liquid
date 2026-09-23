@@ -1,0 +1,10 @@
+{%- comment -%}
+  Loads fonts, stylesheet and script for all Reviv sections.
+  Rendered by the Reviv header. If you don't use the Reviv header,
+  add {% render 'rv-assets' %} inside <head> in layout/theme.liquid.
+{%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+{{ 'reviv.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'reviv.js' | asset_url }}" defer></script>

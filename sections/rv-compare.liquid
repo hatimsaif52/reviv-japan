@@ -1,0 +1,153 @@
+{%- liquid
+  assign s = section.settings
+  assign featured = s.featured_column | plus: 0
+-%}
+<section class="rv-scope rv-section rv-compare" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-compare-{{ section.id }}">
+  <div class="rv-container">
+    <div class="rv-head">
+      <div>
+        {%- render 'rv-pill', text: s.eyebrow -%}
+        <h2 class="rv-head__title" id="rv-compare-{{ section.id }}">{{ s.heading }}</h2>
+        {%- if s.subheading != blank -%}<p class="rv-head__sub">{{ s.subheading }}</p>{%- endif -%}
+      </div>
+      {%- if s.button_label != blank -%}
+        <a href="{{ s.button_link | default: '#' }}" class="rv-btn rv-btn--ghost">{{ s.button_label }} {% render 'rv-icon', icon: 'arrow-up-right' %}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="rv-compare__scroll" tabindex="0" role="region" aria-label="{{ s.heading | escape }}">
+      <table class="rv-compare__table">
+        <thead>
+          <tr>
+            <td></td>
+            {%- for i in (1..3) -%}
+              {%- liquid
+                assign pkey = 'product_' | append: i
+                assign skey = 'support_' | append: i
+                assign p = s[pkey]
+              -%}
+              <th scope="col"{% if i == featured %} class="is-featured"{% endif %}>
+                <div class="rv-compare__head">
+                  {%- if i == featured and s.featured_badge != blank -%}<span class="rv-compare__badge">★ {{ s.featured_badge }}</span>{%- endif -%}
+                  <span class="rv-compare__thumb">
+                    {%- if p.featured_image != blank -%}
+                      {{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+                    {%- else -%}
+                      {{ 'product-2' | placeholder_svg_tag: 'rv-placeholder' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="rv-compare__name">{{ p.title | default: 'Product' }}</span>
+                  {%- if s[skey] != blank -%}<span class="rv-compare__support">{{ s[skey] }}</span>{%- endif -%}
+                </div>
+              </th>
+            {%- endfor -%}
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            <tr {{ block.shopify_attributes }}>
+              <th scope="row">{{ block.settings.label }}</th>
+              {%- for i in (1..3) -%}
+                {%- liquid
+                  assign vkey = 'value_' | append: i
+                  assign pkey = 'product_' | append: i
+                  assign v = block.settings[vkey]
+                  assign v_down = v | downcase | strip
+                -%}
+                <td{% if i == featured %} class="is-featured"{% endif %}>
+                  {%- if block.settings.use_price and s[pkey] != blank -%}
+                    {{ s[pkey].price | money_without_trailing_zeros }}
+                  {%- elsif v_down == 'yes' -%}
+                    <span class="rv-yesno rv-yesno--yes"><i>{% render 'rv-icon', icon: 'check' %}</i>{{ s.yes_label }}</span>
+                  {%- elsif v_down == 'no' -%}
+                    <span class="rv-yesno rv-yesno--no"><i>{% render 'rv-icon', icon: 'close' %}</i>{{ s.no_label }}</span>
+                  {%- else -%}
+                    {{ v }}
+                  {%- endif -%}
+                </td>
+              {%- endfor -%}
+            </tr>
+          {%- endfor -%}
+          {%- if s.show_buttons -%}
+            <tr class="rv-compare__actions">
+              <td></td>
+              {%- for i in (1..3) -%}
+                {%- liquid
+                  assign pkey = 'product_' | append: i
+                  assign bkey = 'button_style_' | append: i
+                -%}
+                <td{% if i == featured %} class="is-featured"{% endif %}>
+                  {%- render 'rv-product-form', product: s[pkey], style: s[bkey], label: s.cart_label -%}
+                </td>
+              {%- endfor -%}
+            </tr>
+          {%- endif -%}
+        </tbody>
+      </table>
+    </div>
+
+    {%- if s.note != blank -%}<p class="rv-compare__note">{{ s.note }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv comparison table",
+  "tag": "div",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Compare" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Which one is yours?" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "R3, R2 and R1 side by side — profile, durability, air holes, sizes and who each one suits." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Full comparison" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "header", "content": "Columns" },
+    { "type": "product", "id": "product_1", "label": "Column 1 product" },
+    { "type": "text", "id": "support_1", "label": "Column 1 sub-label", "default": "1 year support" },
+    { "type": "select", "id": "button_style_1", "label": "Column 1 button", "default": "primary", "options": [{ "value": "primary", "label": "Filled" }, { "value": "outline", "label": "Outline" }] },
+    { "type": "product", "id": "product_2", "label": "Column 2 product" },
+    { "type": "text", "id": "support_2", "label": "Column 2 sub-label", "default": "1 year support" },
+    { "type": "select", "id": "button_style_2", "label": "Column 2 button", "default": "primary", "options": [{ "value": "primary", "label": "Filled" }, { "value": "outline", "label": "Outline" }] },
+    { "type": "product", "id": "product_3", "label": "Column 3 product" },
+    { "type": "text", "id": "support_3", "label": "Column 3 sub-label", "default": "1 year support" },
+    { "type": "select", "id": "button_style_3", "label": "Column 3 button", "default": "outline", "options": [{ "value": "primary", "label": "Filled" }, { "value": "outline", "label": "Outline" }] },
+    { "type": "select", "id": "featured_column", "label": "Highlighted column", "default": "1", "options": [
+      { "value": "0", "label": "None" }, { "value": "1", "label": "Column 1" }, { "value": "2", "label": "Column 2" }, { "value": "3", "label": "Column 3" }
+    ]},
+    { "type": "text", "id": "featured_badge", "label": "Highlighted column badge", "default": "Best to start with" },
+    { "type": "header", "content": "Cells" },
+    { "type": "paragraph", "content": "Type \"yes\" or \"no\" in a cell to show a check or cross icon." },
+    { "type": "text", "id": "yes_label", "label": "Yes label", "default": "Yes" },
+    { "type": "text", "id": "no_label", "label": "No label", "default": "No" },
+    { "type": "checkbox", "id": "show_buttons", "label": "Show add to cart row", "default": true },
+    { "type": "text", "id": "cart_label", "label": "Add to cart label", "default": "Add to cart" },
+    { "type": "text", "id": "note", "label": "Note under table", "default": "Prices include consumption tax. RS1 Reviv Sports is a daytime sport appliance and is listed separately." },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [{
+    "type": "row", "name": "Row",
+    "settings": [
+      { "type": "text", "id": "label", "label": "Row label", "default": "Feature" },
+      { "type": "checkbox", "id": "use_price", "label": "Use product prices", "default": false },
+      { "type": "text", "id": "value_1", "label": "Column 1" },
+      { "type": "text", "id": "value_2", "label": "Column 2" },
+      { "type": "text", "id": "value_3", "label": "Column 3" }
+    ]
+  }],
+  "presets": [{
+    "name": "Reviv comparison table",
+    "blocks": [
+      { "type": "row", "settings": { "label": "Price", "use_price": true, "value_1": "¥24,800", "value_2": "¥24,800", "value_3": "¥16,800" } },
+      { "type": "row", "settings": { "label": "Durability", "value_1": "About 1 year", "value_2": "About 1 year", "value_3": "2–4 months" } },
+      { "type": "row", "settings": { "label": "Colour", "value_1": "Yellow, White", "value_2": "Yellow, White", "value_3": "Blue, Clear" } },
+      { "type": "row", "settings": { "label": "Pressure on gums", "value_1": "Lowest", "value_2": "Low", "value_3": "Medium" } },
+      { "type": "row", "settings": { "label": "Air holes", "value_1": "Yes — good for saliva flow", "value_2": "Small — discourages mouth breathing", "value_3": "Large" } },
+      { "type": "row", "settings": { "label": "Sizes", "value_1": "M, L, XL", "value_2": "M, L", "value_3": "S, L" } },
+      { "type": "row", "settings": { "label": "Guarantee", "value_1": "1 year (1 free replacement)", "value_2": "1 year (1 free replacement)", "value_3": "None" } },
+      { "type": "row", "settings": { "label": "Good for grinders", "value_1": "yes", "value_2": "yes", "value_3": "no" } },
+      { "type": "row", "settings": { "label": "Best for", "value_1": "Starting out — low-cut profile", "value_2": "Discouraging mouth breathing", "value_3": "Trying it out" } }
+    ]
+  }]
+}
+{% endschema %}
