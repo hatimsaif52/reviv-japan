@@ -30,19 +30,27 @@
       "blocks": {
         "photo_1": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/benefits-1.png"
+          }
         },
         "photo_2": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/benefits-2.png"
+          }
         },
         "photo_3": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/benefits-3.png"
+          }
         },
         "photo_4": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/benefits-4.png"
+          }
         },
         "point_5": {
           "type": "point",
