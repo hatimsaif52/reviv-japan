@@ -19,13 +19,15 @@
           assign rating = p.metafields.reviews.rating.value.rating
           assign rating_count = p.metafields.reviews.rating_count.value
           assign type_label = b.type_label | default: p.type
+          assign card_style = 'object-fit: ' | append: b.image_fit | append: ';'
         -%}
         <article class="rv-pcard{% if b.raised %} is-raised{% endif %}" {{ block.shopify_attributes }}>
           {%- if b.badge != blank -%}<span class="rv-badge rv-badge--{{ b.badge_style }}">{{ b.badge }}</span>{%- endif -%}
 
           <a href="{{ p.url | default: '#' }}" class="rv-pcard__media" tabindex="-1" aria-hidden="true">
-            {%- if p.featured_image != blank -%}
-              {{ p.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, (min-width: 520px) 50vw, 100vw', widths: '300, 450, 600, 700' }}
+            {%- assign card_image = b.image | default: p.featured_image -%}
+            {%- if card_image != blank -%}
+              {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, (min-width: 520px) 50vw, 100vw', widths: '300, 450, 600, 750, 900', alt: card_image.alt | default: p.title, style: card_style }}
             {%- else -%}
               {{ 'product-1' | placeholder_svg_tag: 'rv-placeholder' }}
             {%- endif -%}
@@ -86,6 +88,11 @@
     "type": "product", "name": "Product",
     "settings": [
       { "type": "product", "id": "product", "label": "Product" },
+      { "type": "image_picker", "id": "image", "label": "Card image", "info": "Optional. Replaces the product's featured image on this card only." },
+      { "type": "select", "id": "image_fit", "label": "Image fit", "default": "contain", "options": [
+        { "value": "contain", "label": "Fit (show whole image)" },
+        { "value": "cover", "label": "Fill (crop to frame)" }
+      ]},
       { "type": "text", "id": "badge", "label": "Badge", "default": "Best seller" },
       { "type": "select", "id": "badge_style", "label": "Badge style", "default": "gold", "options": [
         { "value": "green", "label": "Green" },
