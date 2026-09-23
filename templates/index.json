@@ -526,7 +526,7 @@
       "settings": {
         "eyebrow": "Article",
         "heading": "From the journal",
-        "blog": "",
+        "blog": "news",
         "post_limit": 4,
         "show_tags": true,
         "date_format": "%Y.%m.%d",
