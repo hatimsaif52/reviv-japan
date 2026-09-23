@@ -386,7 +386,7 @@
         "video_1": {
           "type": "video",
           "settings": {
-            "video": "",
+            "video": "https://www.youtube.com/watch?v=pUDMltQ84MI",
             "vertical": true,
             "link": "",
             "media_label": "Watch · Short",
@@ -398,7 +398,7 @@
         "video_2": {
           "type": "video",
           "settings": {
-            "video": "",
+            "video": "https://www.youtube.com/watch?v=3qnYhe__7yU",
             "vertical": true,
             "link": "",
             "media_label": "Watch · Short",
