@@ -232,7 +232,7 @@
         "button_label": "View all items",
         "button_link": "",
         "cart_label": "Add to cart",
-        "price_suffix": "tax in",
+        "price_suffix": "tax inc.",
         "show_no_reviews": true,
         "note": "All prices include consumption tax · free shipping nationwide · dispatched from Tokyo within 3 business days",
         "padding_top": 40,
