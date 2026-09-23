@@ -122,11 +122,24 @@
         "link": "",
         "bg": "#c6442a"
       }
+    },
+    "rv_header_dgmLWj": {
+      "type": "rv-header",
+      "name": "Reviv header",
+      "settings": {
+        "logo_width": 120,
+        "flag": "🇯🇵",
+        "menu": "main-menu",
+        "show_search": true,
+        "search_placeholder": "Search",
+        "sticky": false
+      }
     }
   },
   "order": [
     "header_announcements_9jGBFp",
     "header_section",
-    "rv_announcement_GfdzYF"
+    "rv_announcement_GfdzYF",
+    "rv_header_dgmLWj"
   ]
 }
