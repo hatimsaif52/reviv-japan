@@ -170,7 +170,7 @@
         "product_1": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "r3-revivthree-without-support",
             "badge": "Best to start with",
             "badge_style": "green",
             "type_label": "Oral appliance",
