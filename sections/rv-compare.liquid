@@ -1,6 +1,7 @@
 {%- liquid
   assign s = section.settings
   assign featured = s.featured_column | plus: 0
+  assign thumb_style = 'object-fit: ' | append: s.image_fit | append: ';'
 -%}
 <section class="rv-scope rv-section rv-compare" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-compare-{{ section.id }}">
   <div class="rv-container">
@@ -24,14 +25,16 @@
               {%- liquid
                 assign pkey = 'product_' | append: i
                 assign skey = 'support_' | append: i
+                assign ikey = 'image_' | append: i
                 assign p = s[pkey]
+                assign col_image = s[ikey] | default: p.featured_image
               -%}
               <th scope="col"{% if i == featured %} class="is-featured"{% endif %}>
                 <div class="rv-compare__head">
                   {%- if i == featured and s.featured_badge != blank -%}<span class="rv-compare__badge">★ {{ s.featured_badge }}</span>{%- endif -%}
                   <span class="rv-compare__thumb">
-                    {%- if p.featured_image != blank -%}
-                      {{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+                    {%- if col_image != blank -%}
+                      {{ col_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '', style: thumb_style }}
                     {%- else -%}
                       {{ 'product-2' | placeholder_svg_tag: 'rv-placeholder' }}
                     {%- endif -%}
@@ -103,14 +106,21 @@
     { "type": "url", "id": "button_link", "label": "Button link" },
     { "type": "header", "content": "Columns" },
     { "type": "product", "id": "product_1", "label": "Column 1 product" },
+    { "type": "image_picker", "id": "image_1", "label": "Column 1 image", "info": "Optional. Replaces the product's featured image in this table only." },
     { "type": "text", "id": "support_1", "label": "Column 1 sub-label", "default": "1 year support" },
     { "type": "select", "id": "button_style_1", "label": "Column 1 button", "default": "primary", "options": [{ "value": "primary", "label": "Filled" }, { "value": "outline", "label": "Outline" }] },
     { "type": "product", "id": "product_2", "label": "Column 2 product" },
+    { "type": "image_picker", "id": "image_2", "label": "Column 2 image", "info": "Optional. Replaces the product's featured image in this table only." },
     { "type": "text", "id": "support_2", "label": "Column 2 sub-label", "default": "1 year support" },
     { "type": "select", "id": "button_style_2", "label": "Column 2 button", "default": "primary", "options": [{ "value": "primary", "label": "Filled" }, { "value": "outline", "label": "Outline" }] },
     { "type": "product", "id": "product_3", "label": "Column 3 product" },
+    { "type": "image_picker", "id": "image_3", "label": "Column 3 image", "info": "Optional. Replaces the product's featured image in this table only." },
     { "type": "text", "id": "support_3", "label": "Column 3 sub-label", "default": "1 year support" },
     { "type": "select", "id": "button_style_3", "label": "Column 3 button", "default": "outline", "options": [{ "value": "primary", "label": "Filled" }, { "value": "outline", "label": "Outline" }] },
+    { "type": "select", "id": "image_fit", "label": "Image fit", "default": "contain", "options": [
+      { "value": "contain", "label": "Fit (show whole image)" },
+      { "value": "cover", "label": "Fill (crop to frame)" }
+    ]},
     { "type": "select", "id": "featured_column", "label": "Highlighted column", "default": "1", "options": [
       { "value": "0", "label": "None" }, { "value": "1", "label": "Column 1" }, { "value": "2", "label": "Column 2" }, { "value": "3", "label": "Column 3" }
     ]},
