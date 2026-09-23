@@ -11,11 +11,22 @@
   "sections": {
     "hero": {
       "type": "rv-hero",
-      "settings": {}
+      "settings": {
+        "before_image": "shopify://shop_images/before_292a0b3e-82c6-43f1-b382-126f5eaecb8d.webp",
+        "before_label": "Before",
+        "before_date": "Early 2021",
+        "after_image": "shopify://shop_images/after_c3f2d848-4985-4148-82f8-76581f752431.webp",
+        "after_label": "After",
+        "after_date": "Early 2025",
+        "heading": "Four years of wearing it, most nights and much of the day.",
+        "text": "<p>Ken, who founded Reviv, wore the appliance through the biomechanics process he writes about — 2021 on the left, 2025 on the right.</p>",
+        "button_label": "Purchase now",
+        "button_link": "",
+        "note": "<p>Individual experiences vary and are not typical results. Reviv is a consumer oral appliance, not a medical device, and has not been evaluated by the PMDA.</p>"
+      }
     },
     "benefits": {
       "type": "rv-benefits",
-      "settings": {},
       "blocks": {
         "photo_1": {
           "type": "photo",
@@ -74,40 +85,55 @@
         "point_7",
         "point_8",
         "point_9"
-      ]
+      ],
+      "settings": {
+        "heading_line_1": "The more you wear it,",
+        "heading_line_2": "the more your jaw lets go.",
+        "footnote_marker": "*1",
+        "intro": "What customers most often tell us, after wearing it night after night:",
+        "button_label": "Purchase now",
+        "button_link": "",
+        "footnote": "<p>*1 a sense of ease and reduced tension. These statements are based on personal customer experience, individual results vary and are not typical, and they have not been evaluated by the PMDA. Reviv is a consumer oral appliance, not a medical device, and is not intended to diagnose, treat or prevent any condition.</p>",
+        "padding_top": 48,
+        "padding_bottom": 64
+      }
     },
     "press": {
       "type": "rv-press",
-      "settings": {},
       "blocks": {
         "logo_1": {
           "type": "logo",
           "settings": {
-            "name": "Apple News"
+            "name": "Apple News",
+            "link": ""
           }
         },
         "logo_2": {
           "type": "logo",
           "settings": {
-            "name": "Business Insider"
+            "name": "Business Insider",
+            "link": ""
           }
         },
         "logo_3": {
           "type": "logo",
           "settings": {
-            "name": "Yahoo Finance"
+            "name": "Yahoo Finance",
+            "link": ""
           }
         },
         "logo_4": {
           "type": "logo",
           "settings": {
-            "name": "Associated Press"
+            "name": "Associated Press",
+            "link": ""
           }
         },
         "logo_5": {
           "type": "logo",
           "settings": {
-            "name": "MarketWatch"
+            "name": "MarketWatch",
+            "link": ""
           }
         }
       },
@@ -117,46 +143,67 @@
         "logo_3",
         "logo_4",
         "logo_5"
-      ]
+      ],
+      "settings": {
+        "heading": "Where we have been covered",
+        "logo_height": 26,
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
     },
     "products": {
       "type": "rv-products",
-      "settings": {},
       "blocks": {
         "product_1": {
           "type": "product",
           "settings": {
+            "product": "",
             "badge": "Best to start with",
             "badge_style": "green",
-            "highlight": "Low-cut profile — the easiest first appliance"
+            "type_label": "Oral appliance",
+            "highlight": "Low-cut profile — the easiest first appliance",
+            "details": "1 appliance, hard case, guide · about 1 year",
+            "button_style": "primary",
+            "raised": false
           }
         },
         "product_2": {
           "type": "product",
           "settings": {
+            "product": "",
             "badge": "Best seller",
             "badge_style": "gold",
+            "type_label": "Oral appliance",
             "highlight": "Best for discouraging mouth breathing",
+            "details": "1 appliance, hard case, guide · about 1 year",
+            "button_style": "primary",
             "raised": true
           }
         },
         "product_3": {
           "type": "product",
           "settings": {
+            "product": "",
             "badge": "New colour",
             "badge_style": "dark",
+            "type_label": "Oral appliance",
+            "highlight": "",
             "details": "1 appliance · about 2–4 months",
-            "button_style": "outline"
+            "button_style": "outline",
+            "raised": false
           }
         },
         "product_4": {
           "type": "product",
           "settings": {
+            "product": "",
             "badge": "New arrival",
             "badge_style": "soft",
             "type_label": "Sport appliance",
+            "highlight": "",
             "details": "1 appliance, one adult size · wear it while you train",
-            "button_style": "outline"
+            "button_style": "outline",
+            "raised": false
           }
         }
       },
@@ -165,11 +212,22 @@
         "product_2",
         "product_3",
         "product_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Item",
+        "heading": "All products",
+        "button_label": "View all items",
+        "button_link": "",
+        "cart_label": "Add to cart",
+        "price_suffix": "tax in",
+        "show_no_reviews": true,
+        "note": "All prices include consumption tax · free shipping nationwide · dispatched from Tokyo within 3 business days",
+        "padding_top": 40,
+        "padding_bottom": 48
+      }
     },
     "compare": {
       "type": "rv-compare",
-      "settings": {},
       "blocks": {
         "row_1": {
           "type": "row",
@@ -185,6 +243,7 @@
           "type": "row",
           "settings": {
             "label": "Durability",
+            "use_price": false,
             "value_1": "About 1 year",
             "value_2": "About 1 year",
             "value_3": "2–4 months"
@@ -194,6 +253,7 @@
           "type": "row",
           "settings": {
             "label": "Colour",
+            "use_price": false,
             "value_1": "Yellow, White",
             "value_2": "Yellow, White",
             "value_3": "Blue, Clear"
@@ -203,6 +263,7 @@
           "type": "row",
           "settings": {
             "label": "Pressure on gums",
+            "use_price": false,
             "value_1": "Lowest",
             "value_2": "Low",
             "value_3": "Medium"
@@ -212,6 +273,7 @@
           "type": "row",
           "settings": {
             "label": "Air holes",
+            "use_price": false,
             "value_1": "Yes — good for saliva flow",
             "value_2": "Small — discourages mouth breathing",
             "value_3": "Large"
@@ -221,6 +283,7 @@
           "type": "row",
           "settings": {
             "label": "Sizes",
+            "use_price": false,
             "value_1": "M, L, XL",
             "value_2": "M, L",
             "value_3": "S, L"
@@ -230,6 +293,7 @@
           "type": "row",
           "settings": {
             "label": "Guarantee",
+            "use_price": false,
             "value_1": "1 year (1 free replacement)",
             "value_2": "1 year (1 free replacement)",
             "value_3": "None"
@@ -239,6 +303,7 @@
           "type": "row",
           "settings": {
             "label": "Good for grinders",
+            "use_price": false,
             "value_1": "yes",
             "value_2": "yes",
             "value_3": "no"
@@ -248,6 +313,7 @@
           "type": "row",
           "settings": {
             "label": "Best for",
+            "use_price": false,
             "value_1": "Starting out — low-cut profile",
             "value_2": "Discouraging mouth breathing",
             "value_3": "Trying it out"
@@ -264,31 +330,70 @@
         "row_7",
         "row_8",
         "row_9"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Compare",
+        "heading": "Which one is yours?",
+        "subheading": "R3, R2 and R1 side by side — profile, durability, air holes, sizes and who each one suits.",
+        "button_label": "Full comparison",
+        "button_link": "",
+        "product_1": "",
+        "support_1": "1 year support",
+        "button_style_1": "primary",
+        "product_2": "",
+        "support_2": "1 year support",
+        "button_style_2": "primary",
+        "product_3": "",
+        "support_3": "1 year support",
+        "button_style_3": "outline",
+        "featured_column": "1",
+        "featured_badge": "Best to start with",
+        "yes_label": "Yes",
+        "no_label": "No",
+        "show_buttons": true,
+        "cart_label": "Add to cart",
+        "note": "Prices include consumption tax. RS1 Reviv Sports is a daytime sport appliance and is listed separately.",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     },
     "find_your_size": {
       "type": "rv-video-cards",
-      "settings": {},
       "blocks": {
         "video_1": {
           "type": "video",
           "settings": {
+            "video": "",
+            "vertical": true,
+            "link": "",
+            "media_label": "Watch · Short",
             "title": "How to choose R1 size?",
-            "text": "Sizing the everyday R1 — how to read your own bite and pick between Small and Large."
+            "text": "Sizing the everyday R1 — how to read your own bite and pick between Small and Large.",
+            "button_label": "Watch video"
           }
         },
         "video_2": {
           "type": "video",
           "settings": {
+            "video": "",
+            "vertical": true,
+            "link": "",
+            "media_label": "Watch · Short",
             "title": "How to choose R2 size?",
-            "text": "Sizing the R2 — the Medium and Large fit, and how to tell which one is yours."
+            "text": "Sizing the R2 — the Medium and Large fit, and how to tell which one is yours.",
+            "button_label": "Watch video"
           }
         },
         "video_3": {
           "type": "video",
           "settings": {
+            "video": "",
+            "vertical": true,
+            "link": "",
+            "media_label": "Watch · Short",
             "title": "How to choose R3 size?",
-            "text": "Sizing the R3, including the new Extra Large. No impressions, no moulding, no dental visit."
+            "text": "Sizing the R3, including the new Extra Large. No impressions, no moulding, no dental visit.",
+            "button_label": "Watch video"
           }
         }
       },
@@ -296,11 +401,18 @@
         "video_1",
         "video_2",
         "video_3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Size",
+        "heading": "Find your size",
+        "button_label": "Size guide",
+        "button_link": "",
+        "padding_top": 48,
+        "padding_bottom": 24
+      }
     },
     "how_to_use": {
       "type": "rv-how-to-use",
-      "settings": {},
       "blocks": {
         "step_1": {
           "type": "step",
@@ -328,11 +440,17 @@
         "step_1",
         "step_2",
         "step_3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Guide",
+        "heading": "How to use",
+        "subheading": "No moulding, no adjustment period — it arrives in your size, ready to wear.",
+        "padding_top": 8,
+        "padding_bottom": 40
+      }
     },
     "testimonials": {
       "type": "rv-reviews",
-      "settings": {},
       "blocks": {
         "review_1": {
           "type": "review",
@@ -366,11 +484,30 @@
         "review_1",
         "review_2",
         "review_3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Review",
+        "heading": "What customers tell us",
+        "subheading": "4.7 average from 2,418 verified reviews",
+        "button_label": "View all reviews",
+        "button_link": "",
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
     },
     "journal": {
       "type": "rv-journal",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Article",
+        "heading": "From the journal",
+        "blog": "",
+        "post_limit": 4,
+        "show_tags": true,
+        "date_format": "%Y.%m.%d",
+        "button_label": "View all articles",
+        "padding_top": 32,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
