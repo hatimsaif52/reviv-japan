@@ -112,6 +112,7 @@
         "logo_1": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/apple-news.png",
             "name": "Apple News",
             "link": ""
           }
@@ -119,6 +120,7 @@
         "logo_2": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/business-insider.png",
             "name": "Business Insider",
             "link": ""
           }
@@ -126,6 +128,7 @@
         "logo_3": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/yahoo-finance.png",
             "name": "Yahoo Finance",
             "link": ""
           }
@@ -133,6 +136,7 @@
         "logo_4": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/associated-press.svg",
             "name": "Associated Press",
             "link": ""
           }
@@ -140,6 +144,7 @@
         "logo_5": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/market-watch.png",
             "name": "MarketWatch",
             "link": ""
           }
