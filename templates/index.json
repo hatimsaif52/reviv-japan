@@ -183,7 +183,7 @@
         "product_2": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "reviv-two",
             "badge": "Best seller",
             "badge_style": "gold",
             "type_label": "Oral appliance",
