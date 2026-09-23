@@ -63,23 +63,103 @@
 {
   "name": "Reviv footer",
   "class": "rv-footer-section",
-  "enabled_on": { "groups": ["footer"] },
+  "enabled_on": {
+    "groups": [
+      "footer"
+    ]
+  },
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Footer menu", "default": "footer" },
-    { "type": "header", "content": "Support" },
-    { "type": "text", "id": "support_heading", "label": "Heading", "default": "Support" },
-    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email us any time" },
-    { "type": "text", "id": "email", "label": "Email", "default": "cs@getreviv.com" },
-    { "type": "text", "id": "email_note", "label": "Note", "default": "We reply within one business day" },
-    { "type": "richtext", "id": "notice", "label": "Legal notice", "default": "<p>Seller information is disclosed in our <a href=\"/policies/legal-notice\">Specified Commercial Transactions Act notice</a>.</p>" },
-    { "type": "header", "content": "Brand" },
-    { "type": "image_picker", "id": "logo", "label": "Logo" },
-    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 200, "step": 5, "unit": "px", "default": 100 },
-    { "type": "text", "id": "tagline", "label": "Tagline", "default": "日本のために" },
-    { "type": "paragraph", "content": "Social icons use Theme settings › Social media. Links below override Facebook and Instagram." },
-    { "type": "url", "id": "facebook", "label": "Facebook (optional)" },
-    { "type": "url", "id": "instagram", "label": "Instagram (optional)" },
-    { "type": "text", "id": "copyright", "label": "Copyright line", "info": "Shown after © and the current year", "default": "EGK, Inc. · Prices include Japanese consumption tax · Reviv is a consumer oral appliance, not a medical device" }
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Footer menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Support"
+    },
+    {
+      "type": "text",
+      "id": "support_heading",
+      "label": "Heading",
+      "default": "Support"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email us any time"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "cs@getreviv.com"
+    },
+    {
+      "type": "text",
+      "id": "email_note",
+      "label": "Note",
+      "default": "We reply within one business day"
+    },
+    {
+      "type": "richtext",
+      "id": "notice",
+      "label": "Legal notice",
+      "default": "<p>Seller information is disclosed in our <a href=\"/policies/legal-notice\">Specified Commercial Transactions Act notice</a>.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 60,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "日本のために"
+    },
+    {
+      "type": "paragraph",
+      "content": "Social icons use Theme settings › Social media. Links below override Facebook and Instagram."
+    },
+    {
+      "type": "url",
+      "id": "facebook",
+      "label": "Facebook (optional)"
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram (optional)"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright line",
+      "info": "Shown after © and the current year",
+      "default": "EGK, Inc. · Prices include Japanese consumption tax · Reviv is a consumer oral appliance, not a medical device"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviv footer"
+    }
   ]
 }
 {% endschema %}

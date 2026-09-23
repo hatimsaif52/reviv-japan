@@ -111,15 +111,63 @@
 {
   "name": "Reviv header",
   "class": "rv-header-section",
-  "enabled_on": { "groups": ["header"] },
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Logo" },
-    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 240, "step": 5, "unit": "px", "default": 120 },
-    { "type": "text", "id": "flag", "label": "Flag / region badge", "info": "Emoji or short text shown beside the logo", "default": "🇯🇵" },
-    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
-    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
-    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search" },
-    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": false }
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 60,
+      "max": 240,
+      "step": 5,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "text",
+      "id": "flag",
+      "label": "Flag / region badge",
+      "info": "Emoji or short text shown beside the logo",
+      "default": "🇯🇵"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky header",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviv header"
+    }
   ]
 }
 {% endschema %}
