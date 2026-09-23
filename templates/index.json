@@ -196,7 +196,7 @@
         "product_3": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "reviv-one-without-support",
             "badge": "New colour",
             "badge_style": "dark",
             "type_label": "Oral appliance",
