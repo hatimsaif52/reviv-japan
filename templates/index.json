@@ -386,6 +386,7 @@
         "video_1": {
           "type": "video",
           "settings": {
+            "image": "shopify://shop_images/r1-sizing.jpg",
             "video": "https://www.youtube.com/watch?v=pUDMltQ84MI",
             "vertical": true,
             "link": "",
@@ -398,6 +399,7 @@
         "video_2": {
           "type": "video",
           "settings": {
+            "image": "shopify://shop_images/r2-sizing.jpg",
             "video": "https://www.youtube.com/watch?v=3qnYhe__7yU",
             "vertical": true,
             "link": "",
@@ -410,6 +412,7 @@
         "video_3": {
           "type": "video",
           "settings": {
+            "image": "shopify://shop_images/r3-sizing.jpg",
             "video": "https://www.youtube.com/watch?v=gmoeX-6gsFg",
             "vertical": true,
             "link": "",
