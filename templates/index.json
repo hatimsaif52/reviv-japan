@@ -171,6 +171,8 @@
           "type": "product",
           "settings": {
             "product": "r3-revivthree-without-support",
+            "image": "shopify://shop_images/R3_RevivThree_Support_Package.png",
+            "image_fit": "contain",
             "badge": "Best to start with",
             "badge_style": "green",
             "type_label": "Oral appliance",
@@ -184,6 +186,7 @@
           "type": "product",
           "settings": {
             "product": "reviv-two",
+            "image_fit": "contain",
             "badge": "Best seller",
             "badge_style": "gold",
             "type_label": "Oral appliance",
@@ -197,6 +200,8 @@
           "type": "product",
           "settings": {
             "product": "reviv-one-without-support",
+            "image": "shopify://shop_images/R1Yellow-2.webp",
+            "image_fit": "contain",
             "badge": "New colour",
             "badge_style": "dark",
             "type_label": "Oral appliance",
@@ -210,6 +215,8 @@
           "type": "product",
           "settings": {
             "product": "r3-revivthree-copy",
+            "image": "shopify://shop_images/RS1.png",
+            "image_fit": "contain",
             "badge": "Best seller",
             "badge_style": "gold",
             "type_label": "Oral appliance",
