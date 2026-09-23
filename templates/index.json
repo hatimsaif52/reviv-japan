@@ -112,7 +112,7 @@
         "logo_1": {
           "type": "logo",
           "settings": {
-            "logo": "shopify://shop_images/apple-news.png",
+            "logo": "shopify://shop_images/apple-news_05463d13-ce77-477c-84d5-6f26950a4f7c.png",
             "name": "Apple News",
             "link": ""
           }
@@ -120,7 +120,7 @@
         "logo_2": {
           "type": "logo",
           "settings": {
-            "logo": "shopify://shop_images/business-insider.png",
+            "logo": "shopify://shop_images/business-insider_26c05357-cea1-448f-918b-abc79e47aec8.png",
             "name": "Business Insider",
             "link": ""
           }
@@ -144,7 +144,7 @@
         "logo_5": {
           "type": "logo",
           "settings": {
-            "logo": "shopify://shop_images/market-watch.png",
+            "logo": "shopify://shop_images/market-watch_51a17788-c3cc-4553-9960-f253851bc9b4.png",
             "name": "MarketWatch",
             "link": ""
           }
