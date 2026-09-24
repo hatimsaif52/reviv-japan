@@ -13,7 +13,20 @@
   "sections": {
     "footer": {
       "type": "rv-footer",
-      "settings": {}
+      "settings": {
+        "menu": "footer",
+        "support_heading": "Support",
+        "email_label": "Email us any time",
+        "email": "cs@getreviv.com",
+        "email_note": "We reply within one business day",
+        "notice": "<p>Seller information is disclosed in our <a href=\"/policies/legal-notice\">Specified Commercial Transactions Act notice</a>.</p>",
+        "logo": "shopify://shop_images/reviv-logo.png",
+        "logo_width": 100,
+        "tagline": "日本のために",
+        "facebook": "",
+        "instagram": "",
+        "copyright": "EGK, Inc. · Prices include Japanese consumption tax · Reviv is a consumer oral appliance, not a medical device"
+      }
     }
   },
   "order": [

@@ -580,6 +580,7 @@
         "heading": "From the journal",
         "button_label": "View all articles",
         "button_link": "",
+        "image_ratio": "adapt",
         "new_tab": true,
         "padding_top": 32,
         "padding_bottom": 48
