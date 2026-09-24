@@ -1,6 +1,7 @@
 {%- liquid
   assign s = section.settings
   assign menu = linklists[s.menu]
+  assign logo = s.logo | default: settings.logo
 -%}
 <div class="rv-scope rv-footer" style="--rv-logo-w: {{ s.logo_width }}px;">
   <svg class="rv-footer__wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
@@ -32,8 +33,8 @@
   <div class="rv-footer__brand">
     <div class="rv-container">
       <a href="{{ routes.root_url }}" class="rv-footer__logo">
-        {%- if s.logo != blank -%}
-          {{ s.logo | image_url: width: 400 | image_tag: loading: 'lazy', alt: shop.name }}
+        {%- if logo != blank -%}
+          {{ logo | image_url: width: 800 | image_tag: loading: 'lazy', alt: shop.name }}
         {%- else -%}
           <span class="rv-header__logo-text" style="font-size:22px">{{ shop.name | upcase }}</span>
         {%- endif -%}

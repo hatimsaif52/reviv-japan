@@ -1,7 +1,12 @@
 {%- render 'rv-assets' -%}
 {%- assign menu = linklists[section.settings.menu] -%}
 
-<header class="rv-scope rv-header{% if section.settings.sticky %} is-sticky{% endif %}" style="--rv-logo-w: {{ section.settings.logo_width }}px;">
+{%- liquid
+  assign logo = section.settings.logo | default: settings.logo
+  assign logo_h = settings.logo_height | default: 36
+  assign logo_h_m = settings.logo_height_mobile | default: 28
+-%}
+<header class="rv-scope rv-header{% if section.settings.sticky %} is-sticky{% endif %}" style="--rv-logo-h: {{ logo_h }}px; --rv-logo-h-m: {{ logo_h_m }}px;">
   <div class="rv-container rv-container--narrow">
     <div class="rv-header__top">
       <button type="button" class="rv-icon-link rv-burger" data-rv-drawer-open aria-expanded="false" aria-controls="rv-drawer" aria-label="Open menu">
@@ -9,16 +14,21 @@
       </button>
 
       <a href="{{ routes.root_url }}" class="rv-header__logo">
-        {%- if section.settings.logo != blank -%}
-          {{ section.settings.logo | image_url: width: 480 | image_tag: alt: shop.name, loading: 'eager', widths: '160, 240, 320, 480' }}
+        {%- if logo != blank -%}
+          {{ logo | image_url: width: 1200 | image_tag: alt: shop.name, loading: 'eager', fetchpriority: 'high', widths: '300, 600, 900, 1200', sizes: '400px' }}
         {%- else -%}
           <span class="rv-header__logo-text">{{ shop.name | upcase }}</span>
         {%- endif -%}
         {%- if request.page_type == 'index' -%}<h1 class="rv-visually-hidden">{{ shop.name }}</h1>{%- endif -%}
       </a>
-      {%- if section.settings.flag != blank -%}
-        <span class="rv-header__flag" aria-hidden="true">{{ section.settings.flag }}</span>
-      {%- endif -%}
+      {%- case section.settings.flag -%}
+        {%- when 'country' -%}
+          {%- if localization.country -%}
+            <img class="rv-header__flag" src="{{ localization.country | image_url: width: 64 }}" alt="{{ localization.country.name | escape }}" width="24" height="18" loading="eager">
+          {%- endif -%}
+        {%- when 'japan' -%}
+          <svg class="rv-header__flag" viewBox="0 0 24 16" width="24" height="16" role="img" aria-label="Japan"><rect width="24" height="16" fill="#fff"/><circle cx="12" cy="8" r="4.8" fill="#BC002D"/></svg>
+      {%- endcase -%}
 
       <div class="rv-header__right">
         {%- if section.settings.show_search -%}
@@ -120,24 +130,28 @@
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo"
+      "label": "Logo override",
+      "info": "Optional. Leave empty to use the logo from Theme settings › Logo. Size is set there too (Desktop / Mobile height)."
     },
     {
-      "type": "range",
-      "id": "logo_width",
-      "label": "Logo width",
-      "min": 60,
-      "max": 240,
-      "step": 5,
-      "unit": "px",
-      "default": 120
-    },
-    {
-      "type": "text",
+      "type": "select",
       "id": "flag",
-      "label": "Flag / region badge",
-      "info": "Emoji or short text shown beside the logo",
-      "default": "🇯🇵"
+      "label": "Flag beside logo",
+      "default": "country",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "country",
+          "label": "Shopper's current country"
+        },
+        {
+          "value": "japan",
+          "label": "Always Japan"
+        }
+      ]
     },
     {
       "type": "link_list",

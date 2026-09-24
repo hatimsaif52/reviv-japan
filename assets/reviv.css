@@ -167,9 +167,9 @@
 .rv-header.is-sticky { position: sticky; top: 0; }
 .rv-header__top { display: flex; align-items: center; gap: 20px; padding: 14px 0 10px; }
 .rv-header__logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
-.rv-header__logo img { width: var(--rv-logo-w, 120px); height: auto; }
+.rv-header__logo img { height: var(--rv-logo-h, 36px); width: auto !important; max-width: 60vw; object-fit: contain; }
 .rv-header__logo-text { font-family: var(--rv-font-serif); font-size: 26px; letter-spacing: .08em; color: var(--rv-gold); }
-.rv-header__flag { font-size: 16px; line-height: 1; }
+.rv-header__flag { display: block; width: 24px; height: auto; border-radius: 3px; box-shadow: 0 0 0 1px rgba(46,36,26,.12); flex: none; }
 .rv-header__right { margin-left: auto; display: flex; align-items: center; gap: 22px; }
 
 .rv-search { position: relative; width: 240px; }
@@ -254,6 +254,7 @@
   .rv-burger { display: inline-flex; }
   .rv-header__top { padding: 12px 0; }
   .rv-header__logo { margin-right: auto; }
+  .rv-header__logo img { height: var(--rv-logo-h-m, 28px); }
   .rv-header__right { margin-left: 0; }
 }
 
