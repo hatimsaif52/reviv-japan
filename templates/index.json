@@ -524,20 +524,6 @@
         "padding_bottom": 40
       }
     },
-    "journal": {
-      "type": "rv-journal",
-      "settings": {
-        "eyebrow": "Article",
-        "heading": "From the journal",
-        "blog": "news",
-        "post_limit": 4,
-        "show_tags": true,
-        "date_format": "%Y.%m.%d",
-        "button_label": "View all articles",
-        "padding_top": 32,
-        "padding_bottom": 48
-      }
-    },
     "rv_substack_GxXayC": {
       "type": "rv-substack",
       "blocks": {
@@ -609,7 +595,6 @@
     "find_your_size",
     "how_to_use",
     "testimonials",
-    "journal",
     "rv_substack_GxXayC"
   ]
 }
