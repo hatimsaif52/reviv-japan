@@ -443,6 +443,7 @@
         "step_1": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/howtouse-1.webp",
             "title": "Take it out of the box and wash it",
             "text": "Warm water and a little soap. Nothing to boil, nothing to mould."
           }
@@ -450,6 +451,7 @@
         "step_2": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/howtouse-2.webp",
             "title": "Wear it to sleep and 2–3 hours during the day",
             "text": "The hours are what do the work. Take it out to eat and to speak."
           }
@@ -457,6 +459,7 @@
         "step_3": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/howtouse-3.webp",
             "title": "Wash it and let it dry",
             "text": "Air dry somewhere dry, away from heat and direct sun."
           }
