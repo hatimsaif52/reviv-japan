@@ -507,7 +507,7 @@
 .rv-howto .rv-head { margin-bottom: 24px; }
 .rv-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1000px; margin: 0 auto; }
 .rv-step { background: var(--rv-white); border-radius: var(--rv-radius-md); overflow: hidden; box-shadow: var(--rv-shadow); }
-.rv-step__media { position: relative; aspect-ratio: 4 / 3; background: #eee; }
+.rv-step__media { position: relative; aspect-ratio: 1 / 1; background: #eee; }
 .rv-step__media img, .rv-step__media svg { width: 100%; height: 100%; object-fit: cover; }
 .rv-step__num {
   position: absolute; top: 12px; left: 12px;
