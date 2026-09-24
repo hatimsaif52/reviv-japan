@@ -34,6 +34,12 @@
             "image": "shopify://shop_images/benefits-1.png"
           }
         },
+        "photo_2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/benefits-2.png"
+          }
+        },
         "photo_3": {
           "type": "photo",
           "settings": {
@@ -44,12 +50,6 @@
           "type": "photo",
           "settings": {
             "image": "shopify://shop_images/benefits-4.png"
-          }
-        },
-        "photo_2": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/benefits-2.png"
           }
         },
         "point_5": {
@@ -85,9 +85,9 @@
       },
       "block_order": [
         "photo_1",
+        "photo_2",
         "photo_3",
         "photo_4",
-        "photo_2",
         "point_5",
         "point_6",
         "point_7",
