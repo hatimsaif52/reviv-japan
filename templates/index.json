@@ -537,6 +537,67 @@
         "padding_top": 32,
         "padding_bottom": 48
       }
+    },
+    "rv_substack_GxXayC": {
+      "type": "rv-substack",
+      "blocks": {
+        "post_zwURn4": {
+          "type": "post",
+          "settings": {
+            "link": "https://reviv.substack.com/p/what-is-impacted-by-these-biomechanics",
+            "image": "shopify://shop_images/article-1_67e40d19-d774-482b-8cb1-617d1f1d8e55.png",
+            "date": "2024.06.23",
+            "title": "I Am Going to Challenge What You Believe About Health",
+            "tags": "health, biomechanics"
+          }
+        },
+        "post_EKwcgT": {
+          "type": "post",
+          "settings": {
+            "link": "https://reviv.substack.com/p/so-why-do-the-teeth-relate-to-your",
+            "image": "shopify://shop_images/article-2_ae935c1c-66e0-475a-b732-2990359ca558.png",
+            "date": "2024.06.26",
+            "title": "The Balloon Theory",
+            "tags": "theory, dental"
+          }
+        },
+        "post_Y4ETbe": {
+          "type": "post",
+          "settings": {
+            "link": "https://reviv.substack.com/p/how-to-solve-the-problem",
+            "image": "shopify://shop_images/article-3_52963b7d-f4a4-45b6-bf4c-7f36a4b94d40.png",
+            "date": "2024.06.27",
+            "title": "How to Correct the Problem",
+            "tags": "care, how-to"
+          }
+        },
+        "post_DRDpd6": {
+          "type": "post",
+          "settings": {
+            "link": "https://reviv.substack.com/p/what-is-impacted-by-these-biomechanics",
+            "image": "shopify://shop_images/article-4_a383cc08-99c6-4211-ab64-56cfdc69bf80.png",
+            "date": "2024.07.25",
+            "title": "What Is Impacted by These Biomechanics?",
+            "tags": "biomechanics"
+          }
+        }
+      },
+      "block_order": [
+        "post_zwURn4",
+        "post_EKwcgT",
+        "post_Y4ETbe",
+        "post_DRDpd6"
+      ],
+      "name": "Reviv Substack posts",
+      "settings": {
+        "eyebrow": "Article",
+        "heading": "From the journal",
+        "button_label": "View all articles",
+        "button_link": "",
+        "new_tab": true,
+        "padding_top": 32,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
@@ -548,6 +609,7 @@
     "find_your_size",
     "how_to_use",
     "testimonials",
-    "journal"
+    "journal",
+    "rv_substack_GxXayC"
   ]
 }
