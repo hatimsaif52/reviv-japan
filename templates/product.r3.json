@@ -1,0 +1,489 @@
+{
+  "sections": {
+    "main": {
+      "type": "rv-main-product",
+      "settings": {},
+      "blocks": {
+        "option_style_1": {
+          "type": "option_style",
+          "settings": {
+            "option_name": "Package",
+            "style": "cards",
+            "descriptions": "With support | 1 year of community, classroom and journal access, check-ins weekly, and direct messages with Ken.\nR3 only | The R3 appliance on its own."
+          }
+        },
+        "option_style_2": {
+          "type": "option_style",
+          "settings": {
+            "option_name": "Size",
+            "style": "grid",
+            "show_size_guide": true
+          }
+        },
+        "option_style_3": {
+          "type": "option_style",
+          "settings": {
+            "option_name": "Colour",
+            "style": "swatches",
+            "colors": "Yellow: #EACB6A\nClear: #EEEBE4\nWhite: #FFFFFF\nBlue: #5B8FD9"
+          }
+        },
+        "option_style_4": {
+          "type": "option_style",
+          "settings": {
+            "option_name": "Past Reviv purchases",
+            "style": "circles",
+            "helper": "How many Reviv appliances have you bought before? Returning customers pay a reduced price on R2 and R3."
+          }
+        }
+      },
+      "block_order": [
+        "option_style_1",
+        "option_style_2",
+        "option_style_3",
+        "option_style_4"
+      ]
+    },
+    "who_it_is_for": {
+      "type": "rv-feature-cards",
+      "settings": {},
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "icon": "sparkle",
+            "title": "New to Reviv",
+            "text": "The low-cut profile is the easiest of the three to sleep in, so most people start here rather than with R1 or R2."
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "icon": "heart",
+            "title": "Sensitive gums",
+            "text": "R3 sits lower on the gum line and applies the least pressure of any Reviv appliance."
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "icon": "moon",
+            "title": "Long-term nightly use",
+            "text": "Built to be worn every night for about a year, plus a few hours during the day when you can."
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3"
+      ]
+    },
+    "problem": {
+      "type": "rv-story",
+      "settings": {
+        "accent": "red"
+      },
+      "blocks": {
+        "chapter_1": {
+          "type": "chapter",
+          "settings": {
+            "number": "01",
+            "toc_title": "More health issues than ever before",
+            "title": "People today are having more physical and mental health issues than ever before",
+            "list_style": "grid",
+            "items": "Postural issues\nDepression and anxiety\nChronic fatigue and poor energy\nADHD, OCD and similar\nObesity",
+            "caption": "Reported growth in physical and mental health issues, 1950–2024. Log scale."
+          }
+        },
+        "chapter_2": {
+          "type": "chapter",
+          "settings": {
+            "number": "02",
+            "toc_title": "Traditional approaches falling short",
+            "title": "And the traditional ways of fighting them are falling way short",
+            "list_style": "crosses",
+            "items": "Pharmaceuticals\nDiet and eating healthy\nExercise\nMedical procedures"
+          }
+        },
+        "chapter_3": {
+          "type": "chapter",
+          "settings": {
+            "number": "03",
+            "toc_title": "A structural root cause",
+            "title": "So we believe there may be a structural root cause",
+            "list_style": "numbered",
+            "media_position": "left",
+            "items": "There is a set of physics that holds the body up, and the teeth play a critical role in it\nBecause of those physics, the skull can collapse inwards as the teeth change\nThe health of the skull shows up in the curve of Spee — how the upper and lower teeth meet\nOrthodontics, extractions and grinding all flatten that curve",
+            "caption": "The curve of Spee — how the upper and lower teeth meet."
+          }
+        },
+        "chapter_4": {
+          "type": "chapter",
+          "settings": {
+            "number": "04",
+            "toc_title": "The skull can be inflated",
+            "title": "We believe the skull can be inflated like a ball",
+            "divider": true,
+            "concept_1_word": "収縮",
+            "concept_1_label": "Deflating",
+            "concept_1_text": "What we believe causes aging and asymmetry, and sits at the root of most disease",
+            "concept_2_word": "膨張",
+            "concept_2_label": "Inflating",
+            "concept_2_text": "Reverses those things — and a mouthguard can help do it",
+            "note": "As the skull inflates, the curve of Spee improves.",
+            "media_frame": false
+          }
+        }
+      },
+      "block_order": [
+        "chapter_1",
+        "chapter_2",
+        "chapter_3",
+        "chapter_4"
+      ]
+    },
+    "solution": {
+      "type": "rv-story",
+      "settings": {
+        "eyebrow": "The solution",
+        "heading": "What the appliance actually does",
+        "intro": "R3 is a simple piece of soft silicone. The idea behind it is what does the work.",
+        "accent": "green",
+        "show_toc": false,
+        "inset": true,
+        "padding_top": 24
+      },
+      "blocks": {
+        "chapter_1": {
+          "type": "chapter",
+          "settings": {
+            "number": "01",
+            "title": "A simple mouthguard addresses that collapse at its root",
+            "list_style": "numbered",
+            "items": "The appliance acts like a doorstop that prevents the jaw from closing\nThat stretches the soft tissue in the mouth and over the skull\nAs the soft tissue stretches, we believe the skull inflates and the skeleton untwists",
+            "media_frame": false
+          }
+        },
+        "chapter_2": {
+          "type": "chapter",
+          "settings": {
+            "number": "02",
+            "title": "The teeth correct as a function of the skull correcting",
+            "list_style": "numbered",
+            "media_position": "left",
+            "items": "The cranial bones move outwards into better symmetry and the jaw moves to where it should be\nThe teeth are connected to those bones, so they go for the ride and straighten as a result\nThe body should function better, and feel stronger and more flexible",
+            "media_frame": false
+          }
+        }
+      },
+      "block_order": [
+        "chapter_1",
+        "chapter_2"
+      ]
+    },
+    "hypotheses": {
+      "type": "rv-hypotheses",
+      "settings": {},
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "title": "Root cause of almost all disease",
+            "text": "Is disease a function of biomechanical collapse?"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "title": "Root cause of aging",
+            "text": "If we do not collapse, maybe we do not age the way we assume we must."
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "title": "Root cause of beauty",
+            "text": "How far does this go if you take it all the way?"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3"
+      ]
+    },
+    "size_guide": {
+      "type": "rv-size-guide",
+      "settings": {},
+      "blocks": {
+        "size_1": {
+          "type": "size",
+          "settings": {
+            "name": "Medium",
+            "range": "under 6.2 cm",
+            "text": "Teens and adults with smaller mouths. Slightly narrower and shorter for a more precise fit."
+          }
+        },
+        "size_2": {
+          "type": "size",
+          "settings": {
+            "name": "Large",
+            "range": "6.2 – 7.1 cm",
+            "text": "Suits most adults, and gives a snug, comfortable fit for best effect.",
+            "badge": "Most adults",
+            "highlight": true
+          }
+        },
+        "size_3": {
+          "type": "size",
+          "settings": {
+            "name": "XL",
+            "range": "7.2 cm and up",
+            "text": "For adults with larger mouths. New with R3 — it was not available before."
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "size": "Medium",
+            "v1": "46 mm",
+            "v2": "63.5 mm",
+            "v3": "23 mm",
+            "v4": "4.1 mm"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "size": "Large",
+            "v1": "53.6 mm",
+            "v2": "73.2 mm",
+            "v3": "26 mm",
+            "v4": "4.2 mm",
+            "highlight": true
+          }
+        },
+        "row_6": {
+          "type": "row",
+          "settings": {
+            "size": "XL",
+            "v1": "59.6 mm",
+            "v2": "84 mm",
+            "v3": "27 mm",
+            "v4": "5 mm"
+          }
+        }
+      },
+      "block_order": [
+        "size_1",
+        "size_2",
+        "size_3",
+        "row_4",
+        "row_5",
+        "row_6"
+      ]
+    },
+    "how_to_use": {
+      "type": "rv-how-to-use",
+      "settings": {},
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Unbox and rinse",
+            "text": "Take it out of the box and wash it under running water before the first wear."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Wear it overnight, plus daytime",
+            "text": "Sleep in it every night and add 2–3 hours during the day. Build up in short intervals at first."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Wash and let it dry",
+            "text": "Rinse after every use and air-dry. Keep it away from hot water and direct sunlight."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ]
+    },
+    "timeline": {
+      "type": "rv-timeline",
+      "settings": {},
+      "blocks": {
+        "stage_1": {
+          "type": "stage",
+          "settings": {
+            "title": "1 week",
+            "color": "#c6442a",
+            "items": "Some initial discomfort in the teeth and gums\nA few nights to get used to sleeping with it"
+          }
+        },
+        "stage_2": {
+          "type": "stage",
+          "settings": {
+            "title": "1 month",
+            "color": "#e07a3f",
+            "items": "It starts to feel more comfortable\nDifferences in how the teeth fit together\nMany wake without the tight, clenched feeling"
+          }
+        },
+        "stage_3": {
+          "type": "stage",
+          "settings": {
+            "title": "1 year",
+            "color": "#c1913d",
+            "items": "Better concentration and stamina, many report\nMore energy through the day"
+          }
+        },
+        "stage_4": {
+          "type": "stage",
+          "settings": {
+            "title": "2 years+",
+            "color": "#2d6a5e",
+            "items": "The appliance plateaus; the community stretches carry it on\nSteady improvement, functionally and aesthetically"
+          }
+        }
+      },
+      "block_order": [
+        "stage_1",
+        "stage_2",
+        "stage_3",
+        "stage_4"
+      ]
+    },
+    "reviews": {
+      "type": "rv-reviews-app",
+      "settings": {}
+    },
+    "faq": {
+      "type": "rv-faq",
+      "settings": {},
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "How should I start? Is there anything to be aware of?",
+            "answer": "<p>The standard pattern is overnight plus 2–3 hours during the day. Build up gradually with shorter daytime intervals first rather than going straight to overnights — that helps the soft tissue adjust. Most people find the first few weeks the hardest part, and it gets significantly easier after that.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "Is early discomfort normal?"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "How does sizing work?"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "What does the support package include?"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "What is it made of, and how long does it last?"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "Shipping and returns"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6"
+      ]
+    },
+    "other_products": {
+      "type": "rv-products",
+      "settings": {
+        "heading": "Other products",
+        "button_label": "View all",
+        "button_action": "view",
+        "show_rating": false,
+        "note": "",
+        "padding_top": 24
+      },
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "badge": "",
+            "type_label": "Oral appliance",
+            "details": "Smaller air holes — for discouraging mouth breathing",
+            "button_style": "outline"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "badge": "",
+            "type_label": "Oral appliance",
+            "details": "The entry appliance · about 2–4 months",
+            "button_style": "outline"
+          }
+        },
+        "product_3": {
+          "type": "product",
+          "settings": {
+            "badge": "",
+            "type_label": "Sport appliance",
+            "details": "One adult size · wear it while you train",
+            "button_style": "outline"
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "badge": "",
+            "type_label": "Support",
+            "details": "Community, classroom, journal, direct messages with Ken",
+            "button_style": "outline",
+            "soft_media": true
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "who_it_is_for",
+    "problem",
+    "solution",
+    "hypotheses",
+    "size_guide",
+    "how_to_use",
+    "timeline",
+    "reviews",
+    "faq",
+    "other_products"
+  ]
+}

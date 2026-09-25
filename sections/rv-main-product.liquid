@@ -1,0 +1,332 @@
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign featured = current.featured_media | default: product.featured_media
+  assign rating = product.metafields.reviews.rating.value.rating
+  assign rating_count = product.metafields.reviews.rating_count.value
+  assign styles = section.blocks | where: 'type', 'option_style'
+  assign app_blocks = section.blocks | where: 'type', '@app'
+  assign eyebrow = s.eyebrow
+  if eyebrow == blank
+    assign eyebrow = product.type
+    if product.vendor != blank
+      if eyebrow != blank
+        assign eyebrow = eyebrow | append: ' · ' | append: product.vendor
+      else
+        assign eyebrow = product.vendor
+      endif
+    endif
+  endif
+-%}
+{%- capture nl %}
+{% endcapture -%}
+
+<section class="rv-scope rv-pdp" id="rv-product-{{ section.id }}" data-rv-product data-money-format="{{ shop.money_format | escape }}" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;">
+  <div class="rv-container">
+    {%- if s.show_breadcrumb -%}
+      <nav class="rv-breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ s.breadcrumb_link | default: routes.all_products_collection_url }}">{{ s.breadcrumb_label }}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ product.title }}</span>
+      </nav>
+    {%- endif -%}
+
+    <div class="rv-pdp__grid">
+      {%- comment -%} ============ GALLERY ============ {%- endcomment -%}
+      <div class="rv-pdp__gallery{% if s.sticky_gallery %} is-sticky{% endif %}">
+        <div class="rv-gallery__main">
+          {%- if s.badge != blank -%}<span class="rv-badge rv-badge--{{ s.badge_style }}">{{ s.badge }}</span>{%- endif -%}
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              <div class="rv-gallery__slide" data-media-id="{{ media.id }}"{% unless media.id == featured.id %} hidden{% endunless %}>
+                {%- case media.media_type -%}
+                  {%- when 'image' -%}
+                    {%- liquid
+                      assign load = 'lazy'
+                      if media.id == featured.id
+                        assign load = 'eager'
+                      endif
+                    -%}
+                    {{ media | image_url: width: 1400 | image_tag: loading: load, sizes: '(min-width: 990px) 50vw, 100vw', widths: '400, 600, 800, 1000, 1200, 1400', alt: media.alt | default: product.title }}
+                  {%- when 'video' -%}
+                    {{ media | video_tag: controls: true, playsinline: true, image_size: '1200x' }}
+                  {%- when 'external_video' -%}
+                    {{ media | external_video_tag: loading: 'lazy' }}
+                  {%- else -%}
+                    {{ media.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="rv-gallery__slide">{{ 'product-1' | placeholder_svg_tag: 'rv-placeholder' }}</div>
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="rv-gallery__thumbs" role="list">
+            {%- for media in product.media -%}
+              <button type="button" class="rv-gallery__thumb{% if media.id == featured.id %} is-active{% endif %}" data-rv-thumb="{{ media.id }}" aria-label="Show image {{ forloop.index }}" role="listitem"{% if media.id == featured.id %} aria-current="true"{% endif %}>
+                {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ============ INFO ============ {%- endcomment -%}
+      <div class="rv-pdp__info">
+        {%- if eyebrow != blank -%}<p class="rv-pdp__eyebrow">{{ eyebrow }}</p>{%- endif -%}
+        <h1 class="rv-pdp__title">{{ product.title }}</h1>
+
+        {%- if s.rating_source == 'metafields' and rating != blank -%}
+          <a href="{{ s.reviews_anchor | default: '#reviews' }}" class="rv-pdp__rating">
+            {%- render 'rv-stars', rating: rating, show_value: false -%}
+            <strong>{{ rating | round: 1 }}</strong>
+            <span>{{ rating_count }} {{ s.reviews_label }}</span>
+          </a>
+        {%- endif -%}
+        {%- for block in app_blocks -%}
+          <div class="rv-pdp__app" {{ block.shopify_attributes }}>{% render block %}</div>
+        {%- endfor -%}
+
+        <div class="rv-pdp__intro">
+          {%- if s.intro != blank -%}
+            {{ s.intro }}
+          {%- else -%}
+            <p>{{ product.description | strip_html | truncatewords: 40 }}</p>
+          {%- endif -%}
+        </div>
+
+        <div class="rv-buy">
+          <div class="rv-buy__price">
+            <strong data-rv-price>{{ current.price | money_without_trailing_zeros }}</strong>
+            <s data-rv-compare{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ current.compare_at_price | money_without_trailing_zeros }}</s>
+            {%- if s.price_suffix != blank -%}<small>{{ s.price_suffix }}</small>{%- endif -%}
+          </div>
+
+          {%- form 'product', product, class: 'rv-buy__form', data-rv-add: '', data-rv-product-form: '', novalidate: 'novalidate' -%}
+            <input type="hidden" name="id" value="{{ current.id }}" data-rv-variant-id>
+
+            {%- unless product.has_only_default_variant -%}
+              {%- for option in product.options_with_values -%}
+                {%- liquid
+                  assign opt_index = forloop.index0
+                  assign opt_name = option.name | downcase | strip
+                  assign style = nil
+                  for sb in styles
+                    assign sb_name = sb.settings.option_name | downcase | strip
+                    if sb_name == opt_name
+                      assign style = sb
+                    endif
+                  endfor
+                  assign kind = style.settings.style | default: 'grid'
+                  assign desc_lines = style.settings.descriptions | split: nl
+                  assign color_lines = style.settings.colors | split: nl
+                -%}
+                <fieldset class="rv-opt rv-opt--{{ kind }}" data-rv-option="{{ opt_index }}" {{ style.shopify_attributes }}>
+                  <legend class="rv-visually-hidden">{{ style.settings.label | default: option.name }}</legend>
+                  <div class="rv-opt__head">
+                    <span class="rv-opt__label" aria-hidden="true">{{ style.settings.label | default: option.name }}</span>
+                    {%- if style.settings.show_size_guide and s.size_guide_label != blank -%}
+                      <a href="{{ s.size_guide_link | default: '#size-guide' }}" class="rv-opt__guide">{{ s.size_guide_label }}</a>
+                    {%- endif -%}
+                  </div>
+                  {%- if style.settings.helper != blank -%}<p class="rv-opt__help">{{ style.settings.helper }}</p>{%- endif -%}
+
+                  <div class="rv-opt__values">
+                    {%- for value in option.values -%}
+                      {%- liquid
+                        assign input_id = 'rv-' | append: section.id | append: '-' | append: opt_index | append: '-' | append: forloop.index0
+                        assign v_name = value | strip
+                        assign v_desc = ''
+                        for line in desc_lines
+                          assign parts = line | split: '|'
+                          assign key = parts.first | strip
+                          if key == v_name and parts.size > 1
+                            assign v_desc = parts.last | strip
+                          endif
+                        endfor
+                        assign v_color = ''
+                        if kind == 'swatches'
+                          if value.swatch.color
+                            assign v_color = value.swatch.color
+                          else
+                            for line in color_lines
+                              assign parts = line | split: ':'
+                              assign key = parts.first | strip
+                              if key == v_name and parts.size > 1
+                                assign v_color = parts.last | strip
+                              endif
+                            endfor
+                          endif
+                        endif
+                      -%}
+                      <label class="rv-opt__value" for="{{ input_id }}">
+                        <input type="radio" id="{{ input_id }}" name="rv-{{ section.id }}-opt-{{ opt_index }}" value="{{ value | escape }}"{% if value.selected %} checked{% endif %} data-rv-option-input>
+                        <span class="rv-opt__box">
+                          {%- if kind == 'cards' -%}
+                            <span class="rv-opt__radio" aria-hidden="true"></span>
+                            <span class="rv-opt__text">
+                              <strong>{{ value }}</strong>
+                              {%- if v_desc != blank -%}<small>{{ v_desc }}</small>{%- endif -%}
+                            </span>
+                          {%- elsif kind == 'swatches' -%}
+                            <span class="rv-opt__dot" style="{% if v_color != blank %}background: {{ v_color }};{% endif %}" aria-hidden="true"></span>
+                            <strong>{{ value }}</strong>
+                          {%- else -%}
+                            <strong>{{ value }}</strong>
+                          {%- endif -%}
+                        </span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              {%- endfor -%}
+            {%- endunless -%}
+
+            {%- if s.enable_terms -%}
+              <label class="rv-terms">
+                <input type="checkbox" data-rv-terms>
+                <span class="rv-terms__box" aria-hidden="true">{%- render 'rv-icon', icon: 'check' -%}</span>
+                <span class="rv-terms__text">{{ s.terms_text }}</span>
+              </label>
+            {%- endif -%}
+
+            <div class="rv-buy__actions{% if s.enable_terms %} is-locked{% endif %}" data-rv-actions>
+              <div class="rv-buy__row">
+                {%- if s.show_quantity -%}
+                  <div class="rv-qty">
+                    <button type="button" data-rv-qty="-1" aria-label="Decrease quantity"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                    <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="Quantity">
+                    <button type="button" data-rv-qty="1" aria-label="Increase quantity"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                  </div>
+                {%- else -%}
+                  <input type="hidden" name="quantity" value="1">
+                {%- endif -%}
+                <button type="submit" class="rv-btn rv-btn--primary rv-btn--lg rv-buy__atc" data-rv-atc
+                  data-label-add="{{ s.cart_label | escape }}" data-label-soldout="{{ s.soldout_label | escape }}" data-label-unavailable="{{ s.unavailable_label | escape }}" data-added-label="{{ s.added_label | escape }}"
+                  {% unless current.available %}disabled{% endunless %}>
+                  <span data-rv-atc-text>{%- if current.available -%}{{ s.cart_label }}{%- else -%}{{ s.soldout_label }}{%- endif -%}</span>
+                  {%- render 'rv-icon', icon: 'arrow' -%}
+                </button>
+              </div>
+              {%- if s.show_buy_now -%}
+                <div class="rv-buy__now">{{ form | payment_button }}</div>
+              {%- endif -%}
+            </div>
+            {%- if s.enable_terms and s.terms_hint != blank -%}
+              <p class="rv-terms__hint" data-rv-terms-hint>{{ s.terms_hint }}</p>
+            {%- endif -%}
+          {%- endform -%}
+
+          {%- if s.trust_1 != blank or s.trust_2 != blank or s.trust_3 != blank -%}
+            <ul class="rv-buy__trust">
+              {%- if s.trust_1 != blank -%}<li>{% render 'rv-icon', icon: 'check' %}{{ s.trust_1 }}</li>{%- endif -%}
+              {%- if s.trust_2 != blank -%}<li>{% render 'rv-icon', icon: 'check' %}{{ s.trust_2 }}</li>{%- endif -%}
+              {%- if s.trust_3 != blank -%}<li>{% render 'rv-icon', icon: 'check' %}{{ s.trust_3 }}</li>{%- endif -%}
+            </ul>
+          {%- endif -%}
+        </div>
+
+        {%- assign points = s.checklist | split: nl -%}
+        {%- if s.checklist != blank -%}
+          <ul class="rv-checklist rv-pdp__points">
+            {%- for p in points -%}
+              {%- assign p = p | strip -%}
+              {%- if p != blank -%}
+                <li><span class="rv-checklist__icon">{%- render 'rv-icon', icon: 'check' -%}</span>{{ p }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if s.disclaimer != blank -%}<div class="rv-pdp__disclaimer">{{ s.disclaimer }}</div>{%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-rv-variants>
+    [
+      {%- for v in product.variants -%}
+        {"id": {{ v.id }}, "available": {{ v.available }}, "price": {{ v.price }}, "compare_at_price": {{ v.compare_at_price | default: 0 }}, "options": {{ v.options | json }}, "media": {{ v.featured_media.id | default: 'null' }}}{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  </script>
+</section>
+<script src="{{ 'reviv-product.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Reviv product",
+  "tag": "div",
+  "class": "rv-main-product-section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "header", "content": "Breadcrumb" },
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "Show breadcrumb", "default": true },
+    { "type": "text", "id": "breadcrumb_label", "label": "Breadcrumb label", "default": "All products" },
+    { "type": "url", "id": "breadcrumb_link", "label": "Breadcrumb link" },
+
+    { "type": "header", "content": "Gallery" },
+    { "type": "text", "id": "badge", "label": "Badge", "info": "Connect a product metafield to show a different badge per product", "default": "Best to start with" },
+    { "type": "select", "id": "badge_style", "label": "Badge style", "default": "green", "options": [
+      { "value": "green", "label": "Green" }, { "value": "gold", "label": "Gold" }, { "value": "dark", "label": "Dark" }, { "value": "soft", "label": "Soft peach" }
+    ]},
+    { "type": "checkbox", "id": "sticky_gallery", "label": "Keep gallery in view while scrolling (desktop)", "default": true },
+
+    { "type": "header", "content": "Product info" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave blank to show product type · vendor", "default": "Oral appliance · Reviv" },
+    { "type": "select", "id": "rating_source", "label": "Star rating", "default": "metafields", "info": "Judge.me fills the standard review metafields. Choose \"App block only\" if you add the Judge.me star badge block instead.", "options": [
+      { "value": "metafields", "label": "Review metafields" },
+      { "value": "none", "label": "App block only / hide" }
+    ]},
+    { "type": "text", "id": "reviews_label", "label": "Reviews label", "default": "reviews" },
+    { "type": "text", "id": "reviews_anchor", "label": "Rating links to", "default": "#reviews" },
+    { "type": "richtext", "id": "intro", "label": "Short description", "info": "Leave blank to use the start of the product description" },
+
+    { "type": "header", "content": "Buy box" },
+    { "type": "text", "id": "price_suffix", "label": "Price suffix", "default": "tax in · free shipping" },
+    { "type": "text", "id": "size_guide_label", "label": "Size guide link label", "default": "Size guide ↓" },
+    { "type": "text", "id": "size_guide_link", "label": "Size guide link", "default": "#size-guide" },
+    { "type": "checkbox", "id": "enable_terms", "label": "Require terms checkbox", "default": true },
+    { "type": "inline_richtext", "id": "terms_text", "label": "Terms text", "default": "I agree to the <a href=\"/policies/terms-of-service\">product terms and conditions</a> and that all sales are final." },
+    { "type": "text", "id": "terms_hint", "label": "Hint when terms not ticked", "default": "Please tick the box above to continue." },
+    { "type": "checkbox", "id": "show_quantity", "label": "Show quantity selector", "default": true },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy it now button", "default": true },
+    { "type": "text", "id": "cart_label", "label": "Add to cart label", "default": "Add to cart" },
+    { "type": "text", "id": "added_label", "label": "Added label", "default": "Added to cart" },
+    { "type": "text", "id": "soldout_label", "label": "Sold out label", "default": "Sold out" },
+    { "type": "text", "id": "unavailable_label", "label": "Unavailable label", "default": "Unavailable" },
+    { "type": "text", "id": "trust_1", "label": "Trust point 1", "default": "Trusted by 30,000+ customers" },
+    { "type": "text", "id": "trust_2", "label": "Trust point 2", "default": "Ships within 48 hours" },
+    { "type": "text", "id": "trust_3", "label": "Trust point 3" },
+
+    { "type": "header", "content": "Below the buy box" },
+    { "type": "textarea", "id": "checklist", "label": "Checklist", "info": "One point per line", "default": "Very low pressure on the gums — our gentlest appliance\nAir holes keep saliva moving and make nose breathing easier\nThree sizes including XL · no moulding, no boiling, no dental visit" },
+    { "type": "richtext", "id": "disclaimer", "label": "Disclaimer", "default": "<p>Reviv is a consumer oral appliance, not a medical device, and has not been evaluated by the PMDA. All sales are final. Individual experiences vary.</p>" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "option_style",
+      "name": "Option style",
+      "settings": [
+        { "type": "text", "id": "option_name", "label": "Option name", "info": "Must match the product option name exactly, e.g. Size", "default": "Size" },
+        { "type": "text", "id": "label", "label": "Label override", "info": "Leave blank to use the option name" },
+        { "type": "select", "id": "style", "label": "Style", "default": "grid", "options": [
+          { "value": "cards", "label": "Cards with description (stacked)" },
+          { "value": "grid", "label": "Boxes (equal width)" },
+          { "value": "swatches", "label": "Colour pills" },
+          { "value": "circles", "label": "Circles (short values)" }
+        ]},
+        { "type": "text", "id": "helper", "label": "Helper text" },
+        { "type": "textarea", "id": "descriptions", "label": "Value descriptions (Cards)", "info": "One per line: Value | description" },
+        { "type": "textarea", "id": "colors", "label": "Colours (Colour pills)", "info": "One per line: Value: #hex. Not needed if you use Shopify's native swatches." },
+        { "type": "checkbox", "id": "show_size_guide", "label": "Show size guide link", "default": false }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "presets": [{ "name": "Reviv product" }]
+}
+{% endschema %}

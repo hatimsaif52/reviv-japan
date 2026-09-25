@@ -21,7 +21,7 @@
           assign type_label = b.type_label | default: p.type
           assign card_style = 'object-fit: ' | append: b.image_fit | append: ';'
         -%}
-        <article class="rv-pcard{% if b.raised %} is-raised{% endif %}" {{ block.shopify_attributes }}>
+        <article class="rv-pcard{% if b.raised %} is-raised{% endif %}{% if b.soft_media %} is-soft{% endif %}" {{ block.shopify_attributes }}>
           {%- if b.badge != blank -%}<span class="rv-badge rv-badge--{{ b.badge_style }}">{{ b.badge }}</span>{%- endif -%}
 
           <a href="{{ p.url | default: '#' }}" class="rv-pcard__media" tabindex="-1" aria-hidden="true">
@@ -37,7 +37,8 @@
             {%- if type_label != blank -%}<p class="rv-pcard__type">{{ type_label }}</p>{%- endif -%}
             <h3 class="rv-pcard__title"><a href="{{ p.url | default: '#' }}">{{ p.title | default: 'Product title' }}</a></h3>
 
-            {%- if rating != blank -%}
+            {%- if s.show_rating == false -%}
+            {%- elsif rating != blank -%}
               <div class="rv-pcard__rating">{%- render 'rv-stars', rating: rating, count: rating_count -%}</div>
             {%- elsif s.show_no_reviews -%}
               <p class="rv-pcard__noreviews">No reviews yet</p>
@@ -56,7 +57,11 @@
               {%- if s.price_suffix != blank -%}<small>{{ s.price_suffix }}</small>{%- endif -%}
             </div>
 
-            {%- render 'rv-product-form', product: p, style: b.button_style, label: s.cart_label -%}
+            {%- if s.button_action == 'view' -%}
+              <a href="{{ p.url | default: '#' }}" class="rv-btn rv-btn--block rv-btn--{{ b.button_style }} rv-pcard__view">{{ s.view_label }}</a>
+            {%- else -%}
+              {%- render 'rv-product-form', product: p, style: b.button_style, label: s.cart_label -%}
+            {%- endif -%}
           </div>
         </article>
       {%- endfor -%}
@@ -76,7 +81,13 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "All products" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "View all items" },
     { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "select", "id": "button_action", "label": "Card button", "default": "cart", "options": [
+      { "value": "cart", "label": "Add to cart" },
+      { "value": "view", "label": "Link to product page" }
+    ]},
     { "type": "text", "id": "cart_label", "label": "Add to cart label", "default": "Add to cart" },
+    { "type": "text", "id": "view_label", "label": "View button label", "default": "View" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show star rating", "default": true },
     { "type": "text", "id": "price_suffix", "label": "Price suffix", "default": "tax in" },
     { "type": "checkbox", "id": "show_no_reviews", "label": "Show \"No reviews yet\" when a product has no rating", "default": true },
     { "type": "text", "id": "note", "label": "Note under cards", "default": "All prices include consumption tax · free shipping nationwide · dispatched from Tokyo within 3 business days" },
@@ -107,7 +118,8 @@
         { "value": "primary", "label": "Filled" },
         { "value": "outline", "label": "Outline" }
       ]},
-      { "type": "checkbox", "id": "raised", "label": "Lift this card slightly", "default": false }
+      { "type": "checkbox", "id": "raised", "label": "Lift this card slightly", "default": false },
+      { "type": "checkbox", "id": "soft_media", "label": "Peach image background", "info": "Good for icon images, like a support package card", "default": false }
     ]
   }],
   "presets": [{

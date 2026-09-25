@@ -1,0 +1,8 @@
+{%- comment -%} Shared popup player used by video cards and the size guide. {%- endcomment -%}
+<div class="rv-scope rv-modal" data-rv-modal role="dialog" aria-modal="true" aria-label="Video">
+  <div class="rv-modal__overlay" data-rv-modal-close></div>
+  <div class="rv-modal__box" data-rv-modal-box>
+    <button type="button" class="rv-modal__close" data-rv-modal-close aria-label="Close video">{%- render 'rv-icon', icon: 'close' -%}</button>
+    <div data-rv-modal-slot style="width:100%;height:100%"></div>
+  </div>
+</div>
