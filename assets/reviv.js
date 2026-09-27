@@ -123,8 +123,15 @@
   /* ---------- add to cart ---------- */
   function addWithActions(form) {
     var fd = new FormData(form);
+    var attrs = [];
+    fd.forEach(function (value, key) {
+      var m = key.match(/^properties\[(.+)\]$/);
+      if (m && value !== '') attrs.push({ key: m[1], value: String(value) });
+    });
+    var line = { merchandiseId: String(fd.get('id')), quantity: Number(fd.get('quantity') || 1) };
+    if (attrs.length) line.attributes = attrs;
     return actions().updateCart(
-      { lines: [{ merchandiseId: String(fd.get('id')), quantity: Number(fd.get('quantity') || 1) }] },
+      { lines: [line] },
       { event: { context: 'product' } }
     ).then(function (res) {
       if (res && res.userErrors && res.userErrors.length) throw new Error(res.userErrors[0].message);

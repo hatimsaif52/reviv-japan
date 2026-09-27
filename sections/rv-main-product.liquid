@@ -6,7 +6,11 @@
   assign rating_count = product.metafields.reviews.rating_count.value
   assign styles = section.blocks | where: 'type', 'option_style'
   assign app_blocks = section.blocks | where: 'type', '@app'
-  assign eyebrow = s.eyebrow
+  assign mf = product.metafields.reviv
+  assign short_name = mf.short_name.value | default: product.title
+  assign badge = mf.badge.value | default: s.badge
+  assign checklist = mf.checklist.value | default: s.checklist
+  assign eyebrow = mf.eyebrow.value | default: s.eyebrow
   if eyebrow == blank
     assign eyebrow = product.type
     if product.vendor != blank
@@ -21,7 +25,7 @@
 {%- capture nl %}
 {% endcapture -%}
 
-<section class="rv-scope rv-pdp" id="rv-product-{{ section.id }}" data-rv-product data-money-format="{{ shop.money_format | escape }}" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;">
+<section class="rv-scope rv-pdp" id="rv-product-{{ section.id }}" data-rv-product data-money-format="{{ shop.money_format | escape }}" data-currency="{{ cart.currency.iso_code }}" data-locale="{{ localization.language.iso_code }}-{{ localization.country.iso_code }}" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;">
   <div class="rv-container">
     {%- if s.show_breadcrumb -%}
       <nav class="rv-breadcrumb" aria-label="Breadcrumb">
@@ -35,7 +39,7 @@
       {%- comment -%} ============ GALLERY ============ {%- endcomment -%}
       <div class="rv-pdp__gallery{% if s.sticky_gallery %} is-sticky{% endif %}">
         <div class="rv-gallery__main">
-          {%- if s.badge != blank -%}<span class="rv-badge rv-badge--{{ s.badge_style }}">{{ s.badge }}</span>{%- endif -%}
+          {%- if badge != blank and badge != '-' -%}<span class="rv-badge rv-badge--{{ s.badge_style }}">{{ badge }}</span>{%- endif -%}
           {%- if product.media.size > 0 -%}
             {%- for media in product.media -%}
               <div class="rv-gallery__slide" data-media-id="{{ media.id }}"{% unless media.id == featured.id %} hidden{% endunless %}>
@@ -90,10 +94,12 @@
         {%- endfor -%}
 
         <div class="rv-pdp__intro">
-          {%- if s.intro != blank -%}
-            {{ s.intro }}
+          {%- if mf.intro.value != blank -%}
+            {{ mf.intro.value | newline_to_br }}
+          {%- elsif s.intro_source == 'description' -%}
+            {{ product.description }}
           {%- else -%}
-            <p>{{ product.description | strip_html | truncatewords: 40 }}</p>
+            <p>{{ product.description | strip_html | truncatewords: s.intro_words }}</p>
           {%- endif -%}
         </div>
 
@@ -107,6 +113,21 @@
           {%- form 'product', product, class: 'rv-buy__form', data-rv-add: '', data-rv-product-form: '', novalidate: 'novalidate' -%}
             <input type="hidden" name="id" value="{{ current.id }}" data-rv-variant-id>
 
+            {%- liquid
+              assign is_b2b = false
+              if customer and customer.b2b?
+                assign is_b2b = true
+              endif
+              assign addons = nil
+              if s.addon_metafield != blank
+                assign addons = product.metafields.custom[s.addon_metafield].value
+              endif
+              assign show_addons = false
+              if addons != blank and is_b2b == false
+                assign show_addons = true
+              endif
+              assign addon_option = s.addon_option | downcase | strip
+            -%}
             {%- unless product.has_only_default_variant -%}
               {%- for option in product.options_with_values -%}
                 {%- liquid
@@ -115,18 +136,96 @@
                   assign style = nil
                   for sb in styles
                     assign sb_name = sb.settings.option_name | downcase | strip
+                    if sb_name == blank
+                      continue
+                    endif
                     if sb_name == opt_name
+                      assign style = sb
+                      break
+                    elsif opt_name contains sb_name
                       assign style = sb
                     endif
                   endfor
                   assign kind = style.settings.style | default: 'grid'
                   assign desc_lines = style.settings.descriptions | split: nl
                   assign color_lines = style.settings.colors | split: nl
+                  assign label = style.settings.label | default: option.name
+
+                  assign hide_option = false
+                  if style.settings.hide_for_b2b and is_b2b
+                    assign hide_option = true
+                  endif
+                  assign is_linked = false
+                  if show_addons and addon_option != blank and opt_name == addon_option
+                    assign is_linked = true
+                    assign hide_option = true
+                  endif
+                  assign modal_id = 'rv-modal-' | append: section.id | append: '-' | append: opt_index
                 -%}
-                <fieldset class="rv-opt rv-opt--{{ kind }}" data-rv-option="{{ opt_index }}" {{ style.shopify_attributes }}>
-                  <legend class="rv-visually-hidden">{{ style.settings.label | default: option.name }}</legend>
+
+                {%- if is_linked -%}
+                  {%- comment -%} Add-on cards: pick a package, keeps the linked variant option in sync and adds an "Add-On" line item property {%- endcomment -%}
+                  <fieldset class="rv-opt rv-opt--cards rv-addons" data-rv-addons>
+                    <legend class="rv-visually-hidden">{{ s.addon_label | default: option.name }}</legend>
+                    {%- if s.addon_label != blank -%}
+                      <div class="rv-opt__head"><span class="rv-opt__label" aria-hidden="true">{{ s.addon_label }}</span></div>
+                    {%- endif -%}
+                    <div class="rv-opt__values">
+                      {%- liquid
+                        assign selected_linked = option.selected_value | strip
+                        assign has_match = false
+                        for addon in addons
+                          assign a_title = addon.title | append: '' | split: '(+' | first | strip
+                          if a_title == selected_linked
+                            assign has_match = true
+                          endif
+                        endfor
+                      -%}
+                      {%- for addon in addons -%}
+                        {%- liquid
+                          assign a_title_full = addon.title | append: ''
+                          assign a_title = a_title_full | split: '(+' | first | strip
+                          assign a_checked = false
+                          if has_match and a_title == selected_linked
+                            assign a_checked = true
+                          elsif has_match == false and forloop.first
+                            assign a_checked = true
+                          endif
+                          assign addon_id = 'rv-addon-' | append: section.id | append: '-' | append: forloop.index
+                        -%}
+                        <label class="rv-opt__value" for="{{ addon_id }}">
+                          <input type="radio" id="{{ addon_id }}" name="properties[Add-On]" value="{{ a_title_full | escape }}"
+                            data-price-0="{{ addon.price_0 | times: 100 }}"
+                            data-price-1="{{ addon.price_1 | times: 100 }}"
+                            data-price-2="{{ addon.price_2 | times: 100 }}"
+                            data-rv-addon{% if a_checked %} checked{% endif %}>
+                          <span class="rv-opt__box">
+                            <span class="rv-opt__radio" aria-hidden="true"></span>
+                            <span class="rv-opt__text">
+                              <span class="rv-addon__top">
+                                <strong>{{ a_title_full }}</strong>
+                                <span class="rv-addon__price" data-rv-addon-price></span>
+                              </span>
+                              {%- if addon.description != blank -%}<span class="rv-addon__desc">{{ addon.description | metafield_tag }}</span>{%- endif -%}
+                            </span>
+                          </span>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  </fieldset>
+                {%- endif -%}
+
+                <fieldset class="rv-opt rv-opt--{{ kind }}" data-rv-option="{{ opt_index }}"{% if style.settings.purchase_count %} data-rv-count{% endif %}{% if is_linked %} data-rv-linked{% endif %}{% if hide_option %} hidden{% endif %} {{ style.shopify_attributes }}>
+                  <legend class="rv-visually-hidden">{{ label }}</legend>
                   <div class="rv-opt__head">
-                    <span class="rv-opt__label" aria-hidden="true">{{ style.settings.label | default: option.name }}</span>
+                    <span class="rv-opt__label" aria-hidden="true">
+                      {%- if style.settings.modal_link_text != blank and label contains style.settings.modal_link_text -%}
+                        {%- capture link_btn -%}<button type="button" class="rv-opt__modal-link" data-rv-dialog-open="{{ modal_id }}">{{ style.settings.modal_link_text }}</button>{%- endcapture -%}
+                        {{ label | replace: style.settings.modal_link_text, link_btn }}
+                      {%- else -%}
+                        {{ label }}
+                      {%- endif -%}
+                    </span>
                     {%- if style.settings.show_size_guide and s.size_guide_label != blank -%}
                       <a href="{{ s.size_guide_link | default: '#size-guide' }}" class="rv-opt__guide">{{ s.size_guide_label }}</a>
                     {%- endif -%}
@@ -168,7 +267,7 @@
                             <span class="rv-opt__radio" aria-hidden="true"></span>
                             <span class="rv-opt__text">
                               <strong>{{ value }}</strong>
-                              {%- if v_desc != blank -%}<small>{{ v_desc }}</small>{%- endif -%}
+                              {%- if v_desc != blank -%}<small>{{ v_desc | replace: '[product]', short_name }}</small>{%- endif -%}
                             </span>
                           {%- elsif kind == 'swatches' -%}
                             <span class="rv-opt__dot" style="{% if v_color != blank %}background: {{ v_color }};{% endif %}" aria-hidden="true"></span>
@@ -181,6 +280,22 @@
                     {%- endfor -%}
                   </div>
                 </fieldset>
+
+                {%- if style.settings.modal_link_text != blank and hide_option == false -%}
+                  <dialog class="rv-scope rv-dialog" id="{{ modal_id }}" aria-label="{{ style.settings.modal_title | default: style.settings.modal_link_text | escape }}">
+                    <div class="rv-dialog__inner">
+                      <button type="button" class="rv-dialog__close" data-rv-dialog-close aria-label="Close">{%- render 'rv-icon', icon: 'close' -%}</button>
+                      {%- if style.settings.modal_title != blank -%}<h2 class="rv-dialog__title">{{ style.settings.modal_title }}</h2>{%- endif -%}
+                      <div class="rv-dialog__body">
+                        {%- if style.settings.modal_page != blank -%}
+                          {{ style.settings.modal_page.content }}
+                        {%- else -%}
+                          {{ style.settings.modal_content }}
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </dialog>
+                {%- endif -%}
               {%- endfor -%}
             {%- endunless -%}
 
@@ -228,8 +343,8 @@
           {%- endif -%}
         </div>
 
-        {%- assign points = s.checklist | split: nl -%}
-        {%- if s.checklist != blank -%}
+        {%- assign points = checklist | split: nl -%}
+        {%- if checklist != blank -%}
           <ul class="rv-checklist rv-pdp__points">
             {%- for p in points -%}
               {%- assign p = p | strip -%}
@@ -259,74 +374,411 @@
   "name": "Reviv product",
   "tag": "div",
   "class": "rv-main-product-section",
-  "enabled_on": { "templates": ["product"] },
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
   "settings": [
-    { "type": "header", "content": "Breadcrumb" },
-    { "type": "checkbox", "id": "show_breadcrumb", "label": "Show breadcrumb", "default": true },
-    { "type": "text", "id": "breadcrumb_label", "label": "Breadcrumb label", "default": "All products" },
-    { "type": "url", "id": "breadcrumb_link", "label": "Breadcrumb link" },
-
-    { "type": "header", "content": "Gallery" },
-    { "type": "text", "id": "badge", "label": "Badge", "info": "Connect a product metafield to show a different badge per product", "default": "Best to start with" },
-    { "type": "select", "id": "badge_style", "label": "Badge style", "default": "green", "options": [
-      { "value": "green", "label": "Green" }, { "value": "gold", "label": "Gold" }, { "value": "dark", "label": "Dark" }, { "value": "soft", "label": "Soft peach" }
-    ]},
-    { "type": "checkbox", "id": "sticky_gallery", "label": "Keep gallery in view while scrolling (desktop)", "default": true },
-
-    { "type": "header", "content": "Product info" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave blank to show product type · vendor", "default": "Oral appliance · Reviv" },
-    { "type": "select", "id": "rating_source", "label": "Star rating", "default": "metafields", "info": "Judge.me fills the standard review metafields. Choose \"App block only\" if you add the Judge.me star badge block instead.", "options": [
-      { "value": "metafields", "label": "Review metafields" },
-      { "value": "none", "label": "App block only / hide" }
-    ]},
-    { "type": "text", "id": "reviews_label", "label": "Reviews label", "default": "reviews" },
-    { "type": "text", "id": "reviews_anchor", "label": "Rating links to", "default": "#reviews" },
-    { "type": "richtext", "id": "intro", "label": "Short description", "info": "Leave blank to use the start of the product description" },
-
-    { "type": "header", "content": "Buy box" },
-    { "type": "text", "id": "price_suffix", "label": "Price suffix", "default": "tax in · free shipping" },
-    { "type": "text", "id": "size_guide_label", "label": "Size guide link label", "default": "Size guide ↓" },
-    { "type": "text", "id": "size_guide_link", "label": "Size guide link", "default": "#size-guide" },
-    { "type": "checkbox", "id": "enable_terms", "label": "Require terms checkbox", "default": true },
-    { "type": "inline_richtext", "id": "terms_text", "label": "Terms text", "default": "I agree to the <a href=\"/policies/terms-of-service\">product terms and conditions</a> and that all sales are final." },
-    { "type": "text", "id": "terms_hint", "label": "Hint when terms not ticked", "default": "Please tick the box above to continue." },
-    { "type": "checkbox", "id": "show_quantity", "label": "Show quantity selector", "default": true },
-    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy it now button", "default": true },
-    { "type": "text", "id": "cart_label", "label": "Add to cart label", "default": "Add to cart" },
-    { "type": "text", "id": "added_label", "label": "Added label", "default": "Added to cart" },
-    { "type": "text", "id": "soldout_label", "label": "Sold out label", "default": "Sold out" },
-    { "type": "text", "id": "unavailable_label", "label": "Unavailable label", "default": "Unavailable" },
-    { "type": "text", "id": "trust_1", "label": "Trust point 1", "default": "Trusted by 30,000+ customers" },
-    { "type": "text", "id": "trust_2", "label": "Trust point 2", "default": "Ships within 48 hours" },
-    { "type": "text", "id": "trust_3", "label": "Trust point 3" },
-
-    { "type": "header", "content": "Below the buy box" },
-    { "type": "textarea", "id": "checklist", "label": "Checklist", "info": "One point per line", "default": "Very low pressure on the gums — our gentlest appliance\nAir holes keep saliva moving and make nose breathing easier\nThree sizes including XL · no moulding, no boiling, no dental visit" },
-    { "type": "richtext", "id": "disclaimer", "label": "Disclaimer", "default": "<p>Reviv is a consumer oral appliance, not a medical device, and has not been evaluated by the PMDA. All sales are final. Individual experiences vary.</p>" },
-    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+    {
+      "type": "header",
+      "content": "Breadcrumb"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_label",
+      "label": "Breadcrumb label",
+      "default": "All products"
+    },
+    {
+      "type": "url",
+      "id": "breadcrumb_link",
+      "label": "Breadcrumb link"
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "info": "Default for all products. Override per product with the reviv.badge metafield (enter \"-\" there to hide it).",
+      "default": "Best to start with"
+    },
+    {
+      "type": "select",
+      "id": "badge_style",
+      "label": "Badge style",
+      "default": "green",
+      "options": [
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "soft",
+          "label": "Soft peach"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_gallery",
+      "label": "Keep gallery in view while scrolling (desktop)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product info"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "info": "Leave blank to show product type · vendor. Override per product with the reviv.eyebrow metafield.",
+      "default": "Oral appliance · Reviv"
+    },
+    {
+      "type": "select",
+      "id": "rating_source",
+      "label": "Star rating",
+      "default": "metafields",
+      "info": "Judge.me fills the standard review metafields. Choose \"App block only\" if you add the Judge.me star badge block instead.",
+      "options": [
+        {
+          "value": "metafields",
+          "label": "Review metafields"
+        },
+        {
+          "value": "none",
+          "label": "App block only / hide"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "reviews_label",
+      "label": "Reviews label",
+      "default": "reviews"
+    },
+    {
+      "type": "text",
+      "id": "reviews_anchor",
+      "label": "Rating links to",
+      "default": "#reviews"
+    },
+    {
+      "type": "select",
+      "id": "intro_source",
+      "label": "Short description",
+      "default": "excerpt",
+      "info": "The reviv.intro product metafield is used first when it's filled in",
+      "options": [
+        {
+          "value": "excerpt",
+          "label": "Start of product description"
+        },
+        {
+          "value": "description",
+          "label": "Full product description"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "intro_words",
+      "label": "Excerpt length (words)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Buy box"
+    },
+    {
+      "type": "text",
+      "id": "price_suffix",
+      "label": "Price suffix",
+      "default": "tax in · free shipping"
+    },
+    {
+      "type": "text",
+      "id": "size_guide_label",
+      "label": "Size guide link label",
+      "default": "Size guide ↓"
+    },
+    {
+      "type": "text",
+      "id": "size_guide_link",
+      "label": "Size guide link",
+      "default": "#size-guide"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_terms",
+      "label": "Require terms checkbox",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "terms_text",
+      "label": "Terms text",
+      "default": "I agree to the <a href=\"/policies/terms-of-service\">product terms and conditions</a> and that all sales are final."
+    },
+    {
+      "type": "text",
+      "id": "terms_hint",
+      "label": "Hint when terms not ticked",
+      "default": "Please tick the box above to continue."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Show Buy it now button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "added_label",
+      "label": "Added label",
+      "default": "Added to cart"
+    },
+    {
+      "type": "text",
+      "id": "soldout_label",
+      "label": "Sold out label",
+      "default": "Sold out"
+    },
+    {
+      "type": "text",
+      "id": "unavailable_label",
+      "label": "Unavailable label",
+      "default": "Unavailable"
+    },
+    {
+      "type": "header",
+      "content": "Add-on packages"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shows the add-on cards from a product metafield (list of metaobjects with title, price_0, price_1, price_2 and description). Choosing a card selects the matching value of the linked variant option and adds an \"Add-On\" line item property. Hidden for B2B customers."
+    },
+    {
+      "type": "text",
+      "id": "addon_metafield",
+      "label": "Metafield key (custom.)",
+      "default": "addon_pricing"
+    },
+    {
+      "type": "text",
+      "id": "addon_option",
+      "label": "Linked variant option name",
+      "info": "This option is hidden while the add-on cards are shown",
+      "default": "Product"
+    },
+    {
+      "type": "text",
+      "id": "addon_label",
+      "label": "Heading above add-on cards",
+      "default": "Package"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust point 1",
+      "default": "Trusted by 30,000+ customers"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust point 2",
+      "default": "Ships within 48 hours"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust point 3"
+    },
+    {
+      "type": "header",
+      "content": "Below the buy box"
+    },
+    {
+      "type": "textarea",
+      "id": "checklist",
+      "label": "Checklist",
+      "info": "One point per line. Default for all products; override per product with the reviv.checklist metafield.",
+      "default": "Very low pressure on the gums — our gentlest appliance\nAir holes keep saliva moving and make nose breathing easier\nThree sizes including XL · no moulding, no boiling, no dental visit"
+    },
+    {
+      "type": "richtext",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "<p>Reviv is a consumer oral appliance, not a medical device, and has not been evaluated by the PMDA. All sales are final. Individual experiences vary.</p>"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
   ],
   "blocks": [
     {
       "type": "option_style",
       "name": "Option style",
       "settings": [
-        { "type": "text", "id": "option_name", "label": "Option name", "info": "Must match the product option name exactly, e.g. Size", "default": "Size" },
-        { "type": "text", "id": "label", "label": "Label override", "info": "Leave blank to use the option name" },
-        { "type": "select", "id": "style", "label": "Style", "default": "grid", "options": [
-          { "value": "cards", "label": "Cards with description (stacked)" },
-          { "value": "grid", "label": "Boxes (equal width)" },
-          { "value": "swatches", "label": "Colour pills" },
-          { "value": "circles", "label": "Circles (short values)" }
-        ]},
-        { "type": "text", "id": "helper", "label": "Helper text" },
-        { "type": "textarea", "id": "descriptions", "label": "Value descriptions (Cards)", "info": "One per line: Value | description" },
-        { "type": "textarea", "id": "colors", "label": "Colours (Colour pills)", "info": "One per line: Value: #hex. Not needed if you use Shopify's native swatches." },
-        { "type": "checkbox", "id": "show_size_guide", "label": "Show size guide link", "default": false }
+        {
+          "type": "text",
+          "id": "option_name",
+          "label": "Option name",
+          "info": "Matches the product option name exactly, or any option name that contains this text (e.g. \"purchased in the past\")",
+          "default": "Size"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label override",
+          "info": "Leave blank to use the option name"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "default": "grid",
+          "options": [
+            {
+              "value": "cards",
+              "label": "Cards with description (stacked)"
+            },
+            {
+              "value": "grid",
+              "label": "Boxes (equal width)"
+            },
+            {
+              "value": "swatches",
+              "label": "Colour pills"
+            },
+            {
+              "value": "circles",
+              "label": "Circles (short values)"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "helper",
+          "label": "Helper text"
+        },
+        {
+          "type": "textarea",
+          "id": "descriptions",
+          "label": "Value descriptions (Cards)",
+          "info": "One per line: Value | description. [product] is replaced with the product's short name."
+        },
+        {
+          "type": "textarea",
+          "id": "colors",
+          "label": "Colours (Colour pills)",
+          "info": "One per line: Value: #hex. Not needed if you use Shopify's native swatches."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_size_guide",
+          "label": "Show size guide link",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "purchase_count",
+          "label": "This option is the past-purchase count",
+          "info": "Its value (0, 1, 2) picks which add-on price is shown",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_for_b2b",
+          "label": "Hide for B2B customers",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Popup link in label"
+        },
+        {
+          "type": "text",
+          "id": "modal_link_text",
+          "label": "Link text",
+          "info": "Must appear inside the label, e.g. \"Reviv appliances have you purchased\""
+        },
+        {
+          "type": "text",
+          "id": "modal_title",
+          "label": "Popup title"
+        },
+        {
+          "type": "page",
+          "id": "modal_page",
+          "label": "Popup content from a page"
+        },
+        {
+          "type": "richtext",
+          "id": "modal_content",
+          "label": "Or popup text"
+        }
       ]
     },
-    { "type": "@app" }
+    {
+      "type": "@app"
+    }
   ],
-  "presets": [{ "name": "Reviv product" }]
+  "presets": [
+    {
+      "name": "Reviv product"
+    }
+  ]
 }
 {% endschema %}

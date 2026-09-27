@@ -157,6 +157,84 @@
       }, true);
     }
 
+    /* ---------- add-on packages (mirrors the original Reviv add-on logic) ---------- */
+    var addonBox = root.querySelector('[data-rv-addons]');
+    var linked = root.querySelector('[data-rv-linked]');
+    var countFs = root.querySelector('[data-rv-count]');
+    var currency = root.getAttribute('data-currency') || 'JPY';
+    var locale = root.getAttribute('data-locale') || 'ja-JP';
+
+    // Same conversion + rounding rules as the original theme's Shopify.formatMoney
+    function addonMoney(cents) {
+      var rate = Number((window.Shopify && Shopify.currency && Shopify.currency.rate) || 1.0);
+      var amount = (Number(cents) / 100) * rate;
+      if (currency === 'JPY') amount = Math.ceil(amount / 100) * 100;
+      else if (currency === 'EUR') amount = Math.floor(amount) + 0.95;
+      else if (['CAD', 'AUD', 'GBP'].indexOf(currency) > -1 || rate != 1) amount = Math.floor(amount) + 1;
+      try {
+        return new Intl.NumberFormat(locale, { style: 'currency', currency: currency }).format(Number(amount.toFixed(2)));
+      } catch (e) {
+        return formatMoney(Math.round(amount * 100), moneyFormat);
+      }
+    }
+    function purchaseCount() {
+      if (!countFs) return '0';
+      var c = countFs.querySelector('input:checked');
+      return c ? c.value.trim() : '0';
+    }
+    function updateAddonPrices() {
+      if (!addonBox) return;
+      var n = purchaseCount();
+      addonBox.querySelectorAll('[data-rv-addon]').forEach(function (a) {
+        var price = a.getAttribute('data-price-' + n);
+        var el = a.closest('.rv-opt__value').querySelector('[data-rv-addon-price]');
+        if (!el) return;
+        el.textContent = price ? addonMoney(price) : '';
+      });
+    }
+    function addonTitle(v) { return v.replace(/\(\+.*\)/, '').trim(); }
+    function syncVariantToAddon() {
+      if (!addonBox || !linked) return;
+      var a = addonBox.querySelector('[data-rv-addon]:checked');
+      if (!a) return;
+      var title = addonTitle(a.value), hit = false;
+      linked.querySelectorAll('[data-rv-option-input]').forEach(function (input) {
+        if (input.value.trim() === title) { input.checked = true; hit = true; }
+      });
+      if (!hit && window.console) console.warn('Reviv: no variant option value matches add-on "' + title + '"');
+      onChange();
+    }
+    function syncAddonToVariant() {
+      if (!addonBox || !linked) return;
+      var v = linked.querySelector('[data-rv-option-input]:checked');
+      if (!v) return;
+      addonBox.querySelectorAll('[data-rv-addon]').forEach(function (a) {
+        if (addonTitle(a.value) === v.value.trim()) a.checked = true;
+      });
+    }
+    root.addEventListener('change', function (e) {
+      if (e.target.matches('[data-rv-addon]')) { syncVariantToAddon(); updateAddonPrices(); }
+      else if (e.target.matches('[data-rv-option-input]')) {
+        if (linked && linked.contains(e.target)) syncAddonToVariant();
+        if (countFs && countFs.contains(e.target)) updateAddonPrices();
+      }
+    });
+
+    /* ---------- popup opened from an option label ---------- */
+    root.addEventListener('click', function (e) {
+      var open = e.target.closest('[data-rv-dialog-open]');
+      if (open) {
+        e.preventDefault();
+        var d = document.getElementById(open.getAttribute('data-rv-dialog-open'));
+        if (d && d.showModal) d.showModal(); else if (d) d.setAttribute('open', '');
+      }
+    });
+    root.querySelectorAll('dialog.rv-dialog').forEach(function (d) {
+      d.addEventListener('click', function (e) {
+        if (e.target === d || e.target.closest('[data-rv-dialog-close]')) d.close ? d.close() : d.removeAttribute('open');
+      });
+    });
+
     /* ---------- quantity ---------- */
     root.addEventListener('click', function (e) {
       var b = e.target.closest('[data-rv-qty]');
@@ -166,10 +244,21 @@
       input.value = n;
     });
 
+    if (addonBox && linked) {
+      var pre = addonBox.querySelector('[data-rv-addon]:checked');
+      if (pre) {
+        var tt = addonTitle(pre.value);
+        linked.querySelectorAll('[data-rv-option-input]').forEach(function (input) {
+          if (input.value.trim() === tt) input.checked = true;
+        });
+      }
+    }
+    updateAddonPrices();
     if (fieldsets.length) {
       var opts = selected();
       current = findVariant(opts);
       markAvailability(opts);
+      if (current && String(current.id) !== idInput.value) onChange();
     } else {
       current = variants[0] || null;
     }
