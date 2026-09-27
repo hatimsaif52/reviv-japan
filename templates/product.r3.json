@@ -1,52 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "rv-main-product",
-      "settings": {},
-      "blocks": {
-        "option_style_1": {
-          "type": "option_style",
-          "settings": {
-            "option_name": "Package",
-            "style": "cards",
-            "descriptions": "With support | 1 year of community, classroom and journal access, check-ins weekly, and direct messages with Ken.\nR3 only | The R3 appliance on its own."
-          }
-        },
-        "option_style_2": {
-          "type": "option_style",
-          "settings": {
-            "option_name": "Size",
-            "style": "grid",
-            "show_size_guide": true
-          }
-        },
-        "option_style_3": {
-          "type": "option_style",
-          "settings": {
-            "option_name": "Colour",
-            "style": "swatches",
-            "colors": "Yellow: #EACB6A\nClear: #EEEBE4\nWhite: #FFFFFF\nBlue: #5B8FD9"
-          }
-        },
-        "option_style_4": {
-          "type": "option_style",
-          "settings": {
-            "option_name": "Past Reviv purchases",
-            "style": "circles",
-            "helper": "How many Reviv appliances have you bought before? Returning customers pay a reduced price on R2 and R3."
-          }
-        }
-      },
-      "block_order": [
-        "option_style_1",
-        "option_style_2",
-        "option_style_3",
-        "option_style_4"
-      ]
+      "settings": {
+        "show_breadcrumb": true,
+        "breadcrumb_label": "All products",
+        "breadcrumb_link": "",
+        "badge": "Best to start with",
+        "badge_style": "green",
+        "sticky_gallery": true,
+        "eyebrow": "Oral appliance · Reviv",
+        "rating_source": "metafields",
+        "reviews_label": "reviews",
+        "reviews_anchor": "#reviews",
+        "intro_source": "excerpt",
+        "intro_words": 40,
+        "price_suffix": "tax in · free shipping",
+        "size_guide_label": "Size guide ↓",
+        "size_guide_link": "#size-guide",
+        "enable_terms": true,
+        "terms_text": "I agree to the <a href=\"/policies/terms-of-service\">product terms and conditions</a> and that all sales are final.",
+        "terms_hint": "Please tick the box above to continue.",
+        "show_quantity": true,
+        "show_buy_now": true,
+        "cart_label": "Add to cart",
+        "added_label": "Added to cart",
+        "soldout_label": "Sold out",
+        "unavailable_label": "Unavailable",
+        "addon_metafield": "addon_pricing",
+        "addon_option": "Product",
+        "addon_label": "Package",
+        "trust_1": "Trusted by 30,000+ customers",
+        "trust_2": "Ships within 48 hours",
+        "trust_3": "",
+        "checklist": "Very low pressure on the gums — our gentlest appliance\nAir holes keep saliva moving and make nose breathing easier\nThree sizes including XL · no moulding, no boiling, no dental visit",
+        "disclaimer": "<p>Reviv is a consumer oral appliance, not a medical device, and has not been evaluated by the PMDA. All sales are final. Individual experiences vary.</p>",
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
     },
     "who_it_is_for": {
       "type": "rv-feature-cards",
-      "settings": {},
       "blocks": {
         "card_1": {
           "type": "card",
@@ -77,62 +80,117 @@
         "card_1",
         "card_2",
         "card_3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Who it is for",
+        "heading": "Is R3 the right one for you?",
+        "subheading": "",
+        "columns": 3,
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
     },
     "problem": {
       "type": "rv-story",
-      "settings": {
-        "accent": "red"
-      },
       "blocks": {
         "chapter_1": {
           "type": "chapter",
           "settings": {
             "number": "01",
-            "toc_title": "More health issues than ever before",
             "title": "People today are having more physical and mental health issues than ever before",
+            "toc_title": "More health issues than ever before",
+            "divider": false,
+            "text": "",
             "list_style": "grid",
             "items": "Postural issues\nDepression and anxiety\nChronic fatigue and poor energy\nADHD, OCD and similar\nObesity",
-            "caption": "Reported growth in physical and mental health issues, 1950–2024. Log scale."
+            "video_url": "",
+            "media_position": "right",
+            "media_frame": true,
+            "caption": "Reported growth in physical and mental health issues, 1950–2024. Log scale.",
+            "concept_1_word": "",
+            "concept_1_label": "",
+            "concept_1_text": "",
+            "concept_1_color": "#b5553a",
+            "concept_2_word": "",
+            "concept_2_label": "",
+            "concept_2_text": "",
+            "concept_2_color": "#2d6a5e",
+            "note": ""
           }
         },
         "chapter_2": {
           "type": "chapter",
           "settings": {
             "number": "02",
-            "toc_title": "Traditional approaches falling short",
             "title": "And the traditional ways of fighting them are falling way short",
+            "toc_title": "Traditional approaches falling short",
+            "divider": false,
+            "text": "",
             "list_style": "crosses",
-            "items": "Pharmaceuticals\nDiet and eating healthy\nExercise\nMedical procedures"
+            "items": "Pharmaceuticals\nDiet and eating healthy\nExercise\nMedical procedures",
+            "video_url": "",
+            "media_position": "right",
+            "media_frame": true,
+            "caption": "",
+            "concept_1_word": "",
+            "concept_1_label": "",
+            "concept_1_text": "",
+            "concept_1_color": "#b5553a",
+            "concept_2_word": "",
+            "concept_2_label": "",
+            "concept_2_text": "",
+            "concept_2_color": "#2d6a5e",
+            "note": ""
           }
         },
         "chapter_3": {
           "type": "chapter",
           "settings": {
             "number": "03",
-            "toc_title": "A structural root cause",
             "title": "So we believe there may be a structural root cause",
+            "toc_title": "A structural root cause",
+            "divider": false,
+            "text": "",
             "list_style": "numbered",
-            "media_position": "left",
             "items": "There is a set of physics that holds the body up, and the teeth play a critical role in it\nBecause of those physics, the skull can collapse inwards as the teeth change\nThe health of the skull shows up in the curve of Spee — how the upper and lower teeth meet\nOrthodontics, extractions and grinding all flatten that curve",
-            "caption": "The curve of Spee — how the upper and lower teeth meet."
+            "video_url": "",
+            "media_position": "left",
+            "media_frame": true,
+            "caption": "The curve of Spee — how the upper and lower teeth meet.",
+            "concept_1_word": "",
+            "concept_1_label": "",
+            "concept_1_text": "",
+            "concept_1_color": "#b5553a",
+            "concept_2_word": "",
+            "concept_2_label": "",
+            "concept_2_text": "",
+            "concept_2_color": "#2d6a5e",
+            "note": ""
           }
         },
         "chapter_4": {
           "type": "chapter",
           "settings": {
             "number": "04",
-            "toc_title": "The skull can be inflated",
             "title": "We believe the skull can be inflated like a ball",
+            "toc_title": "The skull can be inflated",
             "divider": true,
+            "text": "",
+            "list_style": "grid",
+            "items": "",
+            "video_url": "",
+            "media_position": "right",
+            "media_frame": false,
+            "caption": "",
             "concept_1_word": "収縮",
             "concept_1_label": "Deflating",
             "concept_1_text": "What we believe causes aging and asymmetry, and sits at the root of most disease",
+            "concept_1_color": "#b5553a",
             "concept_2_word": "膨張",
             "concept_2_label": "Inflating",
             "concept_2_text": "Reverses those things — and a mouthguard can help do it",
-            "note": "As the skull inflates, the curve of Spee improves.",
-            "media_frame": false
+            "concept_2_color": "#2d6a5e",
+            "note": "As the skull inflates, the curve of Spee improves."
           }
         }
       },
@@ -141,28 +199,44 @@
         "chapter_2",
         "chapter_3",
         "chapter_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "The problem",
+        "heading": "Why we think this keeps happening",
+        "intro": "Reviv started from a hypothesis about structure rather than symptoms — set out here in the order we arrived at it.",
+        "accent": "red",
+        "show_toc": true,
+        "inset": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     },
     "solution": {
       "type": "rv-story",
-      "settings": {
-        "eyebrow": "The solution",
-        "heading": "What the appliance actually does",
-        "intro": "R3 is a simple piece of soft silicone. The idea behind it is what does the work.",
-        "accent": "green",
-        "show_toc": false,
-        "inset": true,
-        "padding_top": 24
-      },
       "blocks": {
         "chapter_1": {
           "type": "chapter",
           "settings": {
             "number": "01",
             "title": "A simple mouthguard addresses that collapse at its root",
+            "toc_title": "",
+            "divider": false,
+            "text": "",
             "list_style": "numbered",
             "items": "The appliance acts like a doorstop that prevents the jaw from closing\nThat stretches the soft tissue in the mouth and over the skull\nAs the soft tissue stretches, we believe the skull inflates and the skeleton untwists",
-            "media_frame": false
+            "video_url": "",
+            "media_position": "right",
+            "media_frame": false,
+            "caption": "",
+            "concept_1_word": "",
+            "concept_1_label": "",
+            "concept_1_text": "",
+            "concept_1_color": "#b5553a",
+            "concept_2_word": "",
+            "concept_2_label": "",
+            "concept_2_text": "",
+            "concept_2_color": "#2d6a5e",
+            "note": ""
           }
         },
         "chapter_2": {
@@ -170,21 +244,44 @@
           "settings": {
             "number": "02",
             "title": "The teeth correct as a function of the skull correcting",
+            "toc_title": "",
+            "divider": false,
+            "text": "",
             "list_style": "numbered",
-            "media_position": "left",
             "items": "The cranial bones move outwards into better symmetry and the jaw moves to where it should be\nThe teeth are connected to those bones, so they go for the ride and straighten as a result\nThe body should function better, and feel stronger and more flexible",
-            "media_frame": false
+            "video_url": "",
+            "media_position": "left",
+            "media_frame": false,
+            "caption": "",
+            "concept_1_word": "",
+            "concept_1_label": "",
+            "concept_1_text": "",
+            "concept_1_color": "#b5553a",
+            "concept_2_word": "",
+            "concept_2_label": "",
+            "concept_2_text": "",
+            "concept_2_color": "#2d6a5e",
+            "note": ""
           }
         }
       },
       "block_order": [
         "chapter_1",
         "chapter_2"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "The solution",
+        "heading": "What the appliance actually does",
+        "intro": "R3 is a simple piece of soft silicone. The idea behind it is what does the work.",
+        "accent": "green",
+        "show_toc": false,
+        "inset": true,
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
     },
     "hypotheses": {
       "type": "rv-hypotheses",
-      "settings": {},
       "blocks": {
         "card_1": {
           "type": "card",
@@ -212,18 +309,28 @@
         "card_1",
         "card_2",
         "card_3"
-      ]
+      ],
+      "settings": {
+        "label": "仮説",
+        "heading": "Three hypotheses we are testing",
+        "subheading": "Open questions about the future of biomechanics — not claims.",
+        "disclaimer": "<p>These are Reviv's own hypotheses, based on personal experience and educational in nature. They have not been evaluated by the PMDA, and Reviv makes no claim to diagnose, treat, cure or prevent any disease.</p>",
+        "inset": true,
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
     },
     "size_guide": {
       "type": "rv-size-guide",
-      "settings": {},
       "blocks": {
         "size_1": {
           "type": "size",
           "settings": {
             "name": "Medium",
             "range": "under 6.2 cm",
-            "text": "Teens and adults with smaller mouths. Slightly narrower and shorter for a more precise fit."
+            "text": "Teens and adults with smaller mouths. Slightly narrower and shorter for a more precise fit.",
+            "badge": "",
+            "highlight": false
           }
         },
         "size_2": {
@@ -241,7 +348,9 @@
           "settings": {
             "name": "XL",
             "range": "7.2 cm and up",
-            "text": "For adults with larger mouths. New with R3 — it was not available before."
+            "text": "For adults with larger mouths. New with R3 — it was not available before.",
+            "badge": "",
+            "highlight": false
           }
         },
         "row_4": {
@@ -251,7 +360,8 @@
             "v1": "46 mm",
             "v2": "63.5 mm",
             "v3": "23 mm",
-            "v4": "4.1 mm"
+            "v4": "4.1 mm",
+            "highlight": false
           }
         },
         "row_5": {
@@ -272,7 +382,8 @@
             "v1": "59.6 mm",
             "v2": "84 mm",
             "v3": "27 mm",
-            "v4": "5 mm"
+            "v4": "5 mm",
+            "highlight": false
           }
         }
       },
@@ -283,11 +394,30 @@
         "row_4",
         "row_5",
         "row_6"
-      ]
+      ],
+      "settings": {
+        "anchor": "size-guide",
+        "eyebrow": "Size",
+        "heading": "Find your size",
+        "subheading": "Width matters most. Bite into a slice of bread and measure the mark from molar to molar — that number picks your size.",
+        "table_title": "Dimensions",
+        "col_0": "Size",
+        "col_1": "Length",
+        "col_2": "Width",
+        "col_3": "Height",
+        "col_4": "Thick.",
+        "video": "",
+        "vertical": true,
+        "video_label": "Watch · Short",
+        "video_title": "How to measure, in one minute",
+        "video_text": "The bite-and-bread method, on camera. Still unsure after watching? Email ken@getreviv.com and he will help you pick.",
+        "video_button": "Watch video",
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
     },
     "how_to_use": {
       "type": "rv-how-to-use",
-      "settings": {},
       "blocks": {
         "step_1": {
           "type": "step",
@@ -315,11 +445,17 @@
         "step_1",
         "step_2",
         "step_3"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Guide",
+        "heading": "How to use",
+        "subheading": "No moulding, no adjustment period — it arrives in your size, ready to wear.",
+        "padding_top": 8,
+        "padding_bottom": 40
+      }
     },
     "timeline": {
       "type": "rv-timeline",
-      "settings": {},
       "blocks": {
         "stage_1": {
           "type": "stage",
@@ -359,15 +495,27 @@
         "stage_2",
         "stage_3",
         "stage_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Timeline",
+        "heading": "What to expect",
+        "subheading": "What customers commonly report as they go through the process. This is shared experience, not a promise — everyone is different.",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     },
     "reviews": {
       "type": "rv-reviews-app",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Review",
+        "heading": "[count] reviews of [title]",
+        "anchor": "reviews",
+        "padding_top": 32,
+        "padding_bottom": 48
+      }
     },
     "faq": {
       "type": "rv-faq",
-      "settings": {},
       "blocks": {
         "question_1": {
           "type": "question",
@@ -379,31 +527,36 @@
         "question_2": {
           "type": "question",
           "settings": {
-            "question": "Is early discomfort normal?"
+            "question": "Is early discomfort normal?",
+            "answer": "<p>Answer</p>"
           }
         },
         "question_3": {
           "type": "question",
           "settings": {
-            "question": "How does sizing work?"
+            "question": "How does sizing work?",
+            "answer": "<p>Answer</p>"
           }
         },
         "question_4": {
           "type": "question",
           "settings": {
-            "question": "What does the support package include?"
+            "question": "What does the support package include?",
+            "answer": "<p>Answer</p>"
           }
         },
         "question_5": {
           "type": "question",
           "settings": {
-            "question": "What is it made of, and how long does it last?"
+            "question": "What is it made of, and how long does it last?",
+            "answer": "<p>Answer</p>"
           }
         },
         "question_6": {
           "type": "question",
           "settings": {
-            "question": "Shipping and returns"
+            "question": "Shipping and returns",
+            "answer": "<p>Answer</p>"
           }
         }
       },
@@ -414,53 +567,76 @@
         "question_4",
         "question_5",
         "question_6"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "FAQ",
+        "heading": "Frequently asked questions",
+        "open_first": true,
+        "schema_markup": true,
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
     },
     "other_products": {
       "type": "rv-products",
-      "settings": {
-        "heading": "Other products",
-        "button_label": "View all",
-        "button_action": "view",
-        "show_rating": false,
-        "note": "",
-        "padding_top": 24
-      },
       "blocks": {
         "product_1": {
           "type": "product",
           "settings": {
+            "product": "",
+            "image_fit": "contain",
             "badge": "",
+            "badge_style": "gold",
             "type_label": "Oral appliance",
+            "highlight": "",
             "details": "Smaller air holes — for discouraging mouth breathing",
-            "button_style": "outline"
+            "button_style": "outline",
+            "raised": false,
+            "soft_media": false
           }
         },
         "product_2": {
           "type": "product",
           "settings": {
+            "product": "",
+            "image_fit": "contain",
             "badge": "",
+            "badge_style": "gold",
             "type_label": "Oral appliance",
+            "highlight": "",
             "details": "The entry appliance · about 2–4 months",
-            "button_style": "outline"
+            "button_style": "outline",
+            "raised": false,
+            "soft_media": false
           }
         },
         "product_3": {
           "type": "product",
           "settings": {
+            "product": "",
+            "image_fit": "contain",
             "badge": "",
+            "badge_style": "gold",
             "type_label": "Sport appliance",
+            "highlight": "",
             "details": "One adult size · wear it while you train",
-            "button_style": "outline"
+            "button_style": "outline",
+            "raised": false,
+            "soft_media": false
           }
         },
         "product_4": {
           "type": "product",
           "settings": {
+            "product": "",
+            "image_fit": "contain",
             "badge": "",
+            "badge_style": "gold",
             "type_label": "Support",
+            "highlight": "",
             "details": "Community, classroom, journal, direct messages with Ken",
             "button_style": "outline",
+            "raised": false,
             "soft_media": true
           }
         }
@@ -470,7 +646,22 @@
         "product_2",
         "product_3",
         "product_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Item",
+        "heading": "Other products",
+        "button_label": "View all",
+        "button_link": "",
+        "button_action": "view",
+        "cart_label": "Add to cart",
+        "view_label": "View",
+        "show_rating": false,
+        "price_suffix": "tax in",
+        "show_no_reviews": true,
+        "note": "",
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
