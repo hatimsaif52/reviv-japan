@@ -10,6 +10,7 @@
   - option: {Object} the linked product option
   - section: {Object}
   - label: {String} heading above the cards
+  - show_price: {Boolean} show a price on each card
 
   Usage:
   {% render 'rv-product-addons', addons: addons, option: option, section: section, label: 'Package' %}
@@ -53,7 +54,7 @@
           <span class="rv-opt__text">
             <span class="rv-addon__top">
               <strong>{{ a_title_full }}</strong>
-              <span class="rv-addon__price" data-rv-addon-price></span>
+              {%- if show_price -%}<span class="rv-addon__price" data-rv-addon-price></span>{%- endif -%}
             </span>
             {%- if addon.description != blank -%}<span class="rv-addon__desc">{{ addon.description | metafield_tag }}</span>{%- endif -%}
           </span>

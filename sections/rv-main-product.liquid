@@ -160,8 +160,8 @@
         {%- assign points = checklist | split: nl -%}
         {%- if checklist != blank -%}
           <ul class="rv-checklist rv-pdp__points">
-            {%- for p in points -%}
-              {%- assign p = p | strip -%}
+            {%- for raw in points -%}
+              {%- assign p = raw | strip -%}
               {%- if p != blank -%}
                 <li><span class="rv-checklist__icon">{%- render 'rv-icon', icon: 'check' -%}</span>{{ p }}</li>
               {%- endif -%}
@@ -415,9 +415,31 @@
     {
       "type": "text",
       "id": "addon_option",
-      "label": "Linked variant option name",
-      "info": "This option is hidden while the add-on cards are shown",
+      "label": "Linked variant option name(s)",
+      "info": "Separate names with commas to cover each language, e.g. \"Product, 製品\". This option is hidden while the add-on cards are shown.",
       "default": "Product"
+    },
+    {
+      "type": "select",
+      "id": "addon_position",
+      "label": "Add-on cards position",
+      "default": "first",
+      "options": [
+        {
+          "value": "first",
+          "label": "Before all options"
+        },
+        {
+          "value": "linked",
+          "label": "Where the linked option would be"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_addon_price",
+      "label": "Show a price on each add-on card",
+      "default": false
     },
     {
       "type": "text",
@@ -489,7 +511,7 @@
           "type": "text",
           "id": "option_name",
           "label": "Option name",
-          "info": "Matches the product option name exactly, or any option name that contains this text (e.g. \"purchased in the past\")",
+          "info": "Separate several names with commas to cover each language, e.g. \"Size/Colour, サイズ／カラー\". Partial names work too, e.g. \"purchased in the past, 購入\".",
           "default": "Size"
         },
         {
@@ -510,7 +532,7 @@
             },
             {
               "value": "grid",
-              "label": "Boxes (equal width)"
+              "label": "Boxes"
             },
             {
               "value": "swatches",

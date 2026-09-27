@@ -89,11 +89,20 @@
       return null;
     }
     function markAvailability(opts) {
+      var valid = findVariant(opts);
       fieldsets.forEach(function (fs, idx) {
         fs.querySelectorAll('input[data-rv-option-input]').forEach(function (input) {
-          var test = opts.slice(); test[idx] = input.value;
-          var v = findVariant(test);
-          input.closest('.rv-opt__value').classList.toggle('is-unavailable', !v || !v.available);
+          var ok;
+          if (valid) {
+            // Normal case: would switching just this option give a real, in-stock variant?
+            var test = opts.slice(); test[idx] = input.value;
+            var v = findVariant(test);
+            ok = !!(v && v.available);
+          } else {
+            // Current combination isn't a real variant: only cross out values that are never in stock
+            ok = variants.some(function (v) { return v.available && v.options[idx] === input.value; });
+          }
+          input.closest('.rv-opt__value').classList.toggle('is-unavailable', !ok);
         });
       });
     }
@@ -192,16 +201,31 @@
         el.textContent = price ? addonMoney(price) : '';
       });
     }
+    // Compare add-on titles and option values loosely: ignore "(+…)" price notes,
+    // spaces, and full-width vs half-width characters (common in Japanese translations)
+    function norm(v) {
+      var s = String(v || '');
+      if (s.normalize) s = s.normalize('NFKC');
+      return s.replace(/\(\s*\+.*\)/, '').replace(/\s+/g, '').toLowerCase();
+    }
     function addonTitle(v) { return v.replace(/\(\+.*\)/, '').trim(); }
+    function linkedInputFor(addon) {
+      var inputs = Array.prototype.slice.call(linked.querySelectorAll('[data-rv-option-input]'));
+      var key = norm(addon.value);
+      var hit = inputs.filter(function (i) { return norm(i.value) === key; })[0];
+      if (hit) return hit;
+      // Fallback: the Nth add-on card maps to the Nth value of the linked option
+      var addons = Array.prototype.slice.call(addonBox.querySelectorAll('[data-rv-addon]'));
+      var byIndex = inputs[addons.indexOf(addon)];
+      if (byIndex && window.console) console.warn('Reviv: add-on "' + addon.value + '" matched to option value "' + byIndex.value + '" by position. Make the titles match to be safe.');
+      return byIndex || null;
+    }
     function syncVariantToAddon() {
       if (!addonBox || !linked) return;
       var a = addonBox.querySelector('[data-rv-addon]:checked');
       if (!a) return;
-      var title = addonTitle(a.value), hit = false;
-      linked.querySelectorAll('[data-rv-option-input]').forEach(function (input) {
-        if (input.value.trim() === title) { input.checked = true; hit = true; }
-      });
-      if (!hit && window.console) console.warn('Reviv: no variant option value matches add-on "' + title + '"');
+      var input = linkedInputFor(a);
+      if (input) input.checked = true;
       onChange();
     }
     function syncAddonToVariant() {
@@ -209,7 +233,7 @@
       var v = linked.querySelector('[data-rv-option-input]:checked');
       if (!v) return;
       addonBox.querySelectorAll('[data-rv-addon]').forEach(function (a) {
-        if (addonTitle(a.value) === v.value.trim()) a.checked = true;
+        if (linkedInputFor(a) === v) a.checked = true;
       });
     }
     root.addEventListener('change', function (e) {
@@ -247,10 +271,8 @@
     if (addonBox && linked) {
       var pre = addonBox.querySelector('[data-rv-addon]:checked');
       if (pre) {
-        var tt = addonTitle(pre.value);
-        linked.querySelectorAll('[data-rv-option-input]').forEach(function (input) {
-          if (input.value.trim() === tt) input.checked = true;
-        });
+        var li = linkedInputFor(pre);
+        if (li) li.checked = true;
       }
     }
     updateAddonPrices();

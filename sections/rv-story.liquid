@@ -1,6 +1,16 @@
 {%- liquid
+  assign rv_show = true
+  if section.settings.only_tag != blank and product != blank
+    unless product.tags contains section.settings.only_tag
+      assign rv_show = false
+    endunless
+  endif
+-%}
+{%- if rv_show -%}
+{%- liquid
   assign s = section.settings
   assign chapters = section.blocks | where: 'type', 'chapter'
+  assign short_name = product.metafields.reviv.short_name.value | default: product.title
 -%}
 {%- capture nl %}
 {% endcapture -%}
@@ -10,8 +20,8 @@
       {%- if s.eyebrow != blank -%}
         <span class="rv-pill rv-pill--{{ s.accent }}"><span class="rv-pill__star" aria-hidden="true">✦</span>{{ s.eyebrow }}</span>
       {%- endif -%}
-      <h2 class="rv-head__title" id="rv-story-{{ section.id }}">{{ s.heading }}</h2>
-      {%- if s.intro != blank -%}<p class="rv-story__intro">{{ s.intro }}</p>{%- endif -%}
+      <h2 class="rv-head__title" id="rv-story-{{ section.id }}">{{ s.heading | replace: '[product]', short_name }}</h2>
+      {%- if s.intro != blank -%}<p class="rv-story__intro">{{ s.intro | replace: '[product]', short_name }}</p>{%- endif -%}
     </div>
 
     {%- if s.show_toc and chapters.size > 0 -%}
@@ -34,7 +44,7 @@
       <article class="rv-chapter{% if b.divider %} has-divider{% endif %}{% if has_media %} has-media is-media-{{ b.media_position }}{% endif %}" id="rv-ch-{{ block.id }}" {{ block.shopify_attributes }}>
         <div class="rv-chapter__body">
           {%- if b.number != blank -%}<p class="rv-chapter__num" aria-hidden="true">{{ b.number }}</p>{%- endif -%}
-          <h3 class="rv-chapter__title">{{ b.title }}</h3>
+          <h3 class="rv-chapter__title">{{ b.title | replace: '[product]', short_name }}</h3>
           {%- if b.text != blank -%}<div class="rv-chapter__text">{{ b.text }}</div>{%- endif -%}
 
           {%- if b.items != blank -%}
@@ -42,19 +52,19 @@
               {%- when 'numbered' -%}
                 <ol class="rv-list-num">
                   {%- assign n = 0 -%}
-                  {%- for it in items -%}{%- assign it = it | strip -%}{%- if it != blank -%}{%- assign n = n | plus: 1 -%}
+                  {%- for raw in items -%}{%- assign it = raw | strip -%}{%- if it != blank -%}{%- assign n = n | plus: 1 -%}
                     <li><span>{% if n < 10 %}0{% endif %}{{ n }}</span>{{ it }}</li>
                   {%- endif -%}{%- endfor -%}
                 </ol>
               {%- when 'crosses' -%}
                 <ul class="rv-list-cross">
-                  {%- for it in items -%}{%- assign it = it | strip -%}{%- if it != blank -%}
+                  {%- for raw in items -%}{%- assign it = raw | strip -%}{%- if it != blank -%}
                     <li>{%- render 'rv-icon', icon: 'close' -%}{{ it }}</li>
                   {%- endif -%}{%- endfor -%}
                 </ul>
               {%- else -%}
                 <ul class="rv-list-grid">
-                  {%- for it in items -%}{%- assign it = it | strip -%}{%- if it != blank -%}
+                  {%- for raw in items -%}{%- assign it = raw | strip -%}{%- if it != blank -%}
                     <li>{{ it }}</li>
                   {%- endif -%}{%- endfor -%}
                 </ul>
@@ -104,6 +114,7 @@
     {%- endfor -%}
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -111,59 +122,312 @@
   "tag": "div",
   "max_blocks": 10,
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The problem" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Why we think this keeps happening" },
-    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Reviv started from a hypothesis about structure rather than symptoms — set out here in the order we arrived at it." },
-    { "type": "select", "id": "accent", "label": "Accent colour", "default": "gold", "info": "Colour of the big numbers and the eyebrow tint", "options": [
-      { "value": "gold", "label": "Gold" }, { "value": "red", "label": "Red (eyebrow) + gold numbers" }, { "value": "green", "label": "Green" }
-    ]},
-    { "type": "checkbox", "id": "show_toc", "label": "Show contents list", "default": true },
-    { "type": "checkbox", "id": "inset", "label": "Narrower, indented layout", "default": false },
-    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The problem"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why we think this keeps happening",
+      "info": "[product] is replaced with the product's short name"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Reviv started from a hypothesis about structure rather than symptoms — set out here in the order we arrived at it.",
+      "info": "[product] is replaced with the product's short name"
+    },
+    {
+      "type": "select",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "gold",
+      "info": "Colour of the big numbers and the eyebrow tint",
+      "options": [
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "red",
+          "label": "Red (eyebrow) + gold numbers"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_toc",
+      "label": "Show contents list",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "inset",
+      "label": "Narrower, indented layout",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "text",
+      "id": "only_tag",
+      "label": "Only show on products tagged",
+      "info": "Product pages only. Leave blank to show on every product. Example: appliance"
+    }
   ],
-  "blocks": [{
-    "type": "chapter", "name": "Chapter",
-    "settings": [
-      { "type": "text", "id": "number", "label": "Number", "default": "01" },
-      { "type": "text", "id": "title", "label": "Title", "default": "Chapter title" },
-      { "type": "text", "id": "toc_title", "label": "Short title for contents list" },
-      { "type": "checkbox", "id": "divider", "label": "Line above chapter", "default": false },
-      { "type": "richtext", "id": "text", "label": "Text" },
-      { "type": "header", "content": "List" },
-      { "type": "select", "id": "list_style", "label": "List style", "default": "grid", "options": [
-        { "value": "grid", "label": "Dots in a grid" }, { "value": "crosses", "label": "Crosses in a row" }, { "value": "numbered", "label": "Numbered lines" }
-      ]},
-      { "type": "textarea", "id": "items", "label": "List items", "info": "One per line" },
-      { "type": "header", "content": "Media" },
-      { "type": "image_picker", "id": "image", "label": "Image" },
-      { "type": "video", "id": "video", "label": "Video (uploaded)", "info": "Replaces the image" },
-      { "type": "video_url", "id": "video_url", "label": "Or YouTube / Vimeo URL", "accept": ["youtube", "vimeo"] },
-      { "type": "select", "id": "media_position", "label": "Media position", "default": "right", "options": [
-        { "value": "right", "label": "Right" }, { "value": "left", "label": "Left" }
-      ]},
-      { "type": "checkbox", "id": "media_frame", "label": "White frame around media", "default": true },
-      { "type": "text", "id": "caption", "label": "Caption" },
-      { "type": "header", "content": "Two concepts (optional)" },
-      { "type": "text", "id": "concept_1_word", "label": "Concept 1 word", "info": "e.g. 収縮" },
-      { "type": "text", "id": "concept_1_label", "label": "Concept 1 label", "info": "e.g. Deflating" },
-      { "type": "textarea", "id": "concept_1_text", "label": "Concept 1 text" },
-      { "type": "color", "id": "concept_1_color", "label": "Concept 1 colour", "default": "#b5553a" },
-      { "type": "text", "id": "concept_2_word", "label": "Concept 2 word" },
-      { "type": "text", "id": "concept_2_label", "label": "Concept 2 label" },
-      { "type": "textarea", "id": "concept_2_text", "label": "Concept 2 text" },
-      { "type": "color", "id": "concept_2_color", "label": "Concept 2 colour", "default": "#2d6a5e" },
-      { "type": "text", "id": "note", "label": "Note under the chapter" }
-    ]
-  }],
-  "presets": [{
-    "name": "Reviv numbered story",
-    "blocks": [
-      { "type": "chapter", "settings": { "number": "01", "toc_title": "More health issues than ever before", "title": "People today are having more physical and mental health issues than ever before", "list_style": "grid", "items": "Postural issues\nDepression and anxiety\nChronic fatigue and poor energy\nADHD, OCD and similar\nObesity", "caption": "Reported growth in physical and mental health issues, 1950–2024. Log scale." } },
-      { "type": "chapter", "settings": { "number": "02", "toc_title": "Traditional approaches falling short", "title": "And the traditional ways of fighting them are falling way short", "list_style": "crosses", "items": "Pharmaceuticals\nDiet and eating healthy\nExercise\nMedical procedures" } },
-      { "type": "chapter", "settings": { "number": "03", "toc_title": "A structural root cause", "title": "So we believe there may be a structural root cause", "list_style": "numbered", "media_position": "left", "items": "There is a set of physics that holds the body up, and the teeth play a critical role in it\nBecause of those physics, the skull can collapse inwards as the teeth change\nThe health of the skull shows up in the curve of Spee — how the upper and lower teeth meet\nOrthodontics, extractions and grinding all flatten that curve", "caption": "The curve of Spee — how the upper and lower teeth meet." } },
-      { "type": "chapter", "settings": { "number": "04", "toc_title": "The skull can be inflated", "title": "We believe the skull can be inflated like a ball", "divider": true, "concept_1_word": "収縮", "concept_1_label": "Deflating", "concept_1_text": "What we believe causes aging and asymmetry, and sits at the root of most disease", "concept_2_word": "膨張", "concept_2_label": "Inflating", "concept_2_text": "Reverses those things — and a mouthguard can help do it", "note": "As the skull inflates, the curve of Spee improves.", "media_frame": false } }
-    ]
-  }]
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Chapter title"
+        },
+        {
+          "type": "text",
+          "id": "toc_title",
+          "label": "Short title for contents list"
+        },
+        {
+          "type": "checkbox",
+          "id": "divider",
+          "label": "Line above chapter",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "List"
+        },
+        {
+          "type": "select",
+          "id": "list_style",
+          "label": "List style",
+          "default": "grid",
+          "options": [
+            {
+              "value": "grid",
+              "label": "Dots in a grid"
+            },
+            {
+              "value": "crosses",
+              "label": "Crosses in a row"
+            },
+            {
+              "value": "numbered",
+              "label": "Numbered lines"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "List items",
+          "info": "One per line"
+        },
+        {
+          "type": "header",
+          "content": "Media"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (uploaded)",
+          "info": "Replaces the image"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Or YouTube / Vimeo URL",
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
+        },
+        {
+          "type": "select",
+          "id": "media_position",
+          "label": "Media position",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "media_frame",
+          "label": "White frame around media",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "header",
+          "content": "Two concepts (optional)"
+        },
+        {
+          "type": "text",
+          "id": "concept_1_word",
+          "label": "Concept 1 word",
+          "info": "e.g. 収縮"
+        },
+        {
+          "type": "text",
+          "id": "concept_1_label",
+          "label": "Concept 1 label",
+          "info": "e.g. Deflating"
+        },
+        {
+          "type": "textarea",
+          "id": "concept_1_text",
+          "label": "Concept 1 text"
+        },
+        {
+          "type": "color",
+          "id": "concept_1_color",
+          "label": "Concept 1 colour",
+          "default": "#b5553a"
+        },
+        {
+          "type": "text",
+          "id": "concept_2_word",
+          "label": "Concept 2 word"
+        },
+        {
+          "type": "text",
+          "id": "concept_2_label",
+          "label": "Concept 2 label"
+        },
+        {
+          "type": "textarea",
+          "id": "concept_2_text",
+          "label": "Concept 2 text"
+        },
+        {
+          "type": "color",
+          "id": "concept_2_color",
+          "label": "Concept 2 colour",
+          "default": "#2d6a5e"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Note under the chapter"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviv numbered story",
+      "blocks": [
+        {
+          "type": "chapter",
+          "settings": {
+            "number": "01",
+            "toc_title": "More health issues than ever before",
+            "title": "People today are having more physical and mental health issues than ever before",
+            "list_style": "grid",
+            "items": "Postural issues\nDepression and anxiety\nChronic fatigue and poor energy\nADHD, OCD and similar\nObesity",
+            "caption": "Reported growth in physical and mental health issues, 1950–2024. Log scale."
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "number": "02",
+            "toc_title": "Traditional approaches falling short",
+            "title": "And the traditional ways of fighting them are falling way short",
+            "list_style": "crosses",
+            "items": "Pharmaceuticals\nDiet and eating healthy\nExercise\nMedical procedures"
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "number": "03",
+            "toc_title": "A structural root cause",
+            "title": "So we believe there may be a structural root cause",
+            "list_style": "numbered",
+            "media_position": "left",
+            "items": "There is a set of physics that holds the body up, and the teeth play a critical role in it\nBecause of those physics, the skull can collapse inwards as the teeth change\nThe health of the skull shows up in the curve of Spee — how the upper and lower teeth meet\nOrthodontics, extractions and grinding all flatten that curve",
+            "caption": "The curve of Spee — how the upper and lower teeth meet."
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "number": "04",
+            "toc_title": "The skull can be inflated",
+            "title": "We believe the skull can be inflated like a ball",
+            "divider": true,
+            "concept_1_word": "収縮",
+            "concept_1_label": "Deflating",
+            "concept_1_text": "What we believe causes aging and asymmetry, and sits at the root of most disease",
+            "concept_2_word": "膨張",
+            "concept_2_label": "Inflating",
+            "concept_2_text": "Reverses those things — and a mouthguard can help do it",
+            "note": "As the skull inflates, the curve of Spee improves.",
+            "media_frame": false
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

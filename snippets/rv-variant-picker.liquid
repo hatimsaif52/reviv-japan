@@ -33,25 +33,51 @@
   if addons != blank and is_b2b == false
     assign show_addons = true
   endif
-  assign addon_option = s.addon_option | downcase | strip
+  assign addon_names = s.addon_option | downcase | split: ','
+
+  # Find the linked option up front so the add-on cards can be shown first
+  assign linked_option = nil
+  if show_addons
+    for option in product.options_with_values
+      assign o_name = option.name | downcase | strip
+      for raw in addon_names
+        assign n = raw | strip
+        if n != blank and o_name == n
+          assign linked_option = option
+        endif
+      endfor
+    endfor
+    if linked_option == nil
+      assign show_addons = false
+    endif
+  endif
 -%}
+{%- if show_addons and s.addon_position == 'first' -%}
+  {%- render 'rv-product-addons', addons: addons, option: linked_option, section: section, label: s.addon_label, show_price: s.show_addon_price -%}
+{%- endif -%}
 {%- unless product.has_only_default_variant -%}
   {%- for option in product.options_with_values -%}
     {%- liquid
       assign opt_index = forloop.index0
       assign opt_name = option.name | downcase | strip
+      # Exact name wins; otherwise the longest (most specific) partial name wins
       assign style = nil
+      assign best = 0
       for sb in styles
-        assign sb_name = sb.settings.option_name | downcase | strip
-        if sb_name == blank
-          continue
-        endif
-        if sb_name == opt_name
-          assign style = sb
-          break
-        elsif opt_name contains sb_name
-          assign style = sb
-        endif
+        assign sb_names = sb.settings.option_name | downcase | split: ','
+        for raw in sb_names
+          assign sb_name = raw | strip
+          if sb_name == blank
+            continue
+          endif
+          if sb_name == opt_name
+            assign style = sb
+            assign best = 100000
+          elsif opt_name contains sb_name and sb_name.size > best
+            assign style = sb
+            assign best = sb_name.size
+          endif
+        endfor
       endfor
       assign kind = style.settings.style | default: 'grid'
       assign desc_lines = style.settings.descriptions | split: nl
@@ -63,15 +89,15 @@
         assign hide_option = true
       endif
       assign is_linked = false
-      if show_addons and addon_option != blank and opt_name == addon_option
+      if show_addons and linked_option.name == option.name
         assign is_linked = true
         assign hide_option = true
       endif
       assign modal_id = 'rv-modal-' | append: section.id | append: '-' | append: opt_index
     -%}
 
-    {%- if is_linked -%}
-      {%- render 'rv-product-addons', addons: addons, option: option, section: section, label: s.addon_label -%}
+    {%- if is_linked and s.addon_position != 'first' -%}
+      {%- render 'rv-product-addons', addons: addons, option: option, section: section, label: s.addon_label, show_price: s.show_addon_price -%}
     {%- endif -%}
 
     <fieldset class="rv-opt rv-opt--{{ kind }}" data-rv-option="{{ opt_index }}"{% if style.settings.purchase_count %} data-rv-count{% endif %}{% if is_linked %} data-rv-linked{% endif %}{% if hide_option %} hidden{% endif %} {{ style.shopify_attributes }}>
