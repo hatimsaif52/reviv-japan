@@ -1,0 +1,64 @@
+{%- comment -%}
+  Reviv add-on packages (replaces the original "product-addons" snippet)
+  - Cards come from a product metafield: a list of metaobjects with title, price_0, price_1, price_2 and description
+  - Choosing a card selects the matching value of the linked variant option (e.g. "Product")
+    and adds an "Add-On" line item property
+  - Card prices follow the past-purchase count (0 / 1 / 2), converted and rounded like the original (see reviv-product.js)
+
+  Accepts:
+  - addons: {Array} the metafield value
+  - option: {Object} the linked product option
+  - section: {Object}
+  - label: {String} heading above the cards
+
+  Usage:
+  {% render 'rv-product-addons', addons: addons, option: option, section: section, label: 'Package' %}
+{%- endcomment -%}
+<fieldset class="rv-opt rv-opt--cards rv-addons" data-rv-addons>
+  <legend class="rv-visually-hidden">{{ label | default: option.name }}</legend>
+  {%- if label != blank -%}
+    <div class="rv-opt__head"><span class="rv-opt__label" aria-hidden="true">{{ label }}</span></div>
+  {%- endif -%}
+  <div class="rv-opt__values">
+    {%- liquid
+      assign selected_linked = option.selected_value | strip
+      assign has_match = false
+      for addon in addons
+        assign a_title = addon.title | append: '' | split: '(+' | first | strip
+        if a_title == selected_linked
+          assign has_match = true
+        endif
+      endfor
+    -%}
+    {%- for addon in addons -%}
+      {%- liquid
+        assign a_title_full = addon.title | append: ''
+        assign a_title = a_title_full | split: '(+' | first | strip
+        assign a_checked = false
+        if has_match and a_title == selected_linked
+          assign a_checked = true
+        elsif has_match == false and forloop.first
+          assign a_checked = true
+        endif
+        assign addon_id = 'rv-addon-' | append: section.id | append: '-' | append: forloop.index
+      -%}
+      <label class="rv-opt__value" for="{{ addon_id }}">
+        <input type="radio" id="{{ addon_id }}" name="properties[Add-On]" value="{{ a_title_full | escape }}"
+          data-price-0="{{ addon.price_0 | times: 100 }}"
+          data-price-1="{{ addon.price_1 | times: 100 }}"
+          data-price-2="{{ addon.price_2 | times: 100 }}"
+          data-rv-addon{% if a_checked %} checked{% endif %}>
+        <span class="rv-opt__box">
+          <span class="rv-opt__radio" aria-hidden="true"></span>
+          <span class="rv-opt__text">
+            <span class="rv-addon__top">
+              <strong>{{ a_title_full }}</strong>
+              <span class="rv-addon__price" data-rv-addon-price></span>
+            </span>
+            {%- if addon.description != blank -%}<span class="rv-addon__desc">{{ addon.description | metafield_tag }}</span>{%- endif -%}
+          </span>
+        </span>
+      </label>
+    {%- endfor -%}
+  </div>
+</fieldset>
