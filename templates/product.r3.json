@@ -11,6 +11,48 @@
   "sections": {
     "main": {
       "type": "rv-main-product",
+      "blocks": {
+        "option_style_FNp6wN": {
+          "type": "option_style",
+          "settings": {
+            "option_name": "Size/Colour,  サイズ／カラー",
+            "label": "",
+            "style": "grid",
+            "helper": "",
+            "descriptions": "",
+            "colors": "",
+            "show_size_guide": true,
+            "purchase_count": false,
+            "hide_for_b2b": false,
+            "modal_link_text": "",
+            "modal_title": "",
+            "modal_page": "",
+            "modal_content": ""
+          }
+        },
+        "option_style_iiMQ9R": {
+          "type": "option_style",
+          "settings": {
+            "option_name": "Colour",
+            "label": "",
+            "style": "swatches",
+            "helper": "",
+            "descriptions": "",
+            "colors": "",
+            "show_size_guide": false,
+            "purchase_count": false,
+            "hide_for_b2b": false,
+            "modal_link_text": "",
+            "modal_title": "",
+            "modal_page": "",
+            "modal_content": ""
+          }
+        }
+      },
+      "block_order": [
+        "option_style_FNp6wN",
+        "option_style_iiMQ9R"
+      ],
       "settings": {
         "show_breadcrumb": true,
         "breadcrumb_label": "All products",
