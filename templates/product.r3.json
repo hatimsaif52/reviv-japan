@@ -499,6 +499,7 @@
         "step_1": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/howtouse-1.webp",
             "title": "Unbox and rinse",
             "text": "Take it out of the box and wash it under running water before the first wear."
           }
@@ -506,6 +507,7 @@
         "step_2": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/howtouse-2.webp",
             "title": "Wear it overnight, plus daytime",
             "text": "Sleep in it every night and add 2–3 hours during the day. Build up in short intervals at first."
           }
@@ -513,6 +515,7 @@
         "step_3": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/howtouse-3.webp",
             "title": "Wash and let it dry",
             "text": "Rinse after every use and air-dry. Keep it away from hot water and direct sunlight."
           }
@@ -584,6 +587,20 @@
     },
     "reviews": {
       "type": "rv-reviews-app",
+      "blocks": {
+        "judge_me_reviews_review_widget_DgypHn": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_DgypHn"
+      ],
       "settings": {
         "eyebrow": "Review",
         "heading": "[count] reviews of [title]",
