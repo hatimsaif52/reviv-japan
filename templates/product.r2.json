@@ -679,6 +679,7 @@
           "type": "product",
           "settings": {
             "product": "r3-revivthree-without-support",
+            "image": "shopify://shop_images/R3_RevivThree_Support_Package.png",
             "image_fit": "contain",
             "badge": "",
             "badge_style": "gold",
