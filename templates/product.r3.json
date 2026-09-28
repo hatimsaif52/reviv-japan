@@ -694,6 +694,7 @@
           "type": "product",
           "settings": {
             "product": "reviv-one-without-support",
+            "image": "shopify://shop_images/R1Yellow-2.png",
             "image_fit": "contain",
             "badge": "",
             "badge_style": "gold",
