@@ -1,0 +1,60 @@
+{%- assign s = section.settings -%}
+<section class="rv-scope rv-section rv-phero" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-phero-{{ section.id }}">
+  <div class="rv-container">
+    {%- if s.show_breadcrumb -%}
+      <nav class="rv-breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ s.home_label }}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ s.breadcrumb_label | default: page.title }}</span>
+      </nav>
+    {%- endif -%}
+    <div class="rv-phero__panel{% if s.image == blank %} is-text-only{% endif %}">
+      <div class="rv-phero__content">
+        {%- render 'rv-pill', text: s.eyebrow, style: 'white' -%}
+        <h1 class="rv-phero__title" id="rv-phero-{{ section.id }}">{{ s.heading | newline_to_br }}</h1>
+        {%- if s.text != blank -%}<div class="rv-phero__text">{{ s.text }}</div>{%- endif -%}
+        {%- if s.button_1_label != blank or s.button_2_label != blank -%}
+          <div class="rv-phero__buttons">
+            {%- if s.button_1_label != blank -%}
+              <a href="{{ s.button_1_link | default: '#' }}" class="rv-btn rv-btn--primary rv-btn--lg">{{ s.button_1_label }}{% if s.button_1_icon != 'none' %} {% render 'rv-icon', icon: s.button_1_icon %}{% endif %}</a>
+            {%- endif -%}
+            {%- if s.button_2_label != blank -%}
+              <a href="{{ s.button_2_link | default: '#' }}" class="rv-btn rv-btn--outline rv-btn--lg">{{ s.button_2_label }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if s.image != blank -%}
+        <div class="rv-phero__media">
+          {{ s.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 850px) 45vw, 100vw', widths: '500, 800, 1100, 1400', alt: s.image.alt | default: s.heading }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv page hero",
+  "tag": "div",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "Show breadcrumb", "default": true },
+    { "type": "text", "id": "home_label", "label": "Breadcrumb home label", "default": "Home" },
+    { "type": "text", "id": "breadcrumb_label", "label": "Breadcrumb current page", "info": "Leave blank to use the page title", "default": "How to choose" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Guide" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "How to choose your Reviv appliance" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>There is no sequence to follow. You can start with any appliance — they are not designed to be used in a particular order. Pick the one that matches your comfort, your airflow and your budget.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "button_1_label", "label": "Button 1 label", "default": "See the comparison" },
+    { "type": "url", "id": "button_1_link", "label": "Button 1 link", "info": "Use #comparison to jump to the comparison table on this page" },
+    { "type": "select", "id": "button_1_icon", "label": "Button 1 icon", "default": "arrow-down", "options": [
+      { "value": "none", "label": "None" }, { "value": "arrow", "label": "Arrow right" }, { "value": "arrow-down", "label": "Arrow down" }
+    ]},
+    { "type": "text", "id": "button_2_label", "label": "Button 2 label", "default": "Read the FAQ" },
+    { "type": "url", "id": "button_2_link", "label": "Button 2 link", "info": "Use #faq to jump to the FAQ on this page" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "presets": [{ "name": "Reviv page hero" }]
+}
+{% endschema %}

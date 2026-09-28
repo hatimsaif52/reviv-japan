@@ -1,0 +1,248 @@
+{
+  "sections": {
+    "hero": {
+      "type": "rv-page-hero",
+      "settings": {
+        "button_1_link": "#comparison",
+        "button_2_link": "#faq"
+      }
+    },
+    "choose": {
+      "type": "rv-choice-cards",
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "ribbon": "Recommended",
+            "tagline": "Best overall starting point",
+            "name": "R3",
+            "subname": "RevivThree",
+            "text": "Choose R3 if you want the best balance of comfort and airflow, in an appliance designed to feel gentler on the gums.",
+            "points": "Gentler on the gums\nEasier airflow\nGreat long-term option\n1-year guarantee, one free replacement",
+            "button_label": "Purchase R3",
+            "button_link": "shopify://products/r3-revivthree-without-support"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "tagline": "To encourage nose breathing",
+            "name": "R2",
+            "subname": "RevivTwo",
+            "text": "Choose R2 if you want a solid, durable appliance whose small air holes encourage breathing through the nose.",
+            "points": "Durable through strong clenching\nA good option for grinders\n1-year guarantee, one free replacement",
+            "button_label": "Shop R2",
+            "button_link": "shopify://products/reviv-two-without-support"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "tagline": "Lowest cost entry",
+            "name": "R1",
+            "subname": "RevivOne",
+            "text": "Choose R1 if budget is your main priority and you are not a heavy clencher or grinder. The health benefit is the same as R2 and R3.",
+            "points": "Lowest cost of the three\nGood for trying the concept\n- No guarantee, no replacement",
+            "button_label": "Shop R1",
+            "button_link": "shopify://products/reviv-one-without-support"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3"
+      ],
+      "settings": {}
+    },
+    "comparison": {
+      "type": "rv-spec-table",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "Price (appliance only)",
+            "emphasis": true,
+            "value_1": "¥4,800",
+            "value_2": "¥12,800",
+            "value_3": "¥12,800"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "Price (with support)",
+            "value_1": "¥16,800",
+            "value_2": "¥24,800",
+            "value_3": "¥24,800"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "Durability",
+            "value_1": "2–4 months",
+            "value_2": "12+ months",
+            "value_3": "12+ months"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "Sizes",
+            "value_1": "Small, Large",
+            "value_2": "Medium, Large",
+            "value_3": "Medium, Large, XL"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "Colour",
+            "value_1": "Blue, Yellow, White",
+            "value_2": "Yellow, White",
+            "value_3": "Yellow, White"
+          }
+        },
+        "row_6": {
+          "type": "row",
+          "settings": {
+            "label": "Pressure on gums",
+            "value_1": "Medium",
+            "value_2": "Low",
+            "value_3": "*Very low"
+          }
+        },
+        "row_7": {
+          "type": "row",
+          "settings": {
+            "label": "Air holes",
+            "value_1": "Medium",
+            "value_2": "Small · hard to mouth-breathe",
+            "value_3": "Large · good for saliva flow"
+          }
+        },
+        "row_8": {
+          "type": "row",
+          "settings": {
+            "label": "Replacement guarantee",
+            "value_1": "None",
+            "value_2": "1 year · one free replacement",
+            "value_3": "1 year · one free replacement"
+          }
+        },
+        "row_9": {
+          "type": "row",
+          "settings": {
+            "label": "Good for clenchers and grinders",
+            "value_1": "no",
+            "value_2": "yes",
+            "value_3": "yes"
+          }
+        },
+        "row_10": {
+          "type": "row",
+          "settings": {
+            "label": "Size guide",
+            "value_1": "R1 guide",
+            "popup_1": "<div class=\"size-chart-wrapper\">\n<div class=\"size-chart__heading\">Choosing the right mouthpiece size is crucial for your comfort and the effectiveness of our product. Here's a straightforward guide to help you make the best choice:</div>\n<div class=\"size-chart__subheading\">Which Size Should You Choose?</div>\n<div><img src=\"https://cdn.shopify.com/s/files/1/0706/4243/4289/files/reviv-big.png?v=1765514985\" alt=\"R1 Large size\" loading=\"lazy\"></div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">●</div><div class=\"size-chart-specification__content\">Large Size:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>This is suitable for most adults.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Ensures a snug, comfortable fit for best effectiveness.</div></div></div>\n<div><img src=\"https://cdn.shopify.com/s/files/1/0706/4243/4289/files/R1_Size_Chart.png?v=1762591815\" alt=\"R1 Small size\" loading=\"lazy\"></div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">●</div><div class=\"size-chart-specification__content\">Small Size:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Designed for teens and adults with smaller mouths.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Slightly narrower and shorter for a more precise fit.</div></div></div>\n<div class=\"size-chart__subheading\">Mouthpiece Dimensions</div>\n<div class=\"size-chart__table-wrapper\"><table class=\"size-chart-table\"><tbody>\n<tr class=\"size-chart-table__header\"><th>Size</th><th>Length</th><th>Width</th><th>Height</th><th>Best for</th></tr>\n<tr><td>Small</td><td>4.7 cm</td><td>6.0 cm</td><td>2.5 cm</td><td>Teens &amp; small adult mouths</td></tr>\n<tr><td>Large</td><td>5.0 cm</td><td>6.7 cm</td><td>3.0 cm</td><td>Most adults</td></tr>\n</tbody></table></div>\n<div class=\"size-chart__subheading\">How to measure your mouth</div>\n<div class=\"size-chart-specification__content\">1. Measure Your Mouth Width:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Use a soft measuring tape or a ruler.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Open your mouth slightly and measure the distance between the outer edges of your molars (back teeth).</div></div>\n<div class=\"size-chart-specification__content\">2. Measure Your Mouth Length:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Place the measuring tape from the front of your upper teeth to the back of your molars.</div></div>\n<div class=\"size-chart-specification__content\">3. Compare with Our Mouthpiece Dimensions:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Small Size: 4.7 cm (Length) × 6.0 cm (Width) × 2.5 cm (Height) → Best for teens &amp; small adult mouths.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Large Size: 5.0 cm (Length) x 6.7 cm (Width) x 3.0 cm (Height) → Best for most adults.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>If you're between sizes, we recommend going one size up for comfort.</div></div>\n<div class=\"size-chart__subheading\">Need help on how to measure?</div>\n<div>Check out this video - <a class=\"size-chart__email\" href=\"https://youtu.be/pUDMltQ84MI\" target=\"_blank\" rel=\"noopener\">link</a></div>\n<div class=\"size-chart__subheading\">Already found your fit? Purchase Now</div>\n<div>If you're still uncertain about which size to choose, feel free to reach out to me at <span class=\"size-chart__email\">ken@getreviv.com</span>.</div>\n</div>",
+            "value_2": "R2 guide",
+            "popup_2": "<div class=\"size-chart-wrapper\">\n<div class=\"size-chart__heading\">Choosing the right mouthpiece size is crucial for your comfort and the effectiveness of our product. Here's a straightforward guide to help you make the best choice:</div>\n<div class=\"size-chart__subheading\">Which Size Should You Choose?</div>\n<div><img src=\"https://cdn.shopify.com/s/files/1/0706/4243/4289/files/reviv2-size-large.png?v=1747645606\" alt=\"R2 Large size\" loading=\"lazy\"></div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">●</div><div class=\"size-chart-specification__content\">Large Size:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>This is suitable for most adults.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Ensures a snug, comfortable fit for best effectiveness.</div></div></div>\n<div><img src=\"https://cdn.shopify.com/s/files/1/0706/4243/4289/files/reviv2-size-medium.png?v=1747645611\" alt=\"R2 Medium size\" loading=\"lazy\"></div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">●</div><div class=\"size-chart-specification__content\">Medium Size:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Designed for teens and adults with smaller mouths.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Slightly narrower and shorter for a more precise fit.</div></div></div>\n<div class=\"size-chart__subheading\">Mouthpiece Dimensions</div>\n<div class=\"size-chart__table-wrapper\"><table class=\"size-chart-table\"><tbody>\n<tr class=\"size-chart-table__header\"><th>Size</th><th>Length</th><th>Width</th><th>Height</th><th>Best for</th></tr>\n<tr><td>Large</td><td>54 mm</td><td>74 mm</td><td>30 mm</td><td>Most adults</td></tr>\n<tr><td>Medium</td><td>46 mm</td><td>63 mm</td><td>25 mm</td><td>Teens &amp; small adult mouths</td></tr>\n</tbody></table></div>\n<div class=\"size-chart__subheading\">Need help on how to measure?</div>\n<div>Check out this video - <a class=\"size-chart__email\" href=\"https://youtu.be/3qnYhe__7yU\" target=\"_blank\" rel=\"noopener\">link</a></div>\n<div class=\"size-chart__subheading\">Already found your fit? Purchase Now</div>\n<div>If you're still uncertain about which size to choose, feel free to reach out to me at <span class=\"size-chart__email\">ken@getreviv.com</span>.</div>\n</div>",
+            "value_3": "R3 guide",
+            "popup_3": "<div class=\"size-chart-wrapper\">\n<div class=\"size-chart__heading\">Choosing the right mouthpiece size is crucial for your comfort and the effectiveness of our product. Here's a straightforward guide to help you make the best choice:</div>\n<div class=\"size-chart__subheading\">Which Size Should You Choose?</div>\n<div><img src=\"https://cdn.shopify.com/s/files/1/0706/4243/4289/files/R3_XL.webp?v=1764752251\" alt=\"R3 XL size\" width=\"300\" loading=\"lazy\"></div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">●</div><div class=\"size-chart-specification__content\">XL Size:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>This is suitable for adults with large mouth size.</div></div></div>\n<div><img src=\"https://cdn.shopify.com/s/files/1/0706/4243/4289/files/R3_L.webp?v=1764752252\" alt=\"R3 Large size\" width=\"300\" loading=\"lazy\"></div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">●</div><div class=\"size-chart-specification__content\">Large Size:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>This is suitable for most adults.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Ensures a snug, comfortable fit for best effectiveness.</div></div></div>\n<div><img src=\"https://cdn.shopify.com/s/files/1/0706/4243/4289/files/R3_M.webp?v=1764752252\" alt=\"R3 Medium size\" width=\"300\" loading=\"lazy\"></div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">●</div><div class=\"size-chart-specification__content\">Medium Size:\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Designed for teens and adults with smaller mouths.</div>\n<div class=\"d-flex\"><div class=\"size-chart-specification__dot\">○</div>Slightly narrower and shorter for a more precise fit</div></div></div>\n<div class=\"size-chart__subheading\">Mouthpiece Dimensions</div>\n<div class=\"size-chart__table-wrapper\"><table class=\"size-chart-table\"><tbody>\n<tr class=\"size-chart-table__header\"><th>Size</th><th>Length</th><th>Width</th><th>Height</th><th>Thickness</th><th>Best for</th></tr>\n<tr><td>XL</td><td>59.6 mm</td><td>84 mm</td><td>27 mm</td><td>5 mm</td><td>Adults with large mouth sizes.</td></tr>\n<tr><td>Large</td><td>53.6 mm</td><td>73.2 mm</td><td>26 mm</td><td>4.2 mm</td><td>Most adults</td></tr>\n<tr><td>Medium</td><td>46 mm</td><td>63.5 mm</td><td>23 mm</td><td>4.1 mm</td><td>Teens &amp; small adult mouths</td></tr>\n</tbody></table></div>\n<div class=\"size-chart__subheading\">Need help on how to measure?</div>\n<div>Check out this video - <a class=\"size-chart__email\" href=\"https://youtu.be/gmoeX-6gsFg\" target=\"_blank\" rel=\"noopener\">link</a></div>\n<div class=\"size-chart__subheading\">Already found your fit? Purchase Now</div>\n<div>If you're still uncertain about which size to choose, feel free to reach out to me at <span class=\"size-chart__email\">ken@getreviv.com</span>.</div>\n</div>"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5",
+        "row_6",
+        "row_7",
+        "row_8",
+        "row_9",
+        "row_10"
+      ],
+      "settings": {
+        "link_1": "shopify://products/reviv-one-without-support",
+        "link_2": "shopify://products/reviv-two-without-support",
+        "link_3": "shopify://products/r3-revivthree-without-support"
+      }
+    },
+    "support": {
+      "type": "rv-support-panel",
+      "settings": {}
+    },
+    "faq": {
+      "type": "rv-faq",
+      "blocks": {
+        "q_1": {
+          "type": "question",
+          "settings": {
+            "question": "How is R3 different from R1 and R2? Can I start with R3?",
+            "answer": "<p>R3 is designed to be gentler on gums and to support better airflow, making it a popular starting choice for many customers. Yes, you can absolutely start with R3. Our appliances do not go in any particular order.</p>"
+          }
+        },
+        "q_2": {
+          "type": "question",
+          "settings": {
+            "question": "Do I need to buy R1 first, then R2, then R3?",
+            "answer": "<p>No. Start with the appliance that matches your needs and your comfort. They are not meant to be used sequentially.</p>"
+          }
+        },
+        "q_3": {
+          "type": "question",
+          "settings": {
+            "question": "What is the guarantee?",
+            "answer": "<p>R1 has no guarantee. Both R2 and R3 are guaranteed for one year with one free replacement. This replacement warranty is limited to one user per customer and doesn't cover repeat purchases of the same appliance.</p>"
+          }
+        },
+        "q_4": {
+          "type": "question",
+          "settings": {
+            "question": "I am still unsure — what should I do?",
+            "answer": "<p>Contact support at <a href=\"mailto:cs@getreviv.com\">cs@getreviv.com</a> with your goals (comfort, airflow, grinding, budget) and we'll recommend the best option.</p>"
+          }
+        },
+        "q_5": {
+          "type": "question",
+          "settings": {
+            "question": "Can I add the support package later?",
+            "answer": "<p>Yes. The appliance works on its own, and support can be added at any time after your purchase.</p>"
+          }
+        },
+        "q_6": {
+          "type": "warning",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "q_1",
+        "q_2",
+        "q_3",
+        "q_4",
+        "q_5",
+        "q_6"
+      ],
+      "settings": {
+        "numbered": true,
+        "align": "left",
+        "open_first": false
+      }
+    },
+    "contact": {
+      "type": "rv-contact-cta",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "choose",
+    "comparison",
+    "support",
+    "faq",
+    "contact"
+  ]
+}

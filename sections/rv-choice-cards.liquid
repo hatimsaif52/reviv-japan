@@ -1,0 +1,89 @@
+{%- assign s = section.settings -%}
+{%- capture nl %}
+{% endcapture -%}
+<section class="rv-scope rv-section" id="{{ s.anchor | default: 'choose' }}" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px; scroll-margin-top: 20px;" aria-labelledby="rv-choice-{{ section.id }}">
+  <div class="rv-container">
+    <div class="rv-head">
+      <div>
+        {%- render 'rv-pill', text: s.eyebrow -%}
+        <h2 class="rv-head__title" id="rv-choice-{{ section.id }}">{{ s.heading }}</h2>
+        {%- if s.subheading != blank -%}<p class="rv-head__sub rv-choice__sub">{{ s.subheading }}</p>{%- endif -%}
+      </div>
+    </div>
+    <div class="rv-choice__grid">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- assign points = b.points | split: nl -%}
+        <article class="rv-choice{% if b.ribbon != blank %} is-featured{% endif %}" {{ block.shopify_attributes }}>
+          {%- if b.ribbon != blank -%}<p class="rv-choice__ribbon">★ {{ b.ribbon }}</p>{%- endif -%}
+          <div class="rv-choice__media">
+            {%- if b.image != blank -%}
+              {{ b.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 850px) 33vw, 100vw', widths: '400, 600, 800', alt: b.image.alt | default: b.name }}
+            {%- else -%}
+              {{ 'product-2' | placeholder_svg_tag: 'rv-placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="rv-choice__body">
+            {%- if b.tagline != blank -%}<p class="rv-choice__tagline">{{ b.tagline }}</p>{%- endif -%}
+            <h3 class="rv-choice__name">{{ b.name }}{% if b.subname != blank %} <small>{{ b.subname }}</small>{% endif %}</h3>
+            {%- if b.text != blank -%}<p class="rv-choice__text">{{ b.text }}</p>{%- endif -%}
+            {%- if b.points != blank -%}
+              <ul class="rv-choice__points">
+                {%- for raw in points -%}
+                  {%- liquid
+                    assign pt = raw | strip
+                    assign neg = false
+                    assign first = pt | slice: 0
+                    if first == '-' or first == '×'
+                      assign neg = true
+                      assign pt = pt | remove_first: first | strip
+                    endif
+                  -%}
+                  {%- if pt != blank -%}
+                    <li class="{% if neg %}is-negative{% endif %}"><i aria-hidden="true">{% if neg %}{% render 'rv-icon', icon: 'close' %}{% endif %}</i><span>{% if neg %}<span class="rv-visually-hidden">Not included: </span>{% endif %}{{ pt }}</span></li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+            {%- if b.button_label != blank -%}
+              <a href="{{ b.button_link | default: '#' }}" class="rv-btn rv-btn--block rv-btn--lg rv-btn--{% if b.ribbon != blank %}primary{% else %}outline{% endif %} rv-choice__btn">{{ b.button_label }}</a>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    {%- if s.note != blank -%}<div class="rv-choice__note">{{ s.note }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv choice cards",
+  "tag": "div",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "choose" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Choose" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Start from what matters most to you" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Three appliances, three different priorities. The health benefit is the same across all of them — what changes is comfort, airflow, durability and price." },
+    { "type": "richtext", "id": "note", "label": "Note under the cards", "default": "<p><strong>Note:</strong> Reviv appliances are designed to provide a protective barrier for the teeth and to reduce the effects of nighttime grinding and clenching. They are consumer products, not medical devices, and have not been evaluated by the PMDA.</p>" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [{
+    "type": "card", "name": "Appliance card",
+    "settings": [
+      { "type": "text", "id": "ribbon", "label": "Recommended ribbon", "info": "Filling this in highlights the card (gold border, filled button)" },
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "tagline", "label": "Tagline", "default": "Best overall starting point" },
+      { "type": "text", "id": "name", "label": "Name", "default": "R3" },
+      { "type": "text", "id": "subname", "label": "Sub-name", "default": "RevivThree" },
+      { "type": "textarea", "id": "text", "label": "Text" },
+      { "type": "textarea", "id": "points", "label": "Points", "info": "One per line. Start a line with - or × to show it with a cross (e.g. - No guarantee)" },
+      { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop" },
+      { "type": "url", "id": "button_link", "label": "Button link" }
+    ]
+  }],
+  "presets": [{ "name": "Reviv choice cards", "blocks": [{ "type": "card" }, { "type": "card" }, { "type": "card" }] }]
+}
+{% endschema %}

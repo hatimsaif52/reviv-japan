@@ -1,34 +1,59 @@
+{%- liquid
+  assign rv_show = true
+  if section.settings.only_tag != blank and product != blank
+    unless product.tags contains section.settings.only_tag
+      assign rv_show = false
+    endunless
+  endif
+-%}
+{%- if rv_show -%}
 {%- assign s = section.settings -%}
-<section class="rv-scope rv-section" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-faq-{{ section.id }}">
-  <div class="rv-container rv-faq">
+<section class="rv-scope rv-section" id="{{ s.anchor | default: 'faq' }}" style="scroll-margin-top: 20px; --rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-faq-{{ section.id }}">
+  <div class="rv-container rv-faq{% if s.align == 'left' %} is-left{% endif %}">
     <div class="rv-head">
       <div>
         {%- render 'rv-pill', text: s.eyebrow -%}
         <h2 class="rv-head__title" id="rv-faq-{{ section.id }}">{{ s.heading }}</h2>
       </div>
     </div>
+    {%- assign questions = section.blocks | where: 'type', 'question' -%}
+    {%- assign warnings = section.blocks | where: 'type', 'warning' -%}
     <div class="rv-faq__list">
-      {%- for block in section.blocks -%}
+      {%- for block in questions -%}
         <details class="rv-faq__item"{% if forloop.first and s.open_first %} open{% endif %} {{ block.shopify_attributes }}>
           <summary>
-            <span>{{ block.settings.question }}</span>
+            {%- if s.numbered -%}<span class="rv-faq__num" aria-hidden="true">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>{%- endif -%}
+            <span class="rv-faq__q">{{ block.settings.question }}</span>
             <i class="rv-faq__icon" aria-hidden="true"><span class="rv-faq__plus">{% render 'rv-icon', icon: 'plus' %}</span><span class="rv-faq__minus">{% render 'rv-icon', icon: 'minus' %}</span></i>
           </summary>
           <div class="rv-faq__answer">{{ block.settings.answer }}</div>
         </details>
       {%- endfor -%}
     </div>
+    {%- capture nl %}
+{% endcapture -%}
+    {%- for block in warnings -%}
+      {%- assign items = block.settings.items | split: nl -%}
+      <div class="rv-warn" role="note" {{ block.shopify_attributes }}>
+        <p class="rv-warn__title"><span class="rv-warn__icon" aria-hidden="true">{% render 'rv-icon', icon: 'alert' %}</span>{{ block.settings.title }}</p>
+        {%- if block.settings.text != blank -%}<p class="rv-warn__text">{{ block.settings.text }}</p>{%- endif -%}
+        <ul class="rv-warn__list">
+          {%- for raw in items -%}{%- assign it = raw | strip -%}{%- if it != blank -%}<li>{% render 'rv-icon', icon: 'close' %}{{ it }}</li>{%- endif -%}{%- endfor -%}
+        </ul>
+      </div>
+    {%- endfor -%}
   </div>
-  {%- if s.schema_markup and section.blocks.size > 0 -%}
+  {%- if s.schema_markup and questions.size > 0 -%}
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-        {%- for block in section.blocks -%}
+        {%- for block in questions -%}
           {"@type":"Question","name":{{ block.settings.question | json }},"acceptedAnswer":{"@type":"Answer","text":{{ block.settings.answer | strip_html | json }}}}{% unless forloop.last %},{% endunless %}
         {%- endfor -%}
       ]}
     </script>
   {%- endif -%}
 </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -36,30 +61,175 @@
   "tag": "div",
   "max_blocks": 20,
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FAQ" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently asked questions" },
-    { "type": "checkbox", "id": "open_first", "label": "Open the first question", "default": true },
-    { "type": "checkbox", "id": "schema_markup", "label": "Add FAQ structured data for Google", "default": true },
-    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "info": "Buttons linking to #faq jump here",
+      "default": "faq"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "numbered",
+      "label": "Number the questions (01, 02…)",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Layout",
+      "default": "center",
+      "options": [
+        {
+          "value": "center",
+          "label": "Centred"
+        },
+        {
+          "value": "left",
+          "label": "Left aligned"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open the first question",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "schema_markup",
+      "label": "Add FAQ structured data for Google",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "text",
+      "id": "only_tag",
+      "label": "Only show on products tagged",
+      "info": "Product pages only. Leave blank to show on every product. Example: appliance"
+    }
   ],
-  "blocks": [{
-    "type": "question", "name": "Question",
-    "settings": [
-      { "type": "text", "id": "question", "label": "Question", "default": "Question" },
-      { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer</p>" }
-    ]
-  }],
-  "presets": [{
-    "name": "Reviv FAQ",
-    "blocks": [
-      { "type": "question", "settings": { "question": "How should I start? Is there anything to be aware of?", "answer": "<p>The standard pattern is overnight plus 2–3 hours during the day. Build up gradually with shorter daytime intervals first rather than going straight to overnights — that helps the soft tissue adjust. Most people find the first few weeks the hardest part, and it gets significantly easier after that.</p>" } },
-      { "type": "question", "settings": { "question": "Is early discomfort normal?" } },
-      { "type": "question", "settings": { "question": "How does sizing work?" } },
-      { "type": "question", "settings": { "question": "What does the support package include?" } },
-      { "type": "question", "settings": { "question": "What is it made of, and how long does it last?" } },
-      { "type": "question", "settings": { "question": "Shipping and returns" } }
-    ]
-  }]
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Answer</p>"
+        }
+      ]
+    },
+    {
+      "type": "warning",
+      "name": "Warning box",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Who should not use Reviv appliances"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Do not use a Reviv appliance if you have either of the following. If you are unsure, speak to a dentist first."
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Items",
+          "info": "One per line",
+          "default": "Loose teeth\nSevere gum disease"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviv FAQ",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "How should I start? Is there anything to be aware of?",
+            "answer": "<p>The standard pattern is overnight plus 2–3 hours during the day. Build up gradually with shorter daytime intervals first rather than going straight to overnights — that helps the soft tissue adjust. Most people find the first few weeks the hardest part, and it gets significantly easier after that.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Is early discomfort normal?"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How does sizing work?"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What does the support package include?"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What is it made of, and how long does it last?"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Shipping and returns"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

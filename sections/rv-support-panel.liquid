@@ -1,0 +1,57 @@
+{%- assign s = section.settings -%}
+{%- capture nl %}
+{% endcapture -%}
+{%- assign points = s.points | split: nl -%}
+<section class="rv-scope rv-section" id="{{ s.anchor | default: 'support' }}" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px; scroll-margin-top: 20px;" aria-labelledby="rv-sp-{{ section.id }}">
+  <div class="rv-container">
+    <div class="rv-sp">
+      <div class="rv-sp__content">
+        {%- render 'rv-pill', text: s.eyebrow, style: 'white' -%}
+        <h2 class="rv-head__title rv-sp__title" id="rv-sp-{{ section.id }}">{{ s.heading | newline_to_br }}</h2>
+        {%- if s.text != blank -%}<div class="rv-sp__text">{{ s.text }}</div>{%- endif -%}
+        {%- if s.button_label != blank -%}
+          <a href="{{ s.button_link | default: '#' }}" class="rv-btn rv-btn--primary rv-btn--lg">{{ s.button_label }} {% render 'rv-icon', icon: 'arrow' %}</a>
+        {%- endif -%}
+      </div>
+      <div class="rv-sp__card">
+        {%- if s.video != blank -%}
+          <div class="rv-sp__video">
+            {%- if s.video.type == 'youtube' -%}
+              <iframe src="https://www.youtube-nocookie.com/embed/{{ s.video.id }}?rel=0" title="{{ s.heading | escape }}" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            {%- else -%}
+              <iframe src="https://player.vimeo.com/video/{{ s.video.id }}" title="{{ s.heading | escape }}" loading="lazy" allow="picture-in-picture" allowfullscreen></iframe>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if s.card_label != blank -%}<p class="rv-sp__label">{{ s.card_label }}</p>{%- endif -%}
+        <ul class="rv-checklist">
+          {%- for raw in points -%}
+            {%- assign pt = raw | strip -%}
+            {%- if pt != blank -%}<li><span class="rv-checklist__icon">{%- render 'rv-icon', icon: 'check' -%}</span>{{ pt }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviv support panel",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "support" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Support" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Should you add support to your purchase?" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>The appliance works on its own. Support is for people who want to understand the process and check they are doing it right — it can also be added later.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Add support" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "video_url", "id": "video", "label": "Video (optional)", "accept": ["youtube", "vimeo"], "info": "Shown at the top of the card" },
+    { "type": "text", "id": "card_label", "label": "Card label", "default": "12 months of" },
+    { "type": "textarea", "id": "points", "label": "What's included", "info": "One per line", "default": "Access to the Skool community with 60+ videos\nWeekly topical group calls\nDirect messages with Ken\nWeekly journal review and feedback" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "presets": [{ "name": "Reviv support panel" }]
+}
+{% endschema %}
