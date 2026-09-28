@@ -399,6 +399,7 @@
         "size_1": {
           "type": "size",
           "settings": {
+            "image": "shopify://shop_images/size-medium.png",
             "name": "Medium",
             "range": "under 6.2 cm",
             "text": "Teens and adults with smaller mouths. Slightly narrower and shorter for a more precise fit.",
@@ -409,6 +410,7 @@
         "size_2": {
           "type": "size",
           "settings": {
+            "image": "shopify://shop_images/size-large.png",
             "name": "Large",
             "range": "6.2 – 7.1 cm",
             "text": "Suits most adults, and gives a snug, comfortable fit for best effect.",
@@ -419,6 +421,7 @@
         "size_3": {
           "type": "size",
           "settings": {
+            "image": "shopify://shop_images/size-xl.png",
             "name": "XL",
             "range": "7.2 cm and up",
             "text": "For adults with larger mouths. New with R3 — it was not available before.",
@@ -479,7 +482,8 @@
         "col_2": "Width",
         "col_3": "Height",
         "col_4": "Thick.",
-        "video": "",
+        "video_image": "shopify://shop_images/maxresdefault.jpg",
+        "video": "https://www.youtube.com/watch?v=gmoeX-6gsFg",
         "vertical": true,
         "video_label": "Watch · Short",
         "video_title": "How to measure, in one minute",
