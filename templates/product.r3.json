@@ -99,6 +99,8 @@
         "unavailable_label": "Unavailable",
         "addon_metafield": "addon_pricing",
         "addon_option": "Product",
+        "addon_position": "first",
+        "show_addon_price": false,
         "addon_label": "Package",
         "trust_1": "Trusted by 30,000+ customers",
         "trust_2": "Ships within 48 hours",
@@ -272,7 +274,8 @@
         "show_toc": true,
         "inset": false,
         "padding_top": 48,
-        "padding_bottom": 48
+        "padding_bottom": 48,
+        "only_tag": ""
       }
     },
     "solution": {
@@ -288,9 +291,10 @@
             "text": "",
             "list_style": "numbered",
             "items": "The appliance acts like a doorstop that prevents the jaw from closing\nThat stretches the soft tissue in the mouth and over the skull\nAs the soft tissue stretches, we believe the skull inflates and the skeleton untwists",
+            "image": "shopify://shop_images/after_23ddaeb7-2a9b-4734-84e1-00859e064f2f.webp",
             "video_url": "",
             "media_position": "right",
-            "media_frame": false,
+            "media_frame": true,
             "caption": "",
             "concept_1_word": "",
             "concept_1_label": "",
@@ -313,9 +317,10 @@
             "text": "",
             "list_style": "numbered",
             "items": "The cranial bones move outwards into better symmetry and the jaw moves to where it should be\nThe teeth are connected to those bones, so they go for the ride and straighten as a result\nThe body should function better, and feel stronger and more flexible",
+            "image": "shopify://shop_images/Image6_79bdb2ae-5497-46de-860a-0cf208f1ea1e.webp",
             "video_url": "",
             "media_position": "left",
-            "media_frame": false,
+            "media_frame": true,
             "caption": "",
             "concept_1_word": "",
             "concept_1_label": "",
@@ -341,7 +346,8 @@
         "show_toc": false,
         "inset": true,
         "padding_top": 24,
-        "padding_bottom": 48
+        "padding_bottom": 48,
+        "only_tag": ""
       }
     },
     "hypotheses": {
@@ -350,6 +356,7 @@
         "card_1": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Rectangle_31_28bef6d2-57d2-47b8-92e1-a14df93f6f6e.webp",
             "title": "Root cause of almost all disease",
             "text": "Is disease a function of biomechanical collapse?"
           }
@@ -357,6 +364,7 @@
         "card_2": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Rectangle_32_a6f259c0-3a08-4e6c-a56d-0c75dca4a620.webp",
             "title": "Root cause of aging",
             "text": "If we do not collapse, maybe we do not age the way we assume we must."
           }
@@ -364,6 +372,7 @@
         "card_3": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Rectangle_33_8f10fc5e-97e8-4f12-94c6-d217c1c3fc7c.webp",
             "title": "Root cause of beauty",
             "text": "How far does this go if you take it all the way?"
           }
@@ -565,7 +574,8 @@
         "heading": "What to expect",
         "subheading": "What customers commonly report as they go through the process. This is shared experience, not a promise — everyone is different.",
         "padding_top": 48,
-        "padding_bottom": 48
+        "padding_bottom": 48,
+        "only_tag": ""
       }
     },
     "reviews": {
