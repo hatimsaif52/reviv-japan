@@ -234,7 +234,9 @@
     },
     "contact": {
       "type": "rv-contact-cta",
-      "settings": {}
+      "settings": {
+        "button_link": "mailto:cs@getreviv.com"
+      }
     }
   },
   "order": [
