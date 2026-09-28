@@ -1147,3 +1147,33 @@
 .rv-cta__title { font-size: clamp(24px, 2.6vw, 30px); font-weight: 500; }
 .rv-cta__text { margin: 16px auto 0; max-width: 56ch; font-size: 15px; line-height: 2; color: var(--rv-body); }
 .rv-cta__btn { margin-top: 28px; text-transform: none; letter-spacing: .08em; }
+
+/* page hero: full-width banner layout */
+.rv-pbanner { position: relative; display: grid; min-height: var(--rv-banner-min, 70vh); background: #0b0b0c; overflow: hidden; }
+.rv-pbanner__media, .rv-pbanner__inner { grid-area: 1 / 1; }
+.rv-pbanner__media { position: relative; }
+.rv-pbanner.is-adapt { min-height: 0; }
+.rv-pbanner.is-adapt .rv-pbanner__media { aspect-ratio: var(--rv-banner-ratio, 2.9); }
+.rv-pbanner__media img, .rv-pbanner__media svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rv-pbanner__media::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,var(--rv-banner-overlay, 0)); }
+.rv-pbanner__inner { position: relative; z-index: 1; display: flex; align-items: center; padding: 60px 0; }
+.rv-pbanner__content { max-width: 540px; }
+.rv-pbanner--center .rv-pbanner__content { margin: 0 auto; text-align: center; }
+.rv-pbanner--center .rv-phero__buttons { justify-content: center; }
+.rv-pbanner--right .rv-pbanner__content { margin-left: auto; }
+.rv-pbanner .rv-phero__title { margin-top: 18px !important; }
+.rv-pbanner--light .rv-phero__title { color: #fff; }
+.rv-pbanner--light .rv-phero__text { color: rgba(255,255,255,.82); }
+.rv-pbanner--light .rv-btn--outline { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
+.rv-pbanner--light .rv-btn--outline:hover { border-color: #fff; }
+@media (max-width: 749px) {
+  /* Stack on phones: image on top, text below (like the original) */
+  .rv-pbanner { display: block; min-height: 0; background: var(--rv-bg); }
+  .rv-pbanner__media { aspect-ratio: 4 / 3; }
+  .rv-pbanner__inner { padding: 28px 0 36px; }
+  .rv-pbanner__content { max-width: none; }
+  .rv-pbanner--light .rv-phero__title { color: var(--rv-ink); }
+  .rv-pbanner--light .rv-phero__text { color: var(--rv-body); }
+  .rv-pbanner--light .rv-btn--outline { background: #fff; color: var(--rv-gold-text); border-color: #e9dcc0; }
+  .rv-pbanner .rv-phero__buttons .rv-btn { width: 100%; white-space: nowrap; }
+}
