@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "ebooks": {
@@ -6,6 +15,7 @@
         "book_1": {
           "type": "book",
           "settings": {
+            "image": "shopify://shop_images/eBooks-2.webp",
             "tag": "TMJ",
             "tag_color": "peach",
             "format": "Kindle",
@@ -22,6 +32,7 @@
         "book_2": {
           "type": "book",
           "settings": {
+            "image": "shopify://shop_images/eBooks-1.webp",
             "tag": "Symmetry",
             "tag_color": "peach",
             "format": "Kindle",
@@ -38,6 +49,7 @@
         "book_3": {
           "type": "book",
           "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Apr_22_2026_05_00_03_PM.webp",
             "tag": "Strength",
             "tag_color": "green",
             "format": "PDF",
@@ -54,6 +66,7 @@
         "book_4": {
           "type": "book",
           "settings": {
+            "image": "shopify://shop_images/Frame_14434_1_ec35e352-ed47-4396-a0d3-4020556ec3ac.webp",
             "tag": "For children",
             "tag_color": "purple",
             "format": "PDF",
@@ -74,7 +87,20 @@
         "book_3",
         "book_4"
       ],
-      "settings": {}
+      "settings": {
+        "show_breadcrumb": true,
+        "home_label": "Home",
+        "eyebrow": "Reading",
+        "heading": "eBooks",
+        "intro": "<p>Books from Ken and from people in the community — the thinking behind the appliance, written out in full. Available in English; all titles sold through Amazon and Gumroad.</p>",
+        "show_search": false,
+        "search_placeholder": "Look for title, author, etc.",
+        "no_results": "No books match your search.",
+        "new_tab": true,
+        "disclaimer": "<p>These books are written from personal experience and are educational in nature. They have not been evaluated by the PMDA, and neither Reviv nor its authors claim to diagnose, treat, cure or prevent any disease. Purchases are completed on Amazon or Gumroad under their own terms.</p>",
+        "padding_top": 24,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
