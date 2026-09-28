@@ -1,0 +1,154 @@
+{%- assign s = section.settings -%}
+<section class="rv-scope rv-section rv-ebooks" id="rv-ebooks-{{ section.id }}" style="--rv-pad-top: {{ s.padding_top }}px; --rv-pad-bottom: {{ s.padding_bottom }}px;" aria-labelledby="rv-ebooks-title-{{ section.id }}">
+  <div class="rv-container">
+    {%- if s.show_breadcrumb -%}
+      <nav class="rv-breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ s.home_label }}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ page.title | default: s.heading }}</span>
+      </nav>
+    {%- endif -%}
+
+    <div class="rv-ebooks__head">
+      {%- render 'rv-pill', text: s.eyebrow -%}
+      <h1 class="rv-ebooks__title" id="rv-ebooks-title-{{ section.id }}">{{ s.heading }}</h1>
+      {%- if s.intro != blank -%}<div class="rv-ebooks__intro">{{ s.intro }}</div>{%- endif -%}
+
+      {%- if s.show_search -%}
+        <div class="rv-ebooks__search" role="search">
+          <label for="rv-ebooks-q-{{ section.id }}" class="rv-visually-hidden">{{ s.search_placeholder }}</label>
+          {%- render 'rv-icon', icon: 'search' -%}
+          <input type="search" id="rv-ebooks-q-{{ section.id }}" placeholder="{{ s.search_placeholder | escape }}" data-rv-ebook-search autocomplete="off">
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="rv-ebooks__list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign target = ''
+          if s.new_tab
+            assign target = ' target="_blank" rel="noopener"'
+          endif
+          assign search_text = b.heading | append: ' ' | append: b.author | append: ' ' | append: b.tag | append: ' ' | append: b.format | downcase | escape
+        -%}
+        <article class="rv-book{% cycle '', ' is-reversed' %}" data-rv-ebook="{{ search_text }}" {{ block.shopify_attributes }}>
+          <div class="rv-book__media">
+            <div class="rv-book__frame">
+              {%- if b.image != blank -%}
+                {%- if b.button_link != blank -%}<a href="{{ b.button_link }}"{{ target }} tabindex="-1" aria-hidden="true">{%- endif -%}
+                {{ b.image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 30vw, 80vw', widths: '300, 450, 600, 900', alt: b.image.alt | default: b.heading }}
+                {%- if b.button_link != blank -%}</a>{%- endif -%}
+              {%- else -%}
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'rv-placeholder' }}
+              {%- endif -%}
+            </div>
+          </div>
+
+          <div class="rv-book__body">
+            {%- if b.tag != blank or b.format != blank -%}
+              <div class="rv-book__tags">
+                {%- if b.tag != blank -%}<span class="rv-book__tag rv-book__tag--{{ b.tag_color }}">{{ b.tag }}</span>{%- endif -%}
+                {%- if b.format != blank -%}<span class="rv-book__tag rv-book__tag--outline">{{ b.format }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
+            <h2 class="rv-book__title">{{ b.heading }}</h2>
+            {%- if b.author != blank -%}
+              <p class="rv-book__author">
+                <span{% if b.author_highlight %} class="is-accent"{% endif %}>{{ b.author }}</span>
+                {%- if b.author_note != blank %} · {{ b.author_note }}{% endif -%}
+              </p>
+            {%- endif -%}
+            {%- if b.description != blank -%}<div class="rv-book__text">{{ b.description }}</div>{%- endif -%}
+            {%- if b.button_label != blank -%}
+              <div class="rv-book__cta">
+                <a href="{{ b.button_link | default: '#' }}" class="rv-btn rv-btn--{{ b.button_style }} rv-btn--lg"{{ target }}>
+                  {{ b.button_label }} {% render 'rv-icon', icon: 'arrow-up-right' %}
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+      {%- if s.show_search -%}
+        <p class="rv-ebooks__empty" data-rv-ebook-empty hidden>{{ s.no_results }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if s.disclaimer != blank -%}<div class="rv-ebooks__note">{{ s.disclaimer }}</div>{%- endif -%}
+  </div>
+
+  {%- if s.show_search -%}
+    <script>
+      (function () {
+        var root = document.getElementById('rv-ebooks-{{ section.id }}');
+        if (!root) return;
+        var input = root.querySelector('[data-rv-ebook-search]');
+        var books = root.querySelectorAll('[data-rv-ebook]');
+        var empty = root.querySelector('[data-rv-ebook-empty]');
+        var t;
+        function run() {
+          var q = input.value.trim().toLowerCase(), shown = 0;
+          books.forEach(function (b) {
+            var hit = !q || b.getAttribute('data-rv-ebook').indexOf(q) > -1;
+            b.hidden = !hit;
+            if (hit) shown++;
+          });
+          if (empty) empty.hidden = shown > 0;
+        }
+        input.addEventListener('input', function () { clearTimeout(t); t = setTimeout(run, 200); });
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+      })();
+    </script>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Reviv eBooks",
+  "tag": "div",
+  "max_blocks": 30,
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "Show breadcrumb", "default": true },
+    { "type": "text", "id": "home_label", "label": "Breadcrumb home label", "default": "Home" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Reading" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "eBooks" },
+    { "type": "richtext", "id": "intro", "label": "Intro", "default": "<p>Books from Ken and from people in the community — the thinking behind the appliance, written out in full. Available in English; all titles sold through Amazon and Gumroad.</p>" },
+    { "type": "header", "content": "Search" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search box", "info": "Filters books by title, author and tags as you type", "default": false },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Look for title, author, etc." },
+    { "type": "text", "id": "no_results", "label": "No results text", "default": "No books match your search." },
+    { "type": "header", "content": "Links" },
+    { "type": "checkbox", "id": "new_tab", "label": "Open store links in a new tab", "default": true },
+    { "type": "richtext", "id": "disclaimer", "label": "Note under the list", "default": "<p>These books are written from personal experience and are educational in nature. They have not been evaluated by the PMDA, and neither Reviv nor its authors claim to diagnose, treat, cure or prevent any disease. Purchases are completed on Amazon or Gumroad under their own terms.</p>" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [{
+    "type": "book", "name": "Book",
+    "settings": [
+      { "type": "image_picker", "id": "image", "label": "Cover image" },
+      { "type": "text", "id": "tag", "label": "Topic tag", "default": "TMJ" },
+      { "type": "select", "id": "tag_color", "label": "Topic tag colour", "default": "peach", "options": [
+        { "value": "peach", "label": "Peach" }, { "value": "green", "label": "Green" }, { "value": "purple", "label": "Purple" }, { "value": "blue", "label": "Blue" }
+      ]},
+      { "type": "text", "id": "format", "label": "Format tag", "info": "e.g. Kindle, PDF", "default": "Kindle" },
+      { "type": "text", "id": "heading", "label": "Title", "default": "Book title" },
+      { "type": "text", "id": "author", "label": "Author", "default": "Ken Leaver" },
+      { "type": "text", "id": "author_note", "label": "After the author", "info": "e.g. founder of Reviv" },
+      { "type": "checkbox", "id": "author_highlight", "label": "Show author name in gold", "default": false },
+      { "type": "richtext", "id": "description", "label": "Description" },
+      { "type": "text", "id": "button_label", "label": "Button label", "default": "Buy on Amazon" },
+      { "type": "url", "id": "button_link", "label": "Button link" },
+      { "type": "select", "id": "button_style", "label": "Button style", "default": "primary", "options": [
+        { "value": "primary", "label": "Filled" }, { "value": "outline", "label": "Outline" }
+      ]}
+    ]
+  }],
+  "presets": [{
+    "name": "Reviv eBooks",
+    "blocks": [{ "type": "book" }, { "type": "book" }]
+  }]
+}
+{% endschema %}

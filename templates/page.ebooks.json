@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "ebooks": {
+      "type": "rv-ebooks",
+      "blocks": {
+        "book_1": {
+          "type": "book",
+          "settings": {
+            "tag": "TMJ",
+            "tag_color": "peach",
+            "format": "Kindle",
+            "heading": "I Solved My TMJ and I Think I Can Solve Yours Too",
+            "author": "Ken Leaver",
+            "author_note": "founder of Reviv",
+            "author_highlight": false,
+            "description": "<p>Up until his TMJ nightmare began, Ken was a normal guy who believed in exercise and a healthy diet. Then a TMJ dentist threw him a curveball — telling him he needed to \"correct\" his dental contacts. He flattened some of Ken's back teeth, and from that moment everything changed.</p>",
+            "button_label": "Buy on Amazon",
+            "button_link": "https://www.amazon.com/dp/B0F3P4P2HT",
+            "button_style": "primary"
+          }
+        },
+        "book_2": {
+          "type": "book",
+          "settings": {
+            "tag": "Symmetry",
+            "tag_color": "peach",
+            "format": "Kindle",
+            "heading": "I Think Everyone Can Be a Model",
+            "author": "Ken Leaver",
+            "author_note": "founder of Reviv",
+            "author_highlight": false,
+            "description": "<p>What if we could all be model-level beautiful — perfect symmetry of the face and body at any age, regardless of genetics? Sounds crazy. Ken believes it is not only possible, he wants to prove it on himself: no exercise, eating whatever he wants, at age 47.</p>",
+            "button_label": "Buy on Amazon",
+            "button_link": "https://www.amazon.com/dp/B0F3VQRT8Z",
+            "button_style": "primary"
+          }
+        },
+        "book_3": {
+          "type": "book",
+          "settings": {
+            "tag": "Strength",
+            "tag_color": "green",
+            "format": "PDF",
+            "heading": "Simple Practices for Lifelong Strength",
+            "author": "George Hults",
+            "author_note": "",
+            "author_highlight": false,
+            "description": "<p>A practical approach to building strength, improving posture and increasing energy through simple daily habits. It focuses on reducing hidden tension and how the body functions through the day rather than relying on traditional workouts — with the Reviv mouthguard included as one tool for relaxed breathing and better coordination.</p>",
+            "button_label": "Buy on Gumroad",
+            "button_link": "https://geohult.gumroad.com/l/pdziqy",
+            "button_style": "outline"
+          }
+        },
+        "book_4": {
+          "type": "book",
+          "settings": {
+            "tag": "For children",
+            "tag_color": "purple",
+            "format": "PDF",
+            "heading": "The Second Tooth Fairy",
+            "author": "DJ King",
+            "author_note": "",
+            "author_highlight": true,
+            "description": "<p>There have always been two Tooth Fairies. The younger sister collects baby teeth. The older sister builds adult teeth. Obviously.</p>",
+            "button_label": "Buy on Gumroad",
+            "button_link": "https://djkingwrites.gumroad.com/l/ezdidr?layout=profile",
+            "button_style": "outline"
+          }
+        }
+      },
+      "block_order": [
+        "book_1",
+        "book_2",
+        "book_3",
+        "book_4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "ebooks"
+  ]
+}
