@@ -12,28 +12,10 @@
     "main": {
       "type": "rv-main-product",
       "blocks": {
-        "option_style_kFYhxr": {
-          "type": "option_style",
-          "settings": {
-            "option_name": "これまでに Reviv 製品を何回ご購入いただきましたか？（以下からお選びください）",
-            "label": "",
-            "style": "grid",
-            "helper": "",
-            "descriptions": "",
-            "colors": "",
-            "show_size_guide": false,
-            "purchase_count": true,
-            "hide_for_b2b": false,
-            "modal_link_text": "これまでに Reviv 製品を何回ご購入いただきましたか？",
-            "modal_title": "",
-            "modal_page": "past-purchases",
-            "modal_content": ""
-          }
-        },
         "option_style_FNp6wN": {
           "type": "option_style",
           "settings": {
-            "option_name": "Size/Colour,  サイズ／カラー",
+            "option_name": "Size,  サイズ",
             "label": "",
             "style": "grid",
             "helper": "",
@@ -51,7 +33,7 @@
         "option_style_iiMQ9R": {
           "type": "option_style",
           "settings": {
-            "option_name": "Colour",
+            "option_name": "Colour,  カラー",
             "label": "",
             "style": "swatches",
             "helper": "",
@@ -68,7 +50,6 @@
         }
       },
       "block_order": [
-        "option_style_kFYhxr",
         "option_style_FNp6wN",
         "option_style_iiMQ9R"
       ],
