@@ -678,7 +678,7 @@
         "product_1": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "reviv-two",
             "image_fit": "contain",
             "badge": "",
             "badge_style": "gold",
@@ -693,7 +693,7 @@
         "product_2": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "reviv-one-without-support",
             "image_fit": "contain",
             "badge": "",
             "badge_style": "gold",
@@ -708,7 +708,8 @@
         "product_3": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "rs1-reviv-sports-performance-mouthguard",
+            "image": "shopify://shop_images/RS1.png",
             "image_fit": "contain",
             "badge": "",
             "badge_style": "gold",
@@ -723,7 +724,7 @@
         "product_4": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "1-year-subscription-only",
             "image_fit": "contain",
             "badge": "",
             "badge_style": "gold",
