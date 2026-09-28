@@ -12,6 +12,12 @@
     "hero": {
       "type": "rv-page-hero",
       "settings": {
+        "layout": "banner",
+        "content_position": "left",
+        "text_color": "light",
+        "height_mode": "adapt",
+        "banner_height": 70,
+        "overlay": 0,
         "show_breadcrumb": true,
         "home_label": "Home",
         "breadcrumb_label": "How to choose",
@@ -35,6 +41,7 @@
           "type": "card",
           "settings": {
             "ribbon": "Recommended",
+            "image": "shopify://shop_images/R3.webp",
             "tagline": "Best overall starting point",
             "name": "R3",
             "subname": "RevivThree",
@@ -48,19 +55,21 @@
           "type": "card",
           "settings": {
             "ribbon": "",
+            "image": "shopify://shop_images/r2.webp",
             "tagline": "To encourage nose breathing",
             "name": "R2",
             "subname": "RevivTwo",
             "text": "Choose R2 if you want a solid, durable appliance whose small air holes encourage breathing through the nose.",
             "points": "Durable through strong clenching\nA good option for grinders\n1-year guarantee, one free replacement",
             "button_label": "Shop R2",
-            "button_link": "shopify://products/reviv-two-without-support"
+            "button_link": "shopify://products/reviv-two"
           }
         },
         "card_3": {
           "type": "card",
           "settings": {
             "ribbon": "",
+            "image": "shopify://shop_images/R1.webp",
             "tagline": "Lowest cost entry",
             "name": "R1",
             "subname": "RevivOne",
