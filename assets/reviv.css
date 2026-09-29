@@ -1179,3 +1179,25 @@
   .rv-pbanner--light .rv-btn--outline { background: #fff; color: var(--rv-gold-text); border-color: #e9dcc0; }
   .rv-pbanner .rv-phero__buttons .rv-btn { width: 100%; white-space: nowrap; }
 }
+
+/* ---------- product terms popup ---------- */
+.rv-terms-dialog { padding: 0; width: min(720px, calc(100vw - 24px)); max-height: 88vh; overflow: hidden; }
+.rv-terms-dialog[open] { display: flex; flex-direction: column; }
+.rv-terms-dialog__head { position: relative; padding: 28px 28px 18px; border-bottom: 1px solid var(--rv-line); }
+.rv-terms-dialog__head .rv-dialog__title { margin-bottom: 10px !important; }
+.rv-terms-dialog__intro { font-size: 14px; line-height: 1.8; color: var(--rv-body); }
+.rv-terms-dialog__body { flex: 1; overflow-y: auto; padding: 8px 28px 24px; font-size: 14px; line-height: 1.85; color: var(--rv-body); }
+.rv-terms-dialog__body h3 { margin: 24px 0 8px !important; font-size: 15px; font-weight: 700; color: var(--rv-ink); }
+.rv-terms-dialog__body ol { margin: 0; padding-left: 22px; }
+.rv-terms-dialog__body ol > li { padding-left: 4px; margin-bottom: 8px; }
+.rv-terms-dialog__body ol > li::marker { color: var(--rv-gold-text); font-weight: 700; }
+.rv-terms-dialog__body ul { margin: 6px 0 0; padding-left: 18px; }
+.rv-terms-dialog__body ul li::marker { color: var(--rv-gold); }
+.rv-terms-dialog__body a { color: var(--rv-gold-text); text-decoration: underline; }
+.rv-terms-dialog__closing { margin-top: 22px !important; padding: 14px 16px; background: var(--rv-bg); border-radius: var(--rv-radius-sm); color: var(--rv-ink); }
+.rv-terms-dialog__foot { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 28px 20px; border-top: 1px solid var(--rv-line); background: #fff; }
+.rv-terms-dialog__foot .rv-btn { min-width: 130px; }
+@media (max-width: 519px) {
+  .rv-terms-dialog__head, .rv-terms-dialog__body, .rv-terms-dialog__foot { padding-left: 18px; padding-right: 18px; }
+  .rv-terms-dialog__foot .rv-btn { flex: 1; min-width: 0; }
+}

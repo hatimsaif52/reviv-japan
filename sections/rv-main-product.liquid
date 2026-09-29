@@ -117,8 +117,11 @@
               <label class="rv-terms">
                 <input type="checkbox" data-rv-terms>
                 <span class="rv-terms__box" aria-hidden="true">{%- render 'rv-icon', icon: 'check' -%}</span>
-                <span class="rv-terms__text">{{ s.terms_text }}</span>
+                <span class="rv-terms__text" data-rv-terms-text>{{ s.terms_text }}</span>
               </label>
+              {%- comment -%} Terms popup: opened by the link in the terms text; Accept ticks the box, Refuse unticks it {%- endcomment -%}
+              {%- assign terms_dialog = 'rv-terms-' | append: section.id -%}
+              {%- render 'rv-product-terms', id: terms_dialog, product: product -%}
             {%- endif -%}
 
             <div class="rv-buy__actions{% if s.enable_terms %} is-locked{% endif %}" data-rv-actions>
@@ -354,6 +357,7 @@
       "type": "inline_richtext",
       "id": "terms_text",
       "label": "Terms text",
+      "info": "The link in this text opens the Reviv terms popup (Accept ticks the box, Refuse unticks it).",
       "default": "I agree to the <a href=\"/policies/terms-of-service\">product terms and conditions</a> and that all sales are final."
     },
     {

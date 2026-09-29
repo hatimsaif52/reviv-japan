@@ -1,0 +1,149 @@
+{%- comment -%}
+  Reviv product terms popup (replaces the original "product-terms" snippet's modal)
+  - Opened from the link in the product's terms checkbox label
+  - "Accept" ticks the terms checkbox, "Refuse" unticks it
+  - Product name is worked out from the product URL like the original snippet,
+    falling back to the reviv.short_name metafield, then "Reviv One appliance"
+
+  Accepts:
+  - id: {String} unique dialog id
+  - product: {Object}
+  - product_name: {String} optional override (for pages without a product)
+
+  Usage:
+  {% render 'rv-product-terms', id: 'rv-terms-123', product: product %}
+{%- endcomment -%}
+{%- liquid
+  assign appliance_product = true
+  if product_name == blank
+    assign handle = product.url | downcase
+    if handle contains 'reviv-two' or handle contains 'r2-revivtwo'
+      assign product_name = 'R2 appliance'
+    elsif handle contains 'rd1'
+      assign product_name = 'RD1 appliance'
+    elsif handle contains 'rd2'
+      assign product_name = 'RD2 appliance'
+    elsif handle contains 'r3-revivthree'
+      assign product_name = 'R3 appliance'
+    elsif handle contains 'r4-revivfour'
+      assign product_name = 'Reviv Four appliance'
+    elsif handle contains 're1-reviv-economy-one'
+      assign product_name = 'RE1 appliance'
+    elsif handle contains '1-year-subscription-only'
+      assign product_name = 'EGK Biomechanics Community & Support Membership'
+      assign appliance_product = false
+    elsif product.metafields.reviv.short_name.value != blank
+      assign product_name = product.metafields.reviv.short_name.value | append: ' appliance'
+    else
+      assign product_name = 'Reviv One appliance'
+    endif
+  endif
+  assign refund_url = shop.refund_policy.url | default: 'https://getreviv.com/pages/return-and-refund-policy'
+-%}
+<dialog class="rv-scope rv-dialog rv-dialog--wide rv-terms-dialog" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  <div class="rv-terms-dialog__head">
+    <h2 class="rv-dialog__title" id="{{ id }}-title">Reviv Product Terms &amp; Conditions</h2>
+    <button type="button" class="rv-dialog__close" data-rv-terms-close aria-label="Close">{%- render 'rv-icon', icon: 'close' -%}</button>
+    <p class="rv-terms-dialog__intro">By purchasing the {{ product_name }}, you acknowledge that you have read, understood, and agree to be bound by the following terms and conditions:</p>
+  </div>
+
+  <div class="rv-terms-dialog__body">
+    <h3>General usage and Disclaimer</h3>
+    <ol>
+      <li>The {{ product_name }} is an appliance designed to be worn in the mouth to help address various issues related to dental biomechanics.</li>
+      <li>Reviv makes no claims to diagnose, treat, cure, or prevent any disease. The information provided on our website and in our community is based on personal experience and is educational in nature.</li>
+      <li>You acknowledge that you are using the {{ product_name }} at your own risk and that results may vary from person to person.</li>
+      <li>You agree that Reviv is not responsible for any injuries, discomfort, or adverse effects that may result from the use of the {{ product_name }}.</li>
+    </ol>
+
+    <h3>Returns and Refunds</h3>
+    <p>This product is sold as final sale. No returns or refunds are offered once the order ships, except if the item is never delivered. By accepting these terms, you are explicitly agreeing to our <a href="{{ refund_url }}" target="_blank" rel="noopener">return &amp; refund policy</a>.</p>
+
+    <h3>Recommended Usage</h3>
+    <ol>
+      <li>You agree to follow the recommended usage guidelines for the {{ product_name }}, which typically include:
+        <ul>
+          <li>Initially wearing the appliance for shorter periods and gradually increasing wear time</li>
+          <li>Not wearing the appliance while eating</li>
+          <li>Cleaning the appliance regularly</li>
+          <li>Taking breaks from wearing the appliance if experiencing significant discomfort</li>
+        </ul>
+      </li>
+      <li>You acknowledge that the process of wearing the {{ product_name }} may cause temporary discomfort, including:
+        <ul>
+          <li>Headaches or pressure in the head</li>
+          <li>Soreness in the jaw, teeth, or gums</li>
+          <li>Changes in bite alignment including potentially gaps between the teeth (usually interim)</li>
+          <li>Temporary changes in speech</li>
+        </ul>
+      </li>
+      <li>You understand that these are normal parts of the process and not necessarily signs of something going wrong.</li>
+      {%- if appliance_product -%}
+        <li>If you have veneers, crowns, bridges, or other dental restorations, you acknowledge that you must exercise caution when using the {{ product_name }}. The appliance may exert pressure on your teeth that could cause dental restorations to loosen or dislodge. Reviv strongly recommends consulting your dentist before use if this applies to you, and agrees that Reviv is not liable for any damage to existing dental restorations resulting from use of the appliance.</li>
+        <li>You confirm that you do not have loose teeth, are not currently wearing braces, and do not have untreated dental or gum disease. If any of these conditions apply, you agree to consult a licensed dental professional before using the {{ product_name }}.</li>
+        <li>Keeping the appliance away from hot water, dishwashers, and direct sunlight, as heat may deform the device</li>
+        <li>If you experience gum irritation or notice any signs of gum recession, you agree to pause use immediately and allow your gums to fully heal before resuming. When you resume, you should do so gradually, starting with shorter wear periods and increasing slowly. Persistent or worsening gum recession should be evaluated by a dental professional before continuing use.</li>
+      {%- endif -%}
+    </ol>
+
+    <h3>Important Biomechanical Considerations</h3>
+    <ol>
+      <li>You acknowledge that you understand the Reviv process may create a posterior open bite (a condition where the back teeth do not touch when biting down) over time.</li>
+      <li>You understand that if a posterior open bite develops, it must be supported either by:
+        <ul>
+          <li>Continuing to wear the {{ product_name }} or a similar appliance at night, OR</li>
+          <li>Consulting with a dentist about placing composite material on your teeth to support the bite</li>
+        </ul>
+      </li>
+      <li>You understand that failing to support a posterior open bite could lead to:
+        <ul>
+          <li>Regression of progress</li>
+          <li>Potential development of TMJ issues</li>
+          <li>Structural changes in the skull, spine, and body</li>
+        </ul>
+      </li>
+      <li>You agree to consult with a healthcare professional if you experience any severe or concerning symptoms while using the {{ product_name }}.</li>
+    </ol>
+
+    <h3>EGK Biomechanics Community &amp; Support Membership</h3>
+    <ol>
+      <li>You understand that participating in the EGK community is optional and that any advice or suggestions received from other community members should not replace professional medical advice.</li>
+      <li>You acknowledge that sharing your experience in the community is voluntary and that you do so at your own discretion.</li>
+      <li>The EGK community is an independently operated, peer-led support space. It is not managed, monitored, or endorsed by Reviv as a company, and participation in the community does not constitute a formal support relationship with Reviv.</li>
+      <li>Any information, advice, or guidance shared by community members reflects personal experience only and does not represent the official views, recommendations, or positions of Reviv.</li>
+      <li>Community access does not entitle you to official product support, professional medical or dental consultation, or guaranteed responses from Reviv staff.</li>
+      <li>For official product support, warranty queries, returns, or refunds, you must contact Reviv directly through our official support channels.</li>
+      <li>Participation in the community is also subject to the Community's own Terms &amp; Conditions, which apply separately and in addition to these Product Terms &amp; Conditions.</li>
+    </ol>
+
+    <h3>Communication and Community</h3>
+    <ol>
+      <li>You understand that participating in the Reviv community is optional and that any advice or suggestions received from other community members should not replace professional medical advice.</li>
+      <li>You acknowledge that sharing your experience in the community is voluntary and that you do so at your own discretion.</li>
+    </ol>
+
+    <h3>Limitation of Liability</h3>
+    <ol>
+      <li>To the maximum extent permitted by applicable law, Reviv shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages resulting from your use or inability to use the {{ product_name }}.</li>
+      <li>You agree to indemnify and hold harmless Reviv and its affiliates, officers, employees, and agents from any claims, liabilities, damages, losses, and expenses arising from your use of the {{ product_name }}.</li>
+    </ol>
+
+    <h3>Important Health Notice</h3>
+    <ol>
+      <li>You confirm that you have consulted with a healthcare professional about your specific health conditions and concerns before using the {{ product_name }}, or you have made an informed decision to proceed without such consultation.</li>
+      <li>You acknowledge that the {{ product_name }} is not a substitute for professional dental or medical care.</li>
+      <li>You agree to stop using the {{ product_name }} and consult a healthcare professional if you experience severe pain, significant changes in bite that cause difficulty eating, breathing problems, or any other concerning symptoms.</li>
+      {%- if appliance_product -%}
+        <li>If you have been diagnosed with or suspect you may have sleep apnea, you agree to consult a physician before using the {{ product_name }}. This product is not designed to address sleep apnea and is not a substitute for medically approved sleep apnea treatments.</li>
+        <li>You acknowledge that in rare cases, if the appliance becomes loose or dislodged during sleep, it may present a choking hazard. You agree to stop use immediately and consult a dental professional if this occurs.</li>
+      {%- endif -%}
+    </ol>
+
+    <p class="rv-terms-dialog__closing">By clicking "Accept" and completing your purchase, you confirm that you have read, understood, and agree to be bound by these Terms and Conditions.</p>
+  </div>
+
+  <div class="rv-terms-dialog__foot">
+    <button type="button" class="rv-btn rv-btn--outline" data-rv-terms-refuse>Refuse</button>
+    <button type="button" class="rv-btn rv-btn--primary" data-rv-terms-accept>Accept</button>
+  </div>
+</dialog>

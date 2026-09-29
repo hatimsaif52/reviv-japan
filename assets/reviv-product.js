@@ -259,6 +259,28 @@
       });
     });
 
+    /* ---------- terms popup (like the original product-terms snippet) ---------- */
+    var termsDialog = root.querySelector('.rv-terms-dialog');
+    if (termsDialog && terms) {
+      root.addEventListener('click', function (e) {
+        var link = e.target.closest('[data-rv-terms-text] a');
+        if (!link) return;
+        e.preventDefault(); // don't follow the link or toggle the checkbox
+        if (termsDialog.showModal) termsDialog.showModal(); else termsDialog.setAttribute('open', '');
+      });
+      function setTerms(on) {
+        terms.checked = on;
+        terms.dispatchEvent(new Event('change', { bubbles: true }));
+        termsDialog.close ? termsDialog.close() : termsDialog.removeAttribute('open');
+        terms.focus();
+      }
+      termsDialog.addEventListener('click', function (e) {
+        if (e.target.closest('[data-rv-terms-accept]')) setTerms(true);
+        else if (e.target.closest('[data-rv-terms-refuse]')) setTerms(false);
+        else if (e.target.closest('[data-rv-terms-close]') || e.target === termsDialog) termsDialog.close();
+      });
+    }
+
     /* ---------- quantity ---------- */
     root.addEventListener('click', function (e) {
       var b = e.target.closest('[data-rv-qty]');
