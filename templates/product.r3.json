@@ -38,7 +38,7 @@
             "style": "grid",
             "helper": "",
             "descriptions": "",
-            "colors": "",
+            "colors": "XL／イエロー: yellow\nL／イエロー: yellow\nM／イエロー: yellow",
             "show_size_guide": true,
             "purchase_count": false,
             "hide_for_b2b": false,
@@ -664,12 +664,16 @@
         "question_6"
       ],
       "settings": {
+        "anchor": "faq",
         "eyebrow": "FAQ",
         "heading": "Frequently asked questions",
+        "numbered": false,
+        "align": "center",
         "open_first": true,
         "schema_markup": true,
         "padding_top": 48,
-        "padding_bottom": 32
+        "padding_bottom": 32,
+        "only_tag": ""
       }
     },
     "other_products": {
