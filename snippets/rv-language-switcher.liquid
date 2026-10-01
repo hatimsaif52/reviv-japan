@@ -1,0 +1,283 @@
+{% comment %}
+  Reviv Japan language switcher (Google Translate)
+  - Always visible, bottom-left, on every page
+  - Japanese is the default; nothing is auto-detected from country, IP or browser
+  - Every language, including Japanese, is run through Google Translate, so any
+    English text left on the store is translated too (on by default for new visitors)
+  - The customer's choice is remembered (googtrans cookie) until they change it
+  Install: add {% render 'rv-language-switcher' %} just before </body> in layout/theme.liquid
+{% endcomment %}
+
+<div id="google_translate_element" aria-hidden="true"></div>
+
+<div class="rv-lang notranslate" translate="no" id="rvLang">
+  <ul class="rv-lang__list" id="rvLangList" role="listbox" aria-label="言語を選択 / Choose language" hidden>
+    <li><button type="button" role="option" data-lang="ja"><img src="https://flagcdn.com/w40/jp.png" alt="" width="20" height="15" loading="lazy">日本語</button></li>
+    <li><button type="button" role="option" data-lang="en"><img src="https://flagcdn.com/w40/gb.png" alt="" width="20" height="15" loading="lazy">English</button></li>
+    <li><button type="button" role="option" data-lang="fr"><img src="https://flagcdn.com/w40/fr.png" alt="" width="20" height="15" loading="lazy">Français</button></li>
+    <li><button type="button" role="option" data-lang="es"><img src="https://flagcdn.com/w40/es.png" alt="" width="20" height="15" loading="lazy">Español</button></li>
+    <li><button type="button" role="option" data-lang="de"><img src="https://flagcdn.com/w40/de.png" alt="" width="20" height="15" loading="lazy">Deutsch</button></li>
+    <li><button type="button" role="option" data-lang="sv"><img src="https://flagcdn.com/w40/se.png" alt="" width="20" height="15" loading="lazy">Svenska</button></li>
+    <li><button type="button" role="option" data-lang="no"><img src="https://flagcdn.com/w40/no.png" alt="" width="20" height="15" loading="lazy">Norsk</button></li>
+  </ul>
+  <button type="button" class="rv-lang__toggle" id="rvLangToggle"
+          aria-haspopup="listbox" aria-expanded="false" aria-controls="rvLangList">
+    <img class="rv-lang__flag" id="rvLangFlag" src="https://flagcdn.com/w40/jp.png" alt="" width="24" height="18">
+    <span class="rv-lang__code" id="rvLangCode">JA</span>
+    <svg class="rv-lang__chevron" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+      <path d="M2 8l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+  /* ---- Switcher (Reviv Japan styling; colours have fallbacks so it works on any page) ---- */
+  .rv-lang {
+    position: fixed;
+    left: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 2147483000;
+    font-family: var(--rv-font-sans, "Zen Kaku Gothic New", "Hiragino Sans", system-ui, sans-serif);
+  }
+  .rv-lang__toggle {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 14px 9px 10px;
+    background: #fff; color: var(--rv-ink, #2e241a);
+    border: 1px solid var(--rv-line, #f1e6dc);
+    border-radius: 999px;
+    box-shadow: 0 10px 28px -14px rgba(120, 72, 30, .45);
+    font: inherit; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+    cursor: pointer;
+    transition: border-color .15s ease;
+  }
+  .rv-lang__toggle:hover { border-color: var(--rv-gold, #c1913d); }
+  .rv-lang__toggle:focus-visible,
+  .rv-lang__list button:focus-visible { outline: 2px solid var(--rv-gold, #c1913d); outline-offset: 2px; }
+  .rv-lang__flag { display: block; width: 24px; height: 18px; object-fit: cover; border-radius: 3px; box-shadow: 0 0 0 1px rgba(46,36,26,.12); }
+  .rv-lang__chevron { transition: transform .15s ease; color: var(--rv-gold-text, #8a6a2a); }
+  .rv-lang__toggle[aria-expanded="false"] .rv-lang__chevron { transform: rotate(180deg); }
+  .rv-lang__list {
+    position: absolute; left: 0; bottom: calc(100% + 8px);
+    min-width: 190px; margin: 0; padding: 6px; list-style: none;
+    background: #fff;
+    border: 1px solid var(--rv-line, #f1e6dc); border-radius: 16px;
+    box-shadow: 0 16px 40px -18px rgba(120, 72, 30, .5);
+  }
+  .rv-lang__list[hidden] { display: none; }
+  .rv-lang__list button {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 9px 12px;
+    background: none; border: 0; border-radius: 10px; text-align: left;
+    font: inherit; font-size: 14px; color: var(--rv-ink, #2e241a); cursor: pointer;
+  }
+  .rv-lang__list img { width: 20px; height: 15px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 0 1px rgba(46,36,26,.1); }
+  .rv-lang__list button:hover { background: var(--rv-bg, #fff8f5); }
+  .rv-lang__list button[aria-selected="true"] { font-weight: 700; background: var(--rv-peach, #fdefe4); }
+  @media (prefers-reduced-motion: reduce) { .rv-lang__chevron, .rv-lang__toggle { transition: none; } }
+
+  /* ---- Hide Google's own UI (banner, tooltips, hover highlights) ---- */
+  #google_translate_element,
+  .goog-te-banner-frame,
+  iframe.skiptranslate,
+  body > .skiptranslate,
+  #goog-gt-tt,
+  .goog-te-balloon-frame,
+  .goog-tooltip,
+  .VIpgJd-ZVi9od-ORHb-OEVmcd,
+  .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+  .VIpgJd-yAWNEb-L7lbkb { display: none !important; }
+  html, body { top: 0 !important; }
+  .goog-text-highlight,
+  .VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q { background: none !important; box-shadow: none !important; }
+</style>
+
+<script>
+(function () {
+  var DEFAULT = 'ja';   // shown (and translated to) by default
+
+  /* Source language Google is told to translate FROM, per target.
+     Japanese: tell Google the page is English, so English text is translated and
+     text that is already Japanese comes back unchanged (if Google thought the page
+     was Japanese it would skip translating altogether).
+     Other languages: let Google detect it, so both Japanese and English parts translate. */
+  function sourceFor(lang) { return lang === 'ja' ? 'en' : 'auto'; }
+  var LANGS = {
+    ja: { flag: 'jp', code: 'JA' },
+    en: { flag: 'gb', code: 'EN' },
+    fr: { flag: 'fr', code: 'FR' },
+    es: { flag: 'es', code: 'ES' },
+    de: { flag: 'de', code: 'DE' },
+    sv: { flag: 'se', code: 'SV' },
+    no: { flag: 'no', code: 'NO' }
+  };
+
+  /* Elements that must never be translated (brand, prices, sizes). */
+  var NO_TRANSLATE = [
+    /* Reviv sections */
+    '.rv-header__logo', '.rv-footer__logo',
+    '[data-rv-price]', '[data-rv-compare]', '.rv-buy__price', '.rv-pcard__price',
+    '.rv-addon__price', '.rv-compare__table td', '.rv-spec td', '.rv-cart-count',
+    /* Horizon / common theme elements (header, cart drawer) */
+    '.header-logo', '.price', '.price-item', '.price__container',
+    '.cart-item__price-wrapper', '.totals__total-value', '.cart-items__price'
+  ];
+
+  function markNoTranslate(root) {
+    (root || document).querySelectorAll(NO_TRANSLATE.join(',')).forEach(function (el) {
+      el.setAttribute('translate', 'no');
+      el.classList.add('notranslate');
+    });
+  }
+
+  function hasLangCookie() { return /(?:^|;\s*)googtrans=\/[^\/;]+\/[^;]+/.test(document.cookie); }
+
+  function currentLang() {
+    var m = document.cookie.match(/(?:^|;\s*)googtrans=\/[^\/;]+\/([^;]+)/);
+    var lang = m ? decodeURIComponent(m[1]) : DEFAULT;
+    return LANGS[lang] ? lang : DEFAULT;
+  }
+
+  function domains() {
+    var host = location.hostname;
+    var parts = host.split('.');
+    var list = ['', host];
+    if (parts.length > 2) list.push('.' + parts.slice(-2).join('.'));
+    return list;
+  }
+
+  function allDomainVariants() {
+    var host = location.hostname;
+    var parts = host.split('.');
+    var list = ['', host, '.' + host];
+    for (var i = 1; i < parts.length - 1; i++) {
+      var d = parts.slice(i).join('.');
+      list.push(d, '.' + d);
+    }
+    return list;
+  }
+
+  /* Remove every googtrans cookie (any domain variant) before writing a new one.
+     Duplicate cookies with different values are the #1 reason Google
+     Translate ignores the selected language. */
+  function clearAllCookies() {
+    allDomainVariants().forEach(function (d) {
+      document.cookie = 'googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT' +
+        (d ? ';domain=' + d : '');
+    });
+  }
+
+  function writeCookie(value, expire) {
+    clearAllCookies();
+    if (expire) return;
+    domains().forEach(function (d) {
+      document.cookie = 'googtrans=' + value + ';path=/' + (d ? ';domain=' + d : '');
+    });
+  }
+
+  /* Remembers that the customer picked a language themselves,
+     so any future geo-based default never overrides their choice. */
+  function hasManualChoice() {
+    return /(?:^|;\s*)rv_lang_chosen=1/.test(document.cookie);
+  }
+  function rememberManualChoice() {
+    document.cookie = 'rv_lang_chosen=1;path=/;max-age=31536000;samesite=lax';
+  }
+
+  function switchTo(lang, isAuto) {
+    if (!isAuto) rememberManualChoice();
+    if (lang === currentLang() && hasLangCookie()) { closeList(); return; }
+    writeCookie('/' + sourceFor(lang) + '/' + lang, false);
+    location.reload();
+  }
+
+  /* First visit: translate to Japanese by default (no reload needed, Google isn't loaded yet) */
+  if (!hasLangCookie()) writeCookie('/' + sourceFor(DEFAULT) + '/' + DEFAULT, false);
+
+  /* ---- UI ---- */
+  var toggle = document.getElementById('rvLangToggle');
+  var list = document.getElementById('rvLangList');
+  var active = currentLang();
+
+  document.getElementById('rvLangFlag').src = 'https://flagcdn.com/w40/' + LANGS[active].flag + '.png';
+  document.getElementById('rvLangCode').textContent = LANGS[active].code;
+  list.querySelectorAll('button').forEach(function (b) {
+    b.setAttribute('aria-selected', b.dataset.lang === active ? 'true' : 'false');
+    b.addEventListener('click', function () { switchTo(b.dataset.lang); });
+  });
+
+  /* Public API for other scripts (e.g. geo routing) */
+  window.rvLang = {
+    current: currentLang,
+    hasManualChoice: hasManualChoice,
+    /* Applies a default language only if the customer hasn't chosen one
+       and the page is still on the default. Reloads once. */
+    applyDefault: function (lang) {
+      if (!LANGS[lang] || hasManualChoice() || currentLang() !== DEFAULT || lang === DEFAULT) return;
+      writeCookie('/' + sourceFor(lang) + '/' + lang, false);
+      if (currentLang() === lang) location.reload();   // guard against reload loops
+    }
+  };
+
+  function openList() {
+    list.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    var sel = list.querySelector('[aria-selected="true"]') || list.querySelector('button');
+    sel.focus();
+  }
+  function closeList() {
+    list.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function () { list.hidden ? openList() : closeList(); });
+  document.addEventListener('click', function (e) {
+    if (!document.getElementById('rvLang').contains(e.target)) closeList();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !list.hidden) { closeList(); toggle.focus(); }
+  });
+
+  /* ---- Google Translate: runs for every language, including Japanese ---- */
+  {
+    markNoTranslate();
+    // Re-protect prices that the theme re-renders (variant change, cart drawer)
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        m.addedNodes.forEach(function (n) { if (n.nodeType === 1) markNoTranslate(n); });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+
+    window.googleTranslateElementInit = function () {
+      var opts = { includedLanguages: 'ja,en,fr,es,de,sv,no', autoDisplay: false };
+      if (sourceFor(active) !== 'auto') opts.pageLanguage = sourceFor(active);
+      new google.translate.TranslateElement(opts, 'google_translate_element');
+      ensureTranslated();
+    };
+
+    /* Fallback: if Google didn't pick up the cookie, drive its hidden
+       dropdown directly. Google adds "translated-ltr" to <html> when done. */
+    function ensureTranslated() {
+      var tries = 0;
+      var timer = setInterval(function () {
+        tries++;
+        var html = document.documentElement;
+        if (html.classList.contains('translated-ltr') || html.classList.contains('translated-rtl')) {
+          clearInterval(timer); return;
+        }
+        var combo = document.querySelector('.goog-te-combo');
+        if (combo && combo.options.length > 1) {
+          combo.value = active;
+          combo.dispatchEvent(new Event('change'));
+        }
+        if (tries > 20) {
+          clearInterval(timer);
+          console.warn('[rv-lang] Google Translate did not apply "' + active + '". Check for blocked translate.google.com requests or duplicate googtrans cookies.');
+        }
+      }, 500);
+    }
+    var s = document.createElement('script');
+    s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    s.async = true;
+    document.body.appendChild(s);
+  }
+})();
+</script>
