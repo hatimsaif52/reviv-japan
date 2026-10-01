@@ -238,6 +238,15 @@
 
   /* ---- Google Translate: runs for every language, including Japanese ---- */
   {
+    /* The theme declares <html lang="ja">. Google reads that and skips translating
+       when it matches the target, so for Japanese we declare the page as English
+       (Google then translates the English text; Japanese text comes back unchanged).
+       Google sets the lang attribute back to the target language once it's done. */
+    var src = sourceFor(active);
+    var html = document.documentElement;
+    html.setAttribute('data-rv-original-lang', html.getAttribute('lang') || '');
+    if (src !== 'auto') html.setAttribute('lang', src);
+
     markNoTranslate();
     // Re-protect prices that the theme re-renders (variant change, cart drawer)
     new MutationObserver(function (muts) {
@@ -259,12 +268,13 @@
       var tries = 0;
       var timer = setInterval(function () {
         tries++;
-        var html = document.documentElement;
         if (html.classList.contains('translated-ltr') || html.classList.contains('translated-rtl')) {
           clearInterval(timer); return;
         }
         var combo = document.querySelector('.goog-te-combo');
         if (combo && combo.options.length > 1) {
+          // Reset first: re-selecting the value it already has doesn't trigger Google
+          if (combo.value === active) { combo.value = ''; combo.dispatchEvent(new Event('change')); }
           combo.value = active;
           combo.dispatchEvent(new Event('change'));
         }
