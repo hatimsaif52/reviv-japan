@@ -114,6 +114,7 @@
           "settings": {
             "logo": "shopify://shop_images/apple-news_05463d13-ce77-477c-84d5-6f26950a4f7c.png",
             "name": "Apple News",
+            "height": 0,
             "link": ""
           }
         },
@@ -122,6 +123,7 @@
           "settings": {
             "logo": "shopify://shop_images/business-insider_26c05357-cea1-448f-918b-abc79e47aec8.png",
             "name": "Business Insider",
+            "height": 0,
             "link": ""
           }
         },
@@ -130,6 +132,7 @@
           "settings": {
             "logo": "shopify://shop_images/yahoo-finance.png",
             "name": "Yahoo Finance",
+            "height": 0,
             "link": ""
           }
         },
@@ -138,6 +141,7 @@
           "settings": {
             "logo": "shopify://shop_images/associated-press.svg",
             "name": "Associated Press",
+            "height": 0,
             "link": ""
           }
         },
@@ -146,6 +150,7 @@
           "settings": {
             "logo": "shopify://shop_images/market-watch_51a17788-c3cc-4553-9960-f253851bc9b4.png",
             "name": "MarketWatch",
+            "height": 0,
             "link": ""
           }
         }
@@ -167,21 +172,6 @@
     "products": {
       "type": "rv-products",
       "blocks": {
-        "product_1": {
-          "type": "product",
-          "settings": {
-            "product": "r3-revivthree-without-support",
-            "image": "shopify://shop_images/R3_RevivThree_Support_Package.png",
-            "image_fit": "contain",
-            "badge": "Best to start with",
-            "badge_style": "green",
-            "type_label": "Oral appliance",
-            "highlight": "Low-cut profile — the easiest first appliance",
-            "details": "1 appliance, hard case, guide · about 1 year",
-            "button_style": "primary",
-            "raised": false
-          }
-        },
         "product_2": {
           "type": "product",
           "settings": {
@@ -193,7 +183,8 @@
             "highlight": "Best for discouraging mouth breathing",
             "details": "1 appliance, hard case, guide · about 1 year",
             "button_style": "primary",
-            "raised": true
+            "raised": true,
+            "soft_media": false
           }
         },
         "product_3": {
@@ -208,11 +199,29 @@
             "highlight": "",
             "details": "1 appliance · about 2–4 months",
             "button_style": "outline",
-            "raised": false
+            "raised": false,
+            "soft_media": false
+          }
+        },
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "r3-revivthree-without-support",
+            "image": "shopify://shop_images/R3_RevivThree_Support_Package.png",
+            "image_fit": "contain",
+            "badge": "Best to start with",
+            "badge_style": "green",
+            "type_label": "Oral appliance",
+            "highlight": "Low-cut profile — the easiest first appliance",
+            "details": "1 appliance, hard case, guide · about 1 year",
+            "button_style": "primary",
+            "raised": false,
+            "soft_media": false
           }
         },
         "product_WJBaHx": {
           "type": "product",
+          "disabled": true,
           "settings": {
             "product": "rs1-reviv-sports-performance-mouthguard",
             "image": "shopify://shop_images/RS1.png",
@@ -223,14 +232,15 @@
             "highlight": "",
             "details": "1 appliance, hard case, guide · about 1 year",
             "button_style": "outline",
-            "raised": false
+            "raised": false,
+            "soft_media": false
           }
         }
       },
       "block_order": [
-        "product_1",
         "product_2",
         "product_3",
+        "product_1",
         "product_WJBaHx"
       ],
       "settings": {
@@ -238,7 +248,10 @@
         "heading": "All products",
         "button_label": "View all items",
         "button_link": "",
+        "button_action": "cart",
         "cart_label": "Add to cart",
+        "view_label": "View",
+        "show_rating": true,
         "price_suffix": "tax inc.",
         "show_no_reviews": true,
         "note": "All prices include consumption tax · free shipping nationwide · dispatched from Tokyo within 3 business days",
