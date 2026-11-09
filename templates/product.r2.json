@@ -399,7 +399,7 @@
         "size_1": {
           "type": "size",
           "settings": {
-            "image": "shopify://shop_images/size-medium.png",
+            "image": "shopify://shop_images/reviv2-size-medium.webp",
             "name": "Medium",
             "range": "under 6.2 cm",
             "text": "Teens and adults with smaller mouths. Slightly narrower and shorter for a more precise fit.",
@@ -410,9 +410,9 @@
         "size_2": {
           "type": "size",
           "settings": {
-            "image": "shopify://shop_images/size-large.png",
+            "image": "shopify://shop_images/reviv2-size-large.webp",
             "name": "Large",
-            "range": "6.2 – 7.1 cm",
+            "range": "6.2 and above",
             "text": "Suits most adults, and gives a snug, comfortable fit for best effect.",
             "badge": "Most adults",
             "highlight": true
@@ -420,6 +420,7 @@
         },
         "size_3": {
           "type": "size",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/size-xl.png",
             "name": "XL",
@@ -435,8 +436,8 @@
             "size": "Medium",
             "v1": "46 mm",
             "v2": "63.5 mm",
-            "v3": "23 mm",
-            "v4": "4.1 mm",
+            "v3": "25 mm",
+            "v4": "",
             "highlight": false
           }
         },
@@ -444,15 +445,16 @@
           "type": "row",
           "settings": {
             "size": "Large",
-            "v1": "53.6 mm",
-            "v2": "73.2 mm",
-            "v3": "26 mm",
-            "v4": "4.2 mm",
+            "v1": "54 mm",
+            "v2": "74 mm",
+            "v3": "30 mm",
+            "v4": "",
             "highlight": true
           }
         },
         "row_6": {
           "type": "row",
+          "disabled": true,
           "settings": {
             "size": "XL",
             "v1": "59.6 mm",
@@ -483,7 +485,7 @@
         "col_3": "Height",
         "col_4": "Thick.",
         "video_image": "shopify://shop_images/maxresdefault.jpg",
-        "video": "https://www.youtube.com/watch?v=gmoeX-6gsFg",
+        "video": "",
         "vertical": true,
         "video_label": "Watch · Short",
         "video_title": "How to measure, in one minute",
@@ -664,12 +666,16 @@
         "question_6"
       ],
       "settings": {
+        "anchor": "faq",
         "eyebrow": "FAQ",
         "heading": "Frequently asked questions",
+        "numbered": false,
+        "align": "center",
         "open_first": true,
         "schema_markup": true,
         "padding_top": 48,
-        "padding_bottom": 32
+        "padding_bottom": 32,
+        "only_tag": ""
       }
     },
     "other_products": {
