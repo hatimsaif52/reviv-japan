@@ -1,0 +1,121 @@
+{% comment %}
+  AT terms sheet: shared by all creator pages (and any page that gates checkout on the
+  product-terms tick). Instead of a red error when the box is unticked, a bottom sheet
+  asks for the same tick and continues to checkout in one step. The tick stays required.
+
+  Usage in a section's checkout handler:
+    if (terms && !terms.checked) {
+      if (window.atTermsSheet) { window.atTermsSheet(terms, function () { ...continue... }); return; }
+      ...old error fallback...
+    }
+  Render once per page: {% render 'AT-terms-sheet' %}
+{% endcomment %}
+<style>
+  .at-ts { position: fixed; inset: 0; z-index: 2147483000; display: none; font-family: inherit; }
+  .at-ts.is-open { display: block; }
+  .at-ts__backdrop { position: absolute; inset: 0; background: rgba(23, 21, 21, 0.55); }
+  .at-ts__panel {
+    position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+    width: min(100%, 480px); box-sizing: border-box;
+    background: #fffaf1; color: #242021;
+    border-radius: 20px 20px 0 0;
+    padding: 22px 20px calc(18px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; gap: 14px;
+    box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.25);
+    animation: at-ts-in 0.2s ease;
+  }
+  @keyframes at-ts-in { from { transform: translate(-50%, 100%); } to { transform: translate(-50%, 0); } }
+  @media (prefers-reduced-motion: reduce) { .at-ts__panel { animation: none; } }
+  .at-ts__title { margin: 0; font-weight: 800; font-size: 19px; line-height: 1.2; color: #242021; }
+  .at-ts__tick {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 11px; align-items: start;
+    font-size: 15px; line-height: 1.45; color: #242021; text-align: left;
+    padding: 14px; border: 1.5px solid #242021; border-radius: 14px; background: #fff; cursor: pointer;
+  }
+  .at-ts__tick input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: #242021; }
+  .at-ts__tick span { display: block !important; text-align: left !important; }
+  .at-ts .at-ts__terms {
+    display: inline !important; width: auto !important; min-height: 0 !important; margin: 0 !important;
+    font: inherit !important; font-weight: 700 !important; color: inherit !important;
+    background: none !important; border: 0 !important; padding: 0 !important; box-shadow: none !important;
+    text-align: left !important; text-transform: none !important; letter-spacing: normal !important;
+    text-decoration: underline !important; text-underline-offset: 0.2em; cursor: pointer;
+  }
+  .at-ts .at-ts__title, .at-ts .at-ts__tick { text-align: left !important; }
+  .at-ts .at-ts__go, .at-ts .at-ts__cancel { display: block !important; text-transform: none !important; letter-spacing: normal !important; }
+  .at-ts__go {
+    width: 100%; min-height: 52px; border: 0; border-radius: 999px; cursor: pointer;
+    background: #fcb23e; color: #111; font: inherit; font-weight: 800; font-size: 17px;
+  }
+  .at-ts__go[disabled] { opacity: 0.45; cursor: not-allowed; }
+  .at-ts__cancel {
+    font: inherit; font-weight: 700; font-size: 15px; color: #242021; background: none; border: 0;
+    padding: 4px; cursor: pointer; opacity: 0.7;
+  }
+</style>
+<script>
+  (function () {
+    if (window.atTermsSheet) return;
+    function track(name) {
+      try { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: name }); } catch (e) {}
+    }
+    var sheet, check, go, lastFocus;
+    function close() {
+      if (!sheet) return;
+      sheet.classList.remove('is-open');
+      if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) {} }
+    }
+    function build() {
+      sheet = document.createElement('div');
+      sheet.className = 'at-ts';
+      sheet.setAttribute('role', 'dialog');
+      sheet.setAttribute('aria-modal', 'true');
+      sheet.setAttribute('aria-labelledby', 'at-ts-title');
+      sheet.innerHTML =
+        '<div class="at-ts__backdrop" data-close></div>' +
+        '<div class="at-ts__panel">' +
+        '<p class="at-ts__title" id="at-ts-title">One last step</p>' +
+        '<label class="at-ts__tick"><input type="checkbox" id="at-ts-check" />' +
+        '<span>I agree to the <a href="#" role="button" class="at-ts__terms">Product terms and conditions</a> and that all sales are final.</span></label>' +
+        '<button type="button" class="at-ts__go" disabled>Continue</button>' +
+        '<button type="button" class="at-ts__cancel" data-close>Not now</button>' +
+        '</div>';
+      document.body.appendChild(sheet);
+      check = sheet.querySelector('#at-ts-check');
+      go = sheet.querySelector('.at-ts__go');
+      check.addEventListener('change', function () { go.disabled = !check.checked; });
+      sheet.addEventListener('click', function (e) { if (e.target.hasAttribute('data-close')) close(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && sheet.classList.contains('is-open')) close();
+      });
+    }
+    window.atTermsSheet = function (terms, onAgree) {
+      if (!sheet) build();
+      lastFocus = document.activeElement;
+      check.checked = false;
+      go.disabled = true;
+      sheet.querySelector('.at-ts__terms').onclick = function (e) {
+        if (e) e.preventDefault();
+        var box = terms.closest('.product-terms-container');
+        var link = box && box.querySelector('.terms-link-button, button, a');
+        if (link) {
+          close();
+          link.click();
+        }
+      };
+      go.onclick = function () {
+        terms.checked = true;
+        terms.dispatchEvent(new Event('change', { bubbles: true }));
+        var box = terms.closest('.product-terms-container');
+        var err = box && box.querySelector('.product-terms-error');
+        if (err) err.classList.add('hidden');
+        track('at_terms_agreed');
+        close();
+        if (onAgree) onAgree();
+      };
+      sheet.classList.add('is-open');
+      track('at_terms_sheet_shown');
+      check.focus();
+    };
+  })();
+</script>
