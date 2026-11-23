@@ -122,6 +122,7 @@
               {%- comment -%} Terms popup: opened by the link in the terms text; Accept ticks the box, Refuse unticks it {%- endcomment -%}
               {%- assign terms_dialog = 'rv-terms-' | append: section.id -%}
               {%- render 'rv-product-terms', id: terms_dialog, product: product -%}
+              {%- render 'AT-terms-sheet' -%}
             {%- endif -%}
 
             <div class="rv-buy__actions{% if s.enable_terms %} is-locked{% endif %}" data-rv-actions>
