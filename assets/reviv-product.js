@@ -162,7 +162,11 @@
     }
     if (form) {
       form.addEventListener('submit', function (e) {
-        if (terms && !terms.checked) { e.preventDefault(); e.stopImmediatePropagation(); }
+        if (terms && !terms.checked) { 
+          e.preventDefault(); 
+          e.stopImmediatePropagation(); 
+          
+        }
       }, true);
     }
 
