@@ -154,7 +154,7 @@
         if (terms && !terms.checked) {
           e.preventDefault(); e.stopPropagation();
           if (window.atTermsSheet) {
-            window.atTermsSheet(termsCheckbox, function () {
+            window.atTermsSheet(terms, function () {
               e.target.click();
             });
             return;
@@ -172,7 +172,7 @@
           e.preventDefault(); 
           e.stopImmediatePropagation(); 
           if (window.atTermsSheet) {
-            window.atTermsSheet(termsCheckbox, function () {
+            window.atTermsSheet(terms, function () {
               form.submit();
             });
             return;
