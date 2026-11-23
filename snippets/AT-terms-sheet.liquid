@@ -96,8 +96,8 @@
       go.disabled = true;
       sheet.querySelector('.at-ts__terms').onclick = function (e) {
         if (e) e.preventDefault();
-        var box = terms.closest('.product-terms-container');
-        var link = box && box.querySelector('.terms-link-button, button, a');
+        var box = terms.closest('.rv-terms');
+        var link = box && box.querySelector('a');
         if (link) {
           close();
           link.click();
