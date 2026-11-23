@@ -155,7 +155,7 @@
           e.preventDefault(); e.stopPropagation();
           if (window.atTermsSheet) {
             window.atTermsSheet(termsCheckbox, function () {
-              form.submit();
+              e.target.click();
             });
             return;
           }
