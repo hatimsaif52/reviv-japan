@@ -60,7 +60,7 @@
       try { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: name }); } catch (e) {}
     }
     var sheet, check, go, lastFocus;
-    function close() {
+    function closeATSheet() {
         console.log(sheet);
       if (!sheet) return;
       sheet.classList.remove('is-open');
@@ -85,9 +85,9 @@
       check = sheet.querySelector('#at-ts-check');
       go = sheet.querySelector('.at-ts__go');
       check.addEventListener('change', function () { go.disabled = !check.checked; });
-      sheet.addEventListener('click', function (e) { if (e.target.hasAttribute('data-close')) close(); });
+      sheet.addEventListener('click', function (e) { if (e.target.hasAttribute('data-close')) closeATSheet(); });
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && sheet.classList.contains('is-open')) close();
+        if (e.key === 'Escape' && sheet.classList.contains('is-open')) closeATSheet();
       });
     }
     window.atTermsSheet = function (terms, onAgree) {
@@ -100,7 +100,7 @@
         var box = terms.closest('.rv-terms');
         var link = box && box.querySelector('a');
         if (link) {
-          close();
+          closeATSheet();
           link.click();
         }
       };
@@ -111,7 +111,7 @@
         var err = document.querySelector('.rv-terms__hint');
         if (err) err.classList.remove('is-visble');
         track('at_terms_agreed');
-        close();
+        closeATSheet();
         if (onAgree) onAgree();
       };
       sheet.classList.add('is-open');
