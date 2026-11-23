@@ -107,8 +107,8 @@
         terms.checked = true;
         terms.dispatchEvent(new Event('change', { bubbles: true }));
         var box = terms.closest('.rv-terms');
-        var err = box && box.querySelector('.product-terms-error');
-        if (err) err.classList.add('hidden');
+        var err = document.querySelector('.rv-terms__hint');
+        if (err) err.classList.remove('is-visble');
         track('at_terms_agreed');
         close();
         if (onAgree) onAgree();
