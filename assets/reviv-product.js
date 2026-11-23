@@ -165,7 +165,12 @@
         if (terms && !terms.checked) { 
           e.preventDefault(); 
           e.stopImmediatePropagation(); 
-          
+          if (window.atTermsSheet) {
+            window.atTermsSheet(termsCheckbox, function () {
+              form.submit();
+            });
+            return;
+          }
         }
       }, true);
     }
