@@ -61,6 +61,7 @@
     }
     var sheet, check, go, lastFocus;
     function close() {
+        console.log(sheet);
       if (!sheet) return;
       sheet.classList.remove('is-open');
       if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) {} }
