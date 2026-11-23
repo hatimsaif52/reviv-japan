@@ -153,6 +153,12 @@
         if (!e.target.closest('.rv-buy__atc, .rv-buy__now')) return;
         if (terms && !terms.checked) {
           e.preventDefault(); e.stopPropagation();
+          if (window.atTermsSheet) {
+            window.atTermsSheet(termsCheckbox, function () {
+              form.submit();
+            });
+            return;
+          }
           if (hint) hint.classList.add('is-visible');
           terms.closest('.rv-terms').classList.add('is-attention');
           setTimeout(function () { terms.closest('.rv-terms').classList.remove('is-attention'); }, 900);
